@@ -1,0 +1,35 @@
+# Copyright © 2013-2014 Martin Ueding <dev@martin-ueding.de>
+# Licensed under The MIT License
+
+SHELL = /bin/bash
+
+tex = "_build/physik512-$(number)-Schroedel_Schlepphorst.tex"
+out = "_build/physik512-$(number)-Schroedel_Schlepphorst.pdf"
+
+makefile = "physik512-$(number)-Schroedel_Schlepphorst.makefile"
+
+all: $(out)
+
+$(out): $(tex)
+	cd _build && latexmk -pdflatex='pdflatex -halt-on-error -shell-escape $$O $$S' -pdf $$(basename $<)
+	if [[ -f "_build/$(makefile)" ]]; \
+	    then \
+	    cd _build \
+	    && $(MAKE) -f "$(makefile)" \
+	    && latexmk -pdflatex='pdflatex -halt-on-error -shell-escape $$O $$S' -pdf $$(basename $<); \
+	    fi
+
+_build/template.js: crunch
+	mkdir -p _build
+	./$<
+
+$(tex): Template.tex _build/template.js
+	../insert $^ $@
+
+.PHONY: clean
+clean:
+	$(RM) *.class *.jar
+	$(RM) *.o *.out
+	$(RM) *.pyc *.pyo
+	$(RM) *.orig
+	$(RM) -r _build
