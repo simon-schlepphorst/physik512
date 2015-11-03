@@ -1,0 +1,637 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+# Copyright © 2013-2014 Martin Ueding <dev@martin-ueding.de>
+# Licensed under The GNU Public License Version 2 (or later)
+
+import json
+import sys
+
+import matplotlib.pyplot as pl
+import numpy as np
+import scipy.optimize as op
+import scipy.misc
+import scipy.stats
+import matplotlib.pyplot as pl
+import scipy.ndimage.filters
+import unitprint
+
+def gauss(x, mean, sigma, a):
+    '''
+    Einfache Normalverteilung, deren Integral durch ``a`` gegeben ist.
+    '''
+    return a / (np.sqrt(2 * np.pi) * sigma) \
+            * np.exp(- (x - mean)**2/(2 * sigma**2))
+
+def linear(x, a, b):
+    '''
+    Lineare Funktion.
+    '''
+    return a * x + b
+
+def decay(x, tau, a):
+    '''
+    Exponentieller Abfall.
+    '''
+    return a * np.exp(- x / tau)
+
+def cubic(x, a, b, c, d):
+    '''
+    Kubische Funktion.
+    '''
+    return a * x**3 + b * x**2 + c * x + d
+
+def double_gauss(x, mean1, mean2, sigma1, sigma2, a, b):
+    '''
+    Summe von zwei Gaußfunktionen.
+    '''
+    return gauss(x, mean1, sigma1, a) + gauss(x, mean2, sigma2, b)
+
+def fit_peak(T, filename, kind, lower, upper, p0, energy, show=False):
+    '''
+    Passt einen einzelnen Peak an.
+
+    Als Seiteneffekt werden die Fitdaten in das Template dict geschrieben und
+    die Fits in Plotdateien ausgegeben.
+
+    :param T: Template dict
+    :param filename: Dateiname mit Datenpunkten
+    :param kind: ``double`` oder anderes
+    :param lower: Unterer Index
+    :param upper: Oberer Index
+    :param p0: Anfangswerte für Fit
+    :param energy: Energie, der dieser Peak entspricht
+    :param show: Zeige Plot interaktiv an
+
+    :return: Mittelpunkt, Fehler Mittelpunkt, Breite, Fehler Breite, Energie
+    '''
+    data = np.loadtxt(filename)
+    bins = data[:, 0]
+    counts = data[:, 1]
+
+    fit_bins = bins[lower:upper]
+    fit_counts = counts[lower:upper]
+
+    x = np.linspace(np.min(fit_bins), np.max(fit_bins), 1000)
+
+    if kind == 'double':
+        popt, pconv = op.curve_fit(double_gauss, fit_bins, fit_counts, p0=p0)
+        d = np.sqrt(pconv.diagonal())
+        y = double_gauss(x, *popt)
+        T['{}_mean_kanal'.format(energy)] = unitprint.siunitx(popt[1], d[1])
+        T['{}_sigma'.format(energy)] = unitprint.siunitx(popt[3], d[3])
+        np.savetxt('_build/fit_peak_{}.txt'.format(energy), np.column_stack([x, y]))
+
+        return popt[1], d[1], abs(popt[3]), d[3], energy
+
+    else:
+        popt, pconv = op.curve_fit(gauss, fit_bins, fit_counts, p0=p0)
+        d = np.sqrt(pconv.diagonal())
+        y = gauss(x, *popt)
+        T['{}_mean_kanal'.format(energy)] = unitprint.siunitx(popt[0], d[0])
+        T['{}_sigma'.format(energy)] = unitprint.siunitx(popt[1], d[1])
+        np.savetxt('_build/fit_peak_{}.txt'.format(energy), np.column_stack([x, y]))
+
+        return popt[0], d[0], abs(popt[1]), d[1], energy
+
+
+def interpolate_ansprech():
+    '''
+    Interpoliert die Ansprechwahrscheinlichkeit.
+
+    Als Nebeneffekt wird die angepasste Funktion zum Plotten ausgegeben.
+
+    :return: Umrechnungsfunktion Energie → Ansprechwahrscheinlichkeit.
+    '''
+    data = np.loadtxt('Ansprechwahrscheinlichkeit.csv')
+    x = data[:, 0]
+    y = data[:, 1]
+
+    popt, pconv = op.curve_fit(cubic, x, y)
+
+    converter = lambda x: cubic(x, *popt)
+
+    fx = np.linspace(min(x), max(x), 1000)
+    fy = converter(fx)
+
+    np.savetxt('_build/Ansprech-fit.csv', np.column_stack([fx, fy]))
+
+    return converter
+
+def job_energieeichung(T):
+    '''
+    Eicht die Beziehung Kanal → Energie des Detektors.
+
+    Dazu werden die bekannten Peaks der Spektren genommen und angepasst. Daran
+    wird eine gerade angepasst mit fit_gauge_points().
+
+    Diese Funktion gibt den Kontrollfluss an E_winkelabhaengigkeit() weiter.
+    '''
+    gauge_points = []
+
+    gauge_points.append(fit_peak(T, 'Daten/01_Untergrund001.txt', 'single', 2700, 4000, [3300, 1400, 250], 662))
+
+    spektrum = np.loadtxt('Daten/Spektrum_Ba001.txt')
+    untergrund = np.loadtxt('Daten/Untergrund_Ba001.txt')
+    spektrum[:,1] -= untergrund[:,1]
+
+    np.savetxt('_build/Spektrum_Ba_korr.txt', spektrum)
+
+    gauge_points.append(fit_peak(T, '_build/Spektrum_Ba_korr.txt', 'single', 85, 307, [178, 60, 5500], 31))
+    gauge_points.append(fit_peak(T, '_build/Spektrum_Ba_korr.txt', 'single', 307, 670, [452, 90, 2450], 81))
+    gauge_points.append(fit_peak(T, '_build/Spektrum_Ba_korr.txt', 'double', 1300, 2300, [1550, 1800, 100, 100, 800, 1100], 356))
+
+    popt, pconv = fit_gauge_points(T, gauge_points)
+    d = np.sqrt(pconv.diagonal())
+
+    energie_winkel = peak_winkel(T, popt[0], popt[1], d[0], d[1])
+
+    E_0 = 662e3
+
+    E_winkelabhaengigkeit(T, E_0, energie_winkel)
+
+def E_winkelabhaengigkeit(T, E_0, energie_winkel):
+    '''
+    Nimmt die Energie ↔ Winkel Beziehung und rechnet damit weiter.
+
+    Diese Beschreibung enthält einige »und« und sollte daher dringend zerlegt
+    werden. Aber dies wird jetzt einfach mit aller Kraft ignoriert.
+
+    Zuerst werden die Daten mit dem Cosinus linearisiert und für das
+    linearisierte Diagramm gespeichert. Dann wird die ideale Kurve gespeichert.
+    Als letztes in diesem Schritt werden die Daten noch für ein Polardiagram
+    gespeichert.
+
+    :param energie_winkel: Liste mit Tupeln, die jeweils folgendes enthalten:
+
+        - Winkel
+        - Mittelpunkt
+        - Integral
+        - Fehler Winkel
+        - Fehler Mittelpunkt
+        - Fehler Integral
+
+    :returns: None
+    '''
+    energie_winkel = np.array(energie_winkel)
+    E = energie_winkel[:,1]
+    d_E = energie_winkel[:,4]
+
+    phi = np.radians(energie_winkel[:,0])
+    d_phi = np.radians(energie_winkel[:,3])
+
+    m = 9.91e-31
+    e = 1.6e-19
+    c = 3e8
+
+    P = 1e-3 / ( 1 + E_0*e/(m*c**2) * ( 1 - np.cos(phi) ) )
+    d_P = np.sqrt(
+            (1e-3 * E_0 * e / (m * c**2) * np.sin(phi) * P**2 * d_phi)**2
+            #+ (1e-3 * e / (m * c**2) * (1 - np.cos(phi)) * P**2 * d_E_0)**2
+            )
+
+    np.savetxt('_build/E_winkelabhaengigkeit.txt', np.column_stack([P,E,d_P,d_E]))
+    T['E_winkelabhaengigkeit'] = list(zip(
+        unitprint.siunitx(E, d_E),
+        unitprint.siunitx(phi, d_phi),
+        unitprint.siunitx(P,d_P)
+        ))
+    x = np.linspace(np.min(P), np.max(P), 10)
+    y = E_0*x
+    np.savetxt('_build/E_winkelabhaengigkeit_ideal.txt', np.column_stack([x,y]))
+
+    np.savetxt('_build/E_winkelabhaengigkeit_polar.txt', np.column_stack([
+        np.degrees(phi),
+        E,
+        np.degrees(d_phi),
+        d_E,
+    ]))
+
+    # --------------%<---------------------------------------------------------
+    # Cut here if you ever want to refactor this %$@# below this comment.
+
+    degree_val = energie_winkel[:, 0]
+    degree_err = energie_winkel[:, 3]
+    E_val = energie_winkel[:, 1]
+    E_err = energie_winkel[:, 4]
+    integral_val = energie_winkel[:, 2]
+    integral_err = energie_winkel[:, 5]
+
+    # Korrigiere die Zählraten um die Ansprechwahrscheinlichkeit. Je größer die
+    # Wahrscheinlichkeit ist, desto mehr Zählrate haben wir gemessen. Daher
+    # müssen wir durch die Wahrscheinlichkeit teilen.
+    anspr_ftor = interpolate_ansprech()
+    integral_corr_val = integral_val / anspr_ftor(E_val)
+    integral_corr_err = integral_err / anspr_ftor(E_val)
+
+    # Die Werte, die wir jetzt haben, sind genauso willkürlich wie vorher. Und
+    # jetzt? Erstmal einen theoretischen Klein-Nishina-Plot für die fragliche
+    # Energie erzeugen.
+    theta = np.linspace(np.radians(min(degree_val)), np.radians(max(degree_val)), 1000)
+    sigma_omega = sigma_omega_klein_nishina(662 / 511, theta)
+    np.savetxt('_build/plot_klein_nishina_Cs.csv',
+               np.column_stack([np.degrees(theta), sigma_omega]))
+    
+    # Jetzt müssen noch die Daten passend gemacht werden. Ich versuche das
+    # erstmal so, dass ich einen Wert aus den Messdaten genau auf den
+    # theoretischen Plot anpasse. »What could possibly go wrong?«
+
+    factors = integral_corr_val / sigma_omega_klein_nishina(662 / 511, np.radians(degree_val))
+    factor = np.mean(factors)
+
+    integral_corr_val /= factor
+    integral_corr_err /= factor
+
+    np.savetxt('_build/polar_korr.csv', np.column_stack([degree_val, integral_corr_val, degree_err, integral_corr_err]))
+
+
+
+def fit_gauge_points(T, points, show=False):
+    '''
+    Passt an Eichpunkte eine Gerade an und gibt die Fitparameter zurück.
+
+    Als Nebeneffekt werden die Daten zum Plotten in Dateien geschrieben.
+    '''
+    p = np.array(points)
+    channel_val = p[:, 0]
+    channel_err = p[:, 1]
+    width_val = p[:, 2]
+    width_err = p[:, 3]
+    energy = p[:, 4]
+
+    popt, pconv = op.curve_fit(linear, channel_val, energy)
+
+    d = np.sqrt(pconv.diagonal())
+
+    points_table = np.column_stack([channel_val, energy, channel_err])
+    np.savetxt('_build/data_energieeichung.txt', points_table)
+    T['data_energieeichung'] = list(zip(
+        unitprint.siunitx(channel_val, channel_err),
+        unitprint.siunitx(width_val, width_err),
+        unitprint.siunitx(energy),
+    ))
+
+    x = np.linspace(np.min(channel_val), np.max(channel_val), 10)
+    y = linear(x, *popt)
+
+    T['fit_energieeichung_steigung'] = unitprint.siunitx(popt[0], d[0])
+    T['fit_energieeichung_offset'] = unitprint.siunitx(popt[1], d[1])
+
+    if show:
+        pl.plot(channel_val, energy, marker='+', linestyle='none')
+        pl.plot(x, y)
+        pl.show()
+
+    np.savetxt('_build/fit_energieeichung.txt', np.column_stack([x, y]))
+
+    return popt, pconv
+
+def peak_winkel(T, energie_steigung_val, energie_offset_val, energie_steigung_err, energie_offset_err):
+    '''
+    Findet den Photopeak in allen Spektren.
+
+    Dazu werden die Daten und der Untergrund geladen und voneinander abgezogen.
+    Der größte Wert wird als Position des Photopeaks interpretiert. Dort wird
+    eine Gaußkurve angepasst.
+
+    Der Rückgabewert ist eine Liste mit Tupeln, die jeweils folgendes enthalten:
+
+    - Winkel
+    - Mittelpunkt
+    - Integral
+    - Fehler Winkel
+    - Fehler Mittelpunkt
+    - Fehler Integral
+    '''
+    energie_winkel = []
+    d_winkel = .5
+    for winkel in range(40, 121, 5):
+        messdaten = np.loadtxt('Daten/plastik_{}deg001.txt'.format(winkel))
+        messdaten_cut = messdaten[100:,:]
+        untergrund = np.loadtxt('Daten/untergrund_{}deg001.txt'.format(winkel))
+        untergrund_cut = untergrund[100:,:]
+
+        ereignisse_val = messdaten_cut[:,1] - untergrund_cut[:,1]
+        ereignisse_err = np.sqrt(
+            np.sqrt(messdaten_cut[:,1])**2
+            + np.sqrt(untergrund_cut[:,1])**2
+        )
+
+        energie_val = messdaten_cut[:,0] * energie_steigung_val + energie_offset_err
+        energie_err = np.sqrt(
+            (messdaten_cut[:,0] * energie_steigung_err)**2
+            + (energie_offset_err)**2
+        )
+
+        # Exportiere umgerechnete Daten zum Plotten.
+        np.savetxt(
+            '_build/spektrum_{}deg_korr.txt'.format(winkel),
+            np.column_stack([energie_val, ereignisse_val, energie_err, ereignisse_err])
+        )
+
+        max_index = np.argmax(ereignisse_val)
+        lower = max(max_index - 450, 0)
+        upper = min(max_index + 450, len(energie_val) - 1)
+
+        fit_energie = energie_val[lower:upper]
+        fit_ereignisse = ereignisse_val[lower:upper]
+
+        popt, pconv = op.curve_fit(
+            gauss,
+            fit_energie,
+            fit_ereignisse,
+            p0=[
+                np.mean(energie_val[max_index - 5:max_index + 5]),
+                400,
+                750
+            ],
+        )
+        d = np.sqrt(pconv.diagonal())
+
+        x = np.linspace(np.min(energie_val), np.max(energie_val), 1000)
+        y = gauss(x, *popt)
+
+        """
+        print('lower', lower)
+        print('upper', upper)
+        print(energie.shape, ereignisse.shape)
+        print(fit_energie.shape, fit_ereignisse.shape)
+
+        print(pconv)
+
+        pl.clf()
+        pl.plot(energie, ereignisse)
+        pl.plot(fit_energie, fit_ereignisse)
+        pl.plot(x, y)
+        pl.show()
+        """
+
+        np.savetxt('_build/fit_{}deg.txt'.format(winkel), np.column_stack([x,y]))
+
+        energie_winkel.append((winkel, popt[0], popt[2], d_winkel, d[0], d[2]))
+
+    np.savetxt('_build/data_energie_winkel.txt', energie_winkel)
+
+
+    return energie_winkel
+
+
+def extract_photo_peak(filename, dicke_mm):
+    '''
+    Extrahiert den Photopeak.
+
+    An die Daten wird eine Gaußkurve an den Photopeak gefittet. Die Daten
+    werden zum Plotten erneut ausgegeben.
+
+    Rückgabewert ist ein Tupel mit:
+
+    - Dicke [mm]
+    - Integral
+    - Fehler Integral
+    - Schwerpunkt
+    - Fehler Schwerpunkt
+    - Breite
+    - Fehler Breite
+    '''
+    data = np.loadtxt(filename)
+    bins = data[:, 0]
+    counts = data[:, 1]
+
+    lower = 200
+    upper = -1
+    step = len(bins[lower:upper]) // 200
+
+    bins = bins[lower:upper]
+    counts = counts[lower:upper]
+
+    lower_fit = 2700
+    upper_fit = -1
+
+    popt, pconv = op.curve_fit(
+        gauss,
+        bins[lower_fit:upper_fit],
+        counts[lower_fit:upper_fit], 
+        p0=[3000, 100, 120000],
+    )
+
+    y = gauss(bins, *popt)
+
+    chisq, p = scipy.stats.chisquare(
+        counts[lower_fit:upper_fit],
+        y[lower_fit:upper_fit]
+    )
+    divisor = len(counts[lower_fit:upper_fit]) - 3 - 1
+
+    np.savetxt('_build/plot-decay-data-{:02d}mm.txt'.format(dicke_mm), np.column_stack([
+        bins, counts
+    ]))
+    np.savetxt('_build/plot-decay-used-{:02d}mm.txt'.format(dicke_mm), np.column_stack([
+        bins[lower_fit:upper_fit], counts[lower_fit:upper_fit]
+    ]))
+    np.savetxt('_build/plot-decay-fit-{:02d}mm.txt'.format(dicke_mm), np.column_stack([
+        bins[lower_fit:upper_fit], y[lower_fit:upper_fit]
+    ]))
+
+    c = np.sqrt(pconv.diagonal())
+
+    return dicke_mm, popt[2], c[2], popt[0], c[0], popt[1], c[1]
+
+
+def extinction_ratio(T, filename, dicke_mm):
+    '''
+    Berechnet das Extinktionsverhältnis.
+
+    Glättet die gegebenen Daten und teilt durch den Untergrund. Die Daten
+    werden dann zum Plotten ausgegeben.
+
+    Dies hat sich aber als nicht hilfreich herausgestellt, daher ist diese
+    Funktion nicht mehr sonderlich wichtig.
+    '''
+    normal_data = np.loadtxt('Daten/01_Untergrund001.txt')
+    normal_counts = normal_data[:, 1]
+    data = np.loadtxt(filename)
+    bins = data[:, 0]
+    counts = data[:, 1]
+
+    sigma = 50
+    T['extinction_gauss_sigma'] = unitprint.siunitx(sigma)
+
+    normal_counts = scipy.ndimage.filters.gaussian_filter(normal_counts, sigma)
+    counts = scipy.ndimage.filters.gaussian_filter(counts, sigma)
+    counts /= normal_counts
+
+    counts_err = np.sqrt(
+        (np.sqrt(counts) / normal_counts)**2
+        + (counts / normal_counts**2 * np.sqrt(normal_counts))**2
+    )
+
+    lower = 200
+    upper = -1
+    step = len(bins[lower:upper]) // 200
+
+    bins = bins[lower:upper:step]
+    counts = counts[lower:upper:step]
+    counts_err = counts_err[lower:upper:step]
+
+    np.savetxt('_build/plot-ratio-{:02d}mm.txt'.format(dicke_mm), np.column_stack([
+        bins, counts, counts_err
+    ]))
+
+def absorption(T):
+    '''
+    Berechnet das Abschwächungsverhältnis und berechnet den totalen
+    Wirkungsquerschnitt.
+
+    Die einzelnen Dateien werden durch extract_photo_peak() und
+    extinction_ratio() gejagt. Danach wird an die Daten ein exponentieller
+    Abfall angepasst.
+
+    Zusammen mit einigen Parametern von Aluminium wird der totalen
+    Wirkungsquerschnitt berechnet.
+    '''
+    extinction_ratio(T, 'Daten/01_Untergrund001.txt', 0)
+    extinction_ratio(T, 'Daten/1mm_Al_0deg001.txt', 1)
+    extinction_ratio(T, 'Daten/5mm_Al_0deg001.txt', 5)
+    extinction_ratio(T, 'Daten/10mm_Al_0deg001.txt', 10)
+    extinction_ratio(T, 'Daten/20mm_Al_0deg001.txt', 20)
+    extinction_ratio(T, 'Daten/50mm_Al_0deg001.txt', 50)
+
+    points = []
+    points.append(extract_photo_peak('Daten/01_Untergrund001.txt', 0))
+    points.append(extract_photo_peak('Daten/1mm_Al_0deg001.txt', 1))
+    points.append(extract_photo_peak('Daten/5mm_Al_0deg001.txt', 5))
+    points.append(extract_photo_peak('Daten/10mm_Al_0deg001.txt', 10))
+    points.append(extract_photo_peak('Daten/20mm_Al_0deg001.txt', 20))
+    points.append(extract_photo_peak('Daten/50mm_Al_0deg001.txt', 50))
+
+    points = np.array(points)
+
+
+    dicke = points[:, 0]
+    ampl_val = points[:, 1]
+    ampl_err = points[:, 2]
+    mean_val = points[:, 3]
+    mean_err = points[:, 4]
+    sigma_val = points[:, 5]
+    sigma_err = points[:, 6]
+
+    popt, pconv = op.curve_fit(
+        decay,
+        dicke[:-1],
+        ampl_val[:-1],
+        p0=[20, 420000],
+        sigma=ampl_err[:-1],
+    )
+    x = np.linspace(np.min(dicke), np.max(dicke), 100)
+    y = decay(x, *popt)
+    
+    c = np.sqrt(pconv.diagonal())
+
+    pl.errorbar(dicke, ampl_val, ampl_err)
+    pl.plot(x, y)
+    #pl.show()
+
+    np.savetxt('_build/plot-decay-data.txt', np.column_stack([dicke, ampl_val, ampl_err]))
+    np.savetxt('_build/plot-decay-fit.txt', np.column_stack([x, y]))
+
+    T['decay_table'] = list(zip(
+        unitprint.siunitx(dicke),
+        unitprint.siunitx(ampl_val, ampl_err),
+        unitprint.siunitx(mean_val, mean_err),
+        unitprint.siunitx(sigma_val, sigma_err),
+    ))
+
+    dichte = 2.7
+    amu = 26.98
+    na = 6.022e23
+
+    n = dichte * na / amu
+
+    sigma_val = popt[0] / n
+    sigma_err = c[0] / n
+
+    T['alu_dichte'] = unitprint.siunitx(dichte)
+    T['alu_amu'] = unitprint.siunitx(amu)
+    T['alu_n'] = unitprint.siunitx(n)
+    T['alu_a'] = unitprint.siunitx(popt[0], c[0])
+    T['alu_sigma'] = unitprint.siunitx(sigma_val / 1e-22, sigma_err / 1e-22)
+
+
+def sigma_omega_klein_nishina(gamma, theta):
+    '''
+    Differentieller Wirkungsquerschnitt aus der Klein-Nishina-Formel.
+
+    :param gamma: Photonenenergie
+    :param theta: Ablenkwinkel
+    :return: Differentieller Wirkungsquerschnitt
+    '''
+    re = 1e-15
+
+    cos = np.cos(theta)
+
+    return re**2 / 2 \
+            * \
+            1 / (1 + gamma * (1 - cos))**2 \
+            * \
+            (1 + cos**2 + (gamma**2 * (1 - cos)**2) / (1 + gamma * (1 - cos)))
+
+
+def task_nishina_theorie(T):
+    '''
+    Erzeugt Dateien mit theoretischen Klein-Nishina-Plots.
+    '''
+    theta = np.linspace(0, np.pi, 1000)
+
+    sigma_omega = sigma_omega_klein_nishina(0.01, theta)
+    np.savetxt('_build/plot_klein_nishina_1.txt',
+               np.column_stack([np.degrees(theta), sigma_omega]))
+
+    sigma_omega = sigma_omega_klein_nishina(0.1, theta)
+    np.savetxt('_build/plot_klein_nishina_2.txt',
+               np.column_stack([np.degrees(theta), sigma_omega]))
+
+    sigma_omega = sigma_omega_klein_nishina(1, theta)
+    np.savetxt('_build/plot_klein_nishina_3.txt',
+               np.column_stack([np.degrees(theta), sigma_omega]))
+
+    sigma_omega = sigma_omega_klein_nishina(10, theta)
+    np.savetxt('_build/plot_klein_nishina_4.txt',
+               np.column_stack([np.degrees(theta), sigma_omega]))
+
+def test_keys(T):
+    '''
+    Testet das dict auf Schlüssel mit Bindestrichen.
+    '''
+    dash_keys = []
+    for key in T:
+        if '-' in key:
+            dash_keys.append(key)
+
+    if len(dash_keys) > 0:
+        print()
+        print('**************************************************************')
+        print('* Es dürfen keine Bindestriche in den Schlüsseln für T sein! *')
+        print('**************************************************************')
+        print()
+        print('Folgende Schlüssel enthalten Bindestriche:')
+        for dash_key in dash_keys:
+            print('-', dash_key)
+        print()
+        sys.exit(100)
+
+
+def main():
+    T = {}
+#
+#    task_nishina_theorie(T)
+#    absorption(T)
+#    job_energieeichung(T)
+#
+#    interpolate_ansprech()
+#
+    test_keys(T)
+    with open('_build/template.js', 'w') as f:
+        json.dump(dict(T), f, indent=4, sort_keys=True)
+
+if __name__ == "__main__":
+    main()
