@@ -1,0 +1,16 @@
+Messung der Driftzeitspektren bei verschiedenen Diskriminatorschwellen
+======================================================================
+
+- CSR_DDC="0x0028"
+
+Runspezifisch
+-------------
+
+- run_151017_131731.root
+  - CSR_THR="0x0020"
+
+- run_151017_130858.root
+  - CSR_THR="0x002D" 
+
+- run_151027_132034.root
+  - CSR_THR="0x0040"
