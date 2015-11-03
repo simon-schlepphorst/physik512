@@ -1,0 +1,27 @@
+Messung der Driftzeitspektren bei verschiedenen Hochspannungen
+==============================================================
+
+Allgemein
+---------
+- Trigger
+  - 1.754 kV
+  - 1.150 mA
+
+- Die Probe wurde näher am Rand positioniert,
+  sodass der Trigger besser ansprach.
+
+
+Runspezifisch
+-------------
+
+- run_151027_132423.root
+  - 2.860 kV
+
+- run_151027_133429.root
+  - 2.900 kV
+
+- run_151027_132711.root
+  - 2.950 kV
+
+- run_151027_132851.root
+  - 3.021 kV
