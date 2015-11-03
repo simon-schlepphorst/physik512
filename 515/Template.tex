@@ -66,14 +66,65 @@
 \maketitle
 
 \begin{abstract}
-	%TODO
+Ziel des Driftkammerversuches ist es, die Funktionsweise und Datengewinnung aus einer Driftkammer zu verstehen.
+Hierzu nehmen wir dem Prototyp einer Driftkammer in Betrieb, 
+bestimmen dessen Ansprechverhalten bei verschiedenen Hochspannungen mit oder ohne Bestrahlung durch ein $\beta$-Strahler  
+und ermitteln seine Orts-Driftzeitbeziehung.
 \end{abstract}
 
 \tableofcontents
 
 \chapter{Theorie}
 
-%TODO
+\section{Einführung}
+In der modernen Physik spielen Teilchenbeschleuniger eine wichtige Rolle und mit ihnen auch verschiedene Teilchendetektoren.
+Wir beschäftigen uns im folgenden mit einer Driftkammer als Beispiel für ein gasbasierter Teilchendetektor.
+Aufgabe der Driftkammer ist es den Ort eines bewegten Teilchen zu bestimmen.
+In diesen Versuch werden die charaktristischen Eigenschaften des Prototypen einer Driftkammer des BGO-OD-Experimentes untersucht.
+Hierbei wird zum einen das Verhalten der Driftkammer mit und ohne $^90\text{Sr}$-Präperat bei verschiedenen Hochspannungen verglichen.
+Außerdem wird eine Langzeitmessung ohne Präperat durchgeführt, bei der die Winkelverteilung der kosmischen Strahlung vermessen wird.
+
+\section{Theorie}
+\subsection{Aufbau der Driftkammer}
+Die Driftkammer besteht aus mit Agon-Kohlenstoffdioxidgemisch (im Verhältnis $ 82\%-18\% $ ) gefüllten Kammer, welche mit Drähten durchspannt ist. 
+Hierbei bilden jeweils sechs hexagonal angeordnten Potentialdrähte, an denen
+eine hohe negative spannung anliegt, und der in der Mitte liegede geerdete Anodendraht eine Driftzelle.
+Die Potentialdrähte erfüllen hierbei die Aufgabe ein zylindrisches Feld zu erzeugen. 
+Dieses soll die, durch Ionisierung frei werdenen Elektronen in die Richtung
+des Anodendraht zu beschleunigen und verhindern, dass das Elektron in einer anderen Zelle detektiert wird.
+Die Spannung der Potentialdrähte kann zwischen \SIrange{0}{3000}{\volt} variiert werden.
+
+Ordnet man die einzelnen Driftzellen wie in Abbildung \fehlt an, so erhält man einen Driftkammer.
+Da das Verhältnis der Gaszusammensetzung, dessen Druck und Temperatur entscheident für die Driftgeschwindigkeit der Elektronen ist, wird das Gasgemisch kontinuierlich getauscht. 
+Die longitudinale Diffusion soll dabei möglichst klein gehalten werden,
+anderenfalls wird die Ortsrekonstruktion ungenauer.
+Das hat den Grund, dass die Longitudinale Diffusion die Zeitmessung beeinträchtigt.
+Um durch die Driftgeschwindigkeit nicht durch die Bewegung des Gases stark zu verfälschen läuft dieser Vorgang sehr langsam ab.
+% \fehlt bluber
+
+\subsection{Ionisation der Gasatome}
+Die Driftkammer ist der Prototyp zu einer Driftkammer die benutzt wird, um
+die Bewegung schwere geladener Teilchen zu detektieren.
+Um den Energieverlust dieser sehr schnellen, geladenen Teilchen zu bestimmen kann man die Bethe-Bloch-Formel nutzen.
+\[
+    -\dod Ex = \frac{4 \pi r^2_e m_e c^2 N_\text{A} Z z^2}{A \beta^2}\sbr{\ln\sbr{\frac{2m_e c^2 \beta^2}{(1-\beta^2)I}}-\beta^2}
+\]
+Wobei $N_\text A$ die Avogadro-Zahl, $\beta c$ die Geschwindigkeit und $z$ die Ladung des Teilchens. $A$ und $Z$ sind die Massen- beziehungsweise Ordnungszahl, welche näherungsweise proportional ist zu dem Ionisationspotential $I$.
+
+Die Abgabe der Energie findet hauptsächlich durch Ionisation statt.
+Dies nennt man Primärionisation.
+Die Anzahl der Primärionisationen hängt hierbei von dem Gas ab.
+Bei diesen Vorgang frei werdene Energie ist größer als die Energie die für weitere Ionisationen gebraucht wird, wodurch es zu Sekundärionisationen kommt.
+
+\subsection{Gasverstärkung, Signalentstehung und Ortsmessung}
+Die freien Elektronen werden, wie oben beschrieben, aufgrund der Driftzellenengeomertie Richtung Anodendraht beschleunigt. 
+Nahe des Anodendrahtes ist das elektische Feld so stark, dass die beschleunigten Elektronen weitere Gasatome ionisieren können.
+So kommt es zu einen Lawineneffekt.
+Das Signal wird so um einen Faktor von $106^5$ bis $10^6$ verstärkt.
+
+Die Driftzeit ermittelt man, indem man die Zeitdifferenz zwischen den Durchgang durch den sehr schnell reagierenden Szintilators und dem in der Driftkammer entstandenen Signal misst.
+Mit Hilfe der Orts-Driftzeitbeziehung, auch ODB genannt, lässt sich aus der Driftzeit der Ort des Teilchendurchgangs ermitteln.
+%TODO Ortsbestimmung
 
 \chapter{Durchführung}
 
