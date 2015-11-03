@@ -1,0 +1,19 @@
+Messung der Driftzeitspektren bei verschiedenen Verzögerungen
+=============================================================
+
+- SCR_THR="0x002D"
+
+Runspezifisch
+-------------
+
+- run_151027_123323.root
+  - CSR_DDC="0x0020"
+
+- run_151027_125709.root
+  - CSR_DDC="0x0024"
+
+- run_151027_125014.root
+  - CSR_DDC="0x0028"
+
+- run_151027_125349.root
+  - CSR_DDC="0x0038"
