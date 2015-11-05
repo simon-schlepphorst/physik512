@@ -92,9 +92,7 @@ def time_le_histograms(events_lists, labels, title, outfile):
 
 
 def time_le_vs_wire_le(events, outfile, title):
-    fig = pl.figure()
-    ax = fig.add_subplot(1, 1, 1)
-
+    pl.clf()
     x = []
     y = []
 
@@ -106,19 +104,21 @@ def time_le_vs_wire_le(events, outfile, title):
         y += time_le
 
     #ax.plot(x, np.array(y) * 2.5, linestyle='none', marker='.', alpha=0.3)
-    ax.hist2d(x, np.array(y) * 2.5, bins=(bins(x), bins(y)))
+    pl.hist2d(x, np.array(y) * 2.5, bins=(bins(x), bins(y)/2))
 
-    #ax.colorbar()
+    pl.colorbar()
 
-    ax.set_xlabel('Drahtnummer')
-    ax.set_ylabel('Driftzeit / ns')
-    ax.set_title(title)
-    ax.grid(True)
-    ax.margins(0.05)
 
-    fig.tight_layout()
-    fig.savefig(outfile)
+    pl.xlabel('Drahtnummer')
+    pl.ylabel('Driftzeit / ns')
+    pl.title(title)
+    pl.grid(True)
+    pl.margins(0.05)
 
+    pl.tight_layout()
+    pl.savefig(outfile)
+
+    pl.clf()
 
 def test_keys(T):
     '''
