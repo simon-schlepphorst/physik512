@@ -168,7 +168,7 @@ def wire_correlation(events, outfile, title):
     for event in events:
         wire_le = event[0]
 
-        if len(wire_le) == 0:
+        if len(wire_le) < 2:
             continue
 
         for w1 in wire_le:
