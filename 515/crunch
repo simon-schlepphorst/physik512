@@ -26,11 +26,11 @@ def bins(array):
 def filter_hits(events, tot_min):
     new_events = []
     for event in events:
-        new_event = [
-            list(zip(*[(wire, time, tot) for wire, time, tot in zip(*event) if tot >= tot_min]))
-        ]
+        new_event = list(zip(*[(wire, time, tot) for wire, time, tot in zip(*event) if tot >= tot_min]))
 
-        if len(new_event[0]) > 0:
+        #print(new_event)
+
+        if len(new_event) > 0:
             new_events.append(new_event)
 
     return new_events
@@ -160,6 +160,41 @@ def tot_vs_time_le(events, outfile, title):
 
     pl.clf()
 
+def wire_correlation(events, outfile, title):
+    pl.clf()
+    x = []
+    y = []
+
+    for event in events:
+        wire_le = event[0]
+
+        if len(wire_le) == 0:
+            continue
+
+        for w1 in wire_le:
+            for w2 in wire_le:
+                if w1 == w2:
+                    continue
+
+
+                x.append(w1)
+                y.append(w2)
+
+    #ax.plot(x, np.array(y) * 2.5, linestyle='none', marker='.', alpha=0.3)
+    pl.hist2d(np.array(x), np.array(y), bins=(bins(x), bins(y)), norm=matplotlib.colors.LogNorm())
+
+    pl.colorbar()
+    pl.xlabel('Wire ID')
+    pl.ylabel('Wire ID')
+    pl.title(title)
+    pl.grid(True)
+    pl.margins(0.05)
+
+    pl.tight_layout()
+    pl.savefig(outfile)
+
+    pl.clf()
+
 def test_keys(T):
     '''
     Testet das dict auf Schlüssel mit Bindestrichen.
@@ -209,10 +244,17 @@ def main():
     tot_daten = load_data('Daten/m03.01_run_151027_134606.root.js')
 
     subset = tot_daten[:10]
+    pp.pprint(subset)
+    print()
+    pp.pprint(filter_hits(subset, 60))
 
-    filtered_subset = filter_hits(subset, 60)
+    filtered = filter_hits(tot_daten, 60)
 
     tot_vs_time_le(tot_daten, 'tot_vs_time.pdf', 'Titel')
+    tot_vs_time_le(filtered, 'tot_vs_time_60.pdf', 'Titel')
+
+    wire_correlation(filtered, 'wire_correlation.pdf', 'Kabel Korrelation')
+
 
     time_le_vs_wire_le(m2_1_events[0], 'time_vs_wire.pdf', 'Titel')
 
