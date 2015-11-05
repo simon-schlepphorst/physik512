@@ -7,6 +7,7 @@
 import json
 import os.path
 import sys
+import pprint
 
 import matplotlib.pyplot as pl
 import matplotlib.colors
@@ -20,6 +21,19 @@ import unitprint
 
 def bins(array):
     return max(array) - min(array) + 1
+
+
+def filter_hits(events, tot_min):
+    new_events = []
+    for event in events:
+        new_event = [
+            list(zip(*[(wire, time, tot) for wire, time, tot in zip(*event) if tot >= tot_min]))
+        ]
+
+        if len(new_event[0]) > 0:
+            new_events.append(new_event)
+
+    return new_events
 
 
 def load_data(filename):
@@ -132,11 +146,11 @@ def tot_vs_time_le(events, outfile, title):
         y += tot
 
     #ax.plot(x, np.array(y) * 2.5, linestyle='none', marker='.', alpha=0.3)
-    pl.hist2d(np.array(x) * 2.5, np.array(y) * 2.5, bins=(bins(x), bins(y)/2), norm=matplotlib.colors.LogNorm())
+    pl.hist2d(np.array(x) * 2.5, np.array(y), bins=(bins(x), bins(y)/2), norm=matplotlib.colors.LogNorm())
 
     pl.colorbar()
     pl.xlabel('Driftzeit / ns')
-    pl.ylabel('Time over Threshold / ns')
+    pl.ylabel('Time over Threshold')
     pl.title(title)
     pl.grid(True)
     pl.margins(0.05)
@@ -189,7 +203,14 @@ def main():
         '3.021 kV',
     ]
 
+    pp = pprint.PrettyPrinter()
+
+
     tot_daten = load_data('Daten/m03.01_run_151027_134606.root.js')
+
+    subset = tot_daten[:10]
+
+    filtered_subset = filter_hits(subset, 60)
 
     tot_vs_time_le(tot_daten, 'tot_vs_time.pdf', 'Titel')
 
