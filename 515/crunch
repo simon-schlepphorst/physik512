@@ -16,6 +16,8 @@ import scipy.misc
 import scipy.ndimage.filters
 import scipy.optimize as op
 import scipy.stats
+import scipy.integrate
+import scipy.interpolate
 import unitprint
 
 
@@ -86,6 +88,39 @@ def time_le_hist_into_axes(events, ax, label):
     y, x, patches = dummy_ax.hist(all_time_le, bins=bins)
     new_x = (x[1:] + x[:-1])/2
     ax.plot(new_x * 2.5, y, label=label)
+
+
+def time_le_hist_cdf(events, outfile, title):
+    all_time_le = []
+    for event in events:
+        time_le = event[1]
+        for x in time_le:
+            all_time_le.append(x)
+    dummy = pl.figure()
+    dummy_ax = dummy.add_subplot(1, 1, 1)
+    bins = max(all_time_le) - min(all_time_le) + 1
+    y, x, patches = dummy_ax.hist(all_time_le, bins=bins)
+    x = (x[1:] + x[:-1])/2
+
+    y_integrated = scipy.integrate.cumtrapz(y, x, initial=0)
+
+    y_integrated *= 8.5 / np.max(y_integrated)
+
+    interpolated = scipy.interpolate.interp1d(x, y_integrated, kind='linear')
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(x, y_integrated)
+    ax.set_xlabel('Driftzeit / ns')
+    ax.set_ylabel('Distanz / mm')
+    ax.set_title(title)
+    ax.grid(True)
+    ax.margins(0.05)
+
+    fig.tight_layout()
+    fig.savefig(outfile)
+
+    return interpolated
 
 
 def time_le_histograms(events_lists, labels, title, outfile):
@@ -254,6 +289,8 @@ def main():
     tot_vs_time_le(filtered, 'tot_vs_time_60.pdf', 'Titel')
 
     wire_correlation(filtered, 'wire_correlation.pdf', 'Kabel Korrelation')
+
+    time_le_hist_cdf(filtered, 'odb.pdf', 'ODB')
 
 
     time_le_vs_wire_le(m2_1_events[0], 'time_vs_wire.pdf', 'Titel')
