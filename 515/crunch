@@ -9,6 +9,7 @@ import os.path
 import sys
 
 import matplotlib.pyplot as pl
+import matplotlib.colors
 import numpy as np
 import scipy.misc
 import scipy.ndimage.filters
@@ -104,11 +105,38 @@ def time_le_vs_wire_le(events, outfile, title):
         y += time_le
 
     #ax.plot(x, np.array(y) * 2.5, linestyle='none', marker='.', alpha=0.3)
-    pl.hist2d(x, np.array(y) * 2.5, bins=(bins(x), bins(y)/2))
+    pl.hist2d(x, np.array(y) * 2.5, bins=(bins(x), bins(y)/2), norm=matplotlib.colors.LogNorm())
 
     pl.colorbar()
     pl.xlabel('Drahtnummer')
     pl.ylabel('Driftzeit / ns')
+    pl.title(title)
+    pl.grid(True)
+    pl.margins(0.05)
+
+    pl.tight_layout()
+    pl.savefig(outfile)
+
+    pl.clf()
+
+def tot_vs_time_le(events, outfile, title):
+    pl.clf()
+    x = []
+    y = []
+
+    for event in events:
+        tot = event[2]
+        time_le = event[1]
+
+        x += time_le
+        y += tot
+
+    #ax.plot(x, np.array(y) * 2.5, linestyle='none', marker='.', alpha=0.3)
+    pl.hist2d(np.array(x) * 2.5, np.array(y) * 2.5, bins=(bins(x), bins(y)/2), norm=matplotlib.colors.LogNorm())
+
+    pl.colorbar()
+    pl.xlabel('Driftzeit / ns')
+    pl.ylabel('Time over Threshold / ns')
     pl.title(title)
     pl.grid(True)
     pl.margins(0.05)
@@ -160,6 +188,10 @@ def main():
         '2.950 kV',
         '3.021 kV',
     ]
+
+    tot_daten = load_data('Daten/m03.01_run_151027_134606.root.js')
+
+    tot_vs_time_le(tot_daten, 'tot_vs_time.pdf', 'Titel')
 
     time_le_vs_wire_le(m2_1_events[0], 'time_vs_wire.pdf', 'Titel')
 
