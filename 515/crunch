@@ -95,12 +95,13 @@ def time_le_hist_cdf(events, outfile, title):
     for event in events:
         time_le = event[1]
         for x in time_le:
-            all_time_le.append(x)
+            all_time_le.append(x * 2.5)
     dummy = pl.figure()
     dummy_ax = dummy.add_subplot(1, 1, 1)
     bins = max(all_time_le) - min(all_time_le) + 1
     y, x, patches = dummy_ax.hist(all_time_le, bins=bins)
-    x = (x[1:] + x[:-1])/2
+    #x = (x[1:] + x[:-1])/2
+    x = x[:-1]
 
     y_integrated = scipy.integrate.cumtrapz(y, x, initial=0)
 
@@ -230,6 +231,52 @@ def wire_correlation(events, outfile, title):
 
     pl.clf()
 
+
+def summe_differenz(events, odb, outfile, title):
+    pl.clf()
+    x = []
+    y = []
+
+    for event in events:
+        time_le = event[1]
+
+        if len(time_le) < 2:
+            continue
+
+        for i in range(len(time_le)):
+            for j in range(len(time_le)):
+                if i == j:
+                    continue
+
+                t1 = time_le[i]
+                t2 = time_le[j]
+
+                #if t1 == 0 or t2 == 0:
+                #    continue
+
+                d1 = odb(t1 * 2.5)
+                d2 = odb(t2 * 2.5)
+
+
+                x.append(d1-d2)
+                y.append(d1+d2)
+
+    #ax.plot(x, np.array(y) * 2.5, linestyle='none', marker='.', alpha=0.3)
+    pl.hist2d(np.array(x), np.array(y), bins=(100, 100))#, norm=matplotlib.colors.LogNorm())
+
+    pl.colorbar()
+    pl.xlabel('Abstand / mm')
+    pl.ylabel('Abstand / mm')
+    pl.title(title)
+    pl.grid(True)
+    pl.margins(0.05)
+
+    pl.tight_layout()
+    pl.savefig(outfile)
+
+    pl.clf()
+
+
 def test_keys(T):
     '''
     Testet das dict auf Schlüssel mit Bindestrichen.
@@ -290,7 +337,11 @@ def main():
 
     wire_correlation(filtered, 'wire_correlation.pdf', 'Kabel Korrelation')
 
-    time_le_hist_cdf(filtered, 'odb.pdf', 'ODB')
+    odb = time_le_hist_cdf(filtered, 'odb.pdf', 'ODB')
+    #odb(3 ns) -> ? mm
+
+
+    summe_differenz(filtered, odb, 'summe.pdf', 'summe')
 
 
     time_le_vs_wire_le(m2_1_events[0], 'time_vs_wire.pdf', 'Titel')
