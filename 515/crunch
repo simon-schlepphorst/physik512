@@ -17,6 +17,10 @@ import scipy.stats
 import unitprint
 
 
+def bins(array):
+    return max(array) - min(array) + 1
+
+
 def load_data(filename):
     with open(filename) as f:
         data = json.load(f)
@@ -30,7 +34,7 @@ def wire_le_hist(events, outfile, title):
 
     wire_le_hist_into_axes(events, ax)
 
-    ax.set_xlabel('Drahnummer')
+    ax.set_xlabel('Drahtnummer')
     ax.set_ylabel('Anzahl Events')
     ax.set_title(title)
 
@@ -87,6 +91,35 @@ def time_le_histograms(events_lists, labels, title, outfile):
     fig.savefig(outfile)
 
 
+def time_le_vs_wire_le(events, outfile, title):
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    x = []
+    y = []
+
+    for event in events:
+        wire_le = event[0]
+        time_le = event[1]
+
+        x += wire_le
+        y += time_le
+
+    #ax.plot(x, np.array(y) * 2.5, linestyle='none', marker='.', alpha=0.3)
+    ax.hist2d(x, np.array(y) * 2.5, bins=(bins(x), bins(y)))
+
+    #ax.colorbar()
+
+    ax.set_xlabel('Drahtnummer')
+    ax.set_ylabel('Driftzeit / ns')
+    ax.set_title(title)
+    ax.grid(True)
+    ax.margins(0.05)
+
+    fig.tight_layout()
+    fig.savefig(outfile)
+
+
 def test_keys(T):
     '''
     Testet das dict auf Schlüssel mit Bindestrichen.
@@ -112,6 +145,8 @@ def test_keys(T):
 def main():
     T = {}
 
+    ###########################################
+
     m2_1_filenames = [
         'm02.01_run_151027_132423.root.js',
         'm02.01_run_151027_133429.root.js',
@@ -128,7 +163,13 @@ def main():
         '3.021 kV',
     ]
 
+    time_le_vs_wire_le(m2_1_events[0], 'time_vs_wire.pdf', 'Titel')
+
     time_le_histograms(m2_1_events, m2_1_labels, 'Hochspannung', 'm2_1_time_le_hist.pdf')
+
+    wire_le_hist(m2_1_events[0], 'm02.01_run_151027_132423_wire_le_hist.pdf', 'm02.01')
+
+    ###########################################
 
     test_keys(T)
     with open('_build/template.js', 'w') as f:
