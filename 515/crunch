@@ -107,8 +107,6 @@ def time_le_vs_wire_le(events, outfile, title):
     pl.hist2d(x, np.array(y) * 2.5, bins=(bins(x), bins(y)/2))
 
     pl.colorbar()
-
-
     pl.xlabel('Drahtnummer')
     pl.ylabel('Driftzeit / ns')
     pl.title(title)
