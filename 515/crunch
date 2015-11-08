@@ -276,6 +276,21 @@ def summe_differenz(events, odb, outfile, title):
 
     pl.clf()
 
+def winkelverteilung():
+    events = load_data("Daten/m03.01_run_151027_134606.root.js") 
+    all_wire_le = []
+    for event in events:
+        wire_le = event[0]
+        all_wire_le += wire_le
+    hits, kanten = np.histogram(all_wire_le, bins=bins(all_wire_le))
+    kanten = kanten[:-1]
+    i_max = np.argmax(hits)
+    mitte_draht = kanten[i_max]
+    rel_draht = kanten - mitte_draht
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(rel_draht, hits)
+    fig.savefig("hits-rel_draht.pdf")
 
 def test_keys(T):
     '''
@@ -303,6 +318,9 @@ def main():
     T = {}
 
     ###########################################
+
+    winkelverteilung()
+    return
 
     m2_1_filenames = [
         'm02.01_run_151027_132423.root.js',
