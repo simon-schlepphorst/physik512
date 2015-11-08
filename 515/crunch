@@ -287,10 +287,19 @@ def winkelverteilung():
     i_max = np.argmax(hits)
     mitte_draht = kanten[i_max]
     rel_draht = kanten - mitte_draht
+    draht_abstand = rel_draht * 8.5
+    winkel = np.degrees(np.arctan2(draht_abstand, 123.5))
+
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(rel_draht, hits)
-    fig.savefig("hits-rel_draht.pdf")
+    ax.plot(winkel, hits)
+    ax.set_title("Winkelverteilung")
+    ax.set_xlabel("Winkel [Grad]")
+    ax.set_ylabel("Anzahl Ereignisse")
+    ax.margins(0.05)
+    ax.grid(True)
+    fig.tight_layout()
+    fig.savefig("hits-winkel.pdf")
 
 def test_keys(T):
     '''
