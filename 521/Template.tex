@@ -1,0 +1,104 @@
+\documentclass[11pt, ngerman, fleqn, DIV=15, headinclude, BCOR=2cm]{scrreprt}
+
+\usepackage{../../header}
+
+\usepackage{placeins}
+%\usepackage[maxfloats=50]{morefloats}
+
+\usepackage{csquotes}
+
+\usepackage{tikz}
+\usetikzlibrary{chains}
+\usetikzlibrary{shapes.geometric}
+
+\tikzset{device/.style={
+                rectangle,
+                minimum size=6mm,
+                draw=black
+            },
+            monitor/.style={
+                rectangle,
+                rounded corners=2mm,
+                minimum size=6mm,
+                draw=black
+            },
+        }
+
+\usepackage{pgfplots}
+\pgfplotsset{
+    compat=1.9,
+    width=0.8\linewidth,
+    xticklabel style={/pgf/number format/use comma},
+    yticklabel style={/pgf/number format/use comma},
+}
+\usepgfplotslibrary{polar}
+
+\usepgfplotslibrary{external}
+\tikzexternalize[mode=list and make]
+\tikzsetexternalprefix{Abbildung-}
+
+\DeclareSIUnit{\skt}{SKT}
+
+\usepackage{booktabs}
+
+\hypersetup{
+    pdftitle=
+}
+
+\subject{Praktikumsprotokoll}
+\title{$\gamma$-Spektroskopie mit Szintillations- und Halbleiterdetektoren}
+\subtitle{Versuch P515 -- Universität Bonn}
+\author{
+	Frederike Schrödel \\
+	\small{\href{mailto:fschroedel@gmx.de}{fschroedel@gmx.de}}
+	\and
+	Simon Schlepphorst \\
+	\small{\href{mailto:s2@uni-bonn.de}{s2@uni-bonn.de}}
+}
+
+\date{2015-11-10}
+
+\publishers{Tutor: %TODO
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+%TODO
+\end{abstract}
+
+
+\tableofcontents
+
+\chapter{Theorie}
+
+%TODO
+
+\chapter{Durchführung}
+
+%TODO
+
+\chapter{Auswertung}
+
+%TODO
+
+\chapter{Ergebnis}
+
+%TODO
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                   Anhang                                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{appendix}
+
+%TODO
+
+\end{appendix}
+
+\end{document}
+
+% vim: spell spelllang=de tw=79
