@@ -298,7 +298,7 @@ def summe_differenz(events, odb, outfile, title):
                 y.append(d1+d2)
 
     #ax.plot(x, np.array(y) * 2.5, linestyle='none', marker='.', alpha=0.3)
-    pl.hist2d(np.array(x), np.array(y), bins=(100, 100))#, norm=matplotlib.colors.LogNorm())
+    pl.hist2d(np.array(x), np.array(y), bins=(80, 80))#, norm=matplotlib.colors.LogNorm())
 
     pl.colorbar()
     pl.xlabel('Abstand / mm')
@@ -388,16 +388,21 @@ def main():
             'Driftzeitsprektrum der Langzeitmessung',
             'm03.01_time_le_hist.pdf')
 
-    tot_vs_time_le(tot_daten, 'tot_vs_time.pdf', 'Titel')
-    tot_vs_time_le(filtered, 'tot_vs_time_60.pdf', 'Titel')
+    time_le_histogram(filtered, 
+            'Driftzeitsprektrum der Langzeitmessung',
+            'm03.01_time_le_hist_filtered.pdf')
 
-    wire_correlation(filtered, 'wire_correlation.pdf', 'Kabel Korrelation')
 
-    odb = time_le_hist_cdf(filtered, 'odb.pdf', 'ODB')
+    tot_vs_time_le(tot_daten, 'm03.01_tot_vs_time.pdf', 'Titel')
+    tot_vs_time_le(filtered, 'm03.01_tot_vs_time_filtered.pdf', 'Titel')
+
+    wire_correlation(filtered, 'm03.01_wire_correlation_filtered.pdf', 'Kabel Korrelation')
+
+    odb = time_le_hist_cdf(filtered, 'm03.01_odb_filtered.pdf', 'ODB')
     #odb(3 ns) -> ? mm
 
 
-    summe_differenz(filtered, odb, 'summe.pdf', 'summe')
+    summe_differenz(filtered, odb, 'm03.01_summe_filtered.pdf', 'Titel')
 
 
 
