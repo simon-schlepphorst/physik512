@@ -246,10 +246,23 @@ def wire_correlation(events, outfile, title):
     pl.clf()
 
 
+def odb_wrapper(odb):
+    max_x = odb.x[-1]
+    def new_odb(x):
+        if x > max_x:
+            print('Interpolation cropped from {} to {}.'.format(x, max_x))
+            return odb(max_x)
+        else:
+            return odb(x)
+    return new_odb
+
+
 def summe_differenz(events, odb, outfile, title):
     pl.clf()
     x = []
     y = []
+
+    odb = odb_wrapper(odb)
 
     for event in events:
         time_le = event[1]
@@ -268,8 +281,14 @@ def summe_differenz(events, odb, outfile, title):
                 #if t1 == 0 or t2 == 0:
                 #    continue
 
-                d1 = odb(t1 * 2.5)
-                d2 = odb(t2 * 2.5)
+                try:
+                    d1 = odb(t1 * 2.5)
+                    d2 = odb(t2 * 2.5)
+                except ValueError as e:
+                    print('Error:', e)
+                    print('t1 * 2.5:', t1 * 2.5)
+                    print('t2 * 2.5:', t2 * 2.5)
+                    raise
 
 
                 x.append(d1-d2)
@@ -360,7 +379,7 @@ def main():
     #print()
     #pp.pprint(filter_hits(subset, 60))
 
-    filtered = filter_hits(tot_daten, 60)
+    filtered = filter_hits(tot_daten, 70)
 
     time_le_histograms([tot_daten], 
                        [None],
