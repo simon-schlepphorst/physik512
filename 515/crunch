@@ -298,8 +298,8 @@ def summe_differenz(events, odb, outfile, title):
     pl.hist2d(np.array(x), np.array(y), bins=(80, 80))#, norm=matplotlib.colors.LogNorm())
 
     pl.colorbar()
-    pl.xlabel('Abstand / mm')
-    pl.ylabel('Abstand / mm')
+    pl.xlabel('Differenz / mm')
+    pl.ylabel('Summe / mm')
     pl.title(title)
     pl.grid(True)
     pl.margins(0.05)
