@@ -292,6 +292,59 @@ def distanz_histogram(events, odb, outfile, title, lineare_bins=True):
     fig.savefig(outfile)
 
 
+def driftzeit_nachbarn_2d(events, outfile, title):
+    pl.clf()
+
+    x = []
+    y = []
+
+    all_time_le = []
+
+    for event in events:
+        wire_le = event[0]
+        time_le = event[1]
+        all_time_le += time_le
+
+        if len(time_le) < 2:
+            continue
+
+        for i in range(len(time_le)):
+            for j in range(len(time_le)):
+                if i == j:
+                    continue
+
+                if abs(wire_le[i] - wire_le[j]) > 1:
+                    pass
+
+                t1 = time_le[i]
+                t2 = time_le[j]
+
+                x.append(t1)
+                y.append(t2)
+
+    # --- Histogramme ---
+
+    # 2D Histogram mit Summe gegen Differenz, lineare Bins.
+    pl.hist2d(np.array(x) * 2.5, np.array(y) * 2.5, bins=(bins(x), bins(y)))#, norm=matplotlib.colors.LogNorm())
+
+    # 2D Scatter Plot mit Transparenz.
+    #pl.plot(np.array(d), np.array(s), alpha=0.1, marker='.', linestyle='none')
+
+    # --- Ende Histogramme ---
+
+    pl.colorbar()
+    pl.xlabel('Driftzeit / ns')
+    pl.ylabel('Driftzeit / ns')
+    pl.title(title)
+    pl.grid(True)
+    pl.margins(0.05)
+
+    pl.tight_layout()
+    pl.savefig(outfile)
+
+    pl.clf()
+
+
 def summe_differenz(events, odb, outfile, title):
     pl.clf()
     x = []
@@ -382,6 +435,8 @@ def summe_differenz(events, odb, outfile, title):
     pl.savefig(outfile)
 
     pl.clf()
+
+
 
 def winkelverteilung():
     events = load_data("Daten/m03.01_run_151027_134606.root.js") 
@@ -478,6 +533,7 @@ def main():
     summe_differenz(filtered, odb, 'm03.01_summe_filtered.pdf', 'Titel')
     distanz_histogram(filtered, odb, 'm03.01_distanz_hist-transformed.pdf', 'Distanz Häufigkeit', False)
     distanz_histogram(filtered, odb, 'm03.01_distanz_hist-linear.pdf', 'Distanz Häufigkeit', True)
+    driftzeit_nachbarn_2d(filtered, 'm03.01_driftzeit_nachbarn_2d.pdf', 'Driftzeit Nachbarn')
 
 
 

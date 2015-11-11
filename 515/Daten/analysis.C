@@ -22,6 +22,8 @@
  * @return Transformed ID of wire
  */
 template <typename Integral> Integral wire_id_shift(const Integral &id) {
+    return id;
+
     if (id % 2 == 0) {
         return id;
     } else {
