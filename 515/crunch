@@ -90,6 +90,25 @@ def time_le_hist_into_axes(events, ax, label):
     ax.plot(new_x * 2.5, y, label=label)
 
 
+def time_le_hist_into_axes_2(events, ax):
+    all_time_le = []
+
+    for event in events:
+        time_le = event[1]
+
+        for x in time_le:
+            all_time_le.append(x)
+
+    dummy = pl.figure()
+    dummy_ax = dummy.add_subplot(1, 1, 1)
+
+    bins = max(all_time_le) - min(all_time_le) + 1
+
+    y, x, patches = dummy_ax.hist(all_time_le, bins=bins)
+    new_x = (x[1:] + x[:-1])/2
+    ax.plot(new_x * 2.5, y, label='...')
+
+
 def time_le_hist_cdf(events, outfile, title):
     all_time_le = []
     for event in events:
@@ -130,6 +149,23 @@ def time_le_histograms(events_lists, labels, title, outfile):
     ax = fig.add_subplot(1, 1, 1)
     for events, label in zip(events_lists, labels):
         time_le_hist_into_axes(events, ax, label)
+
+    ax.set_xlabel('Driftzeit / ns')
+    ax.set_ylabel('Anzahl Events')
+    ax.set_title(title)
+    ax.grid(True)
+    ax.margins(0.05)
+    ax.legend(loc='best')
+
+    fig.tight_layout()
+    fig.savefig(outfile)
+
+
+def time_le_histogram(events, title, outfile):
+    fig = pl.figure()
+
+    ax = fig.add_subplot(1, 1, 1)
+    time_le_hist_into_axes_2(events, ax)
 
     ax.set_xlabel('Driftzeit / ns')
     ax.set_ylabel('Anzahl Events')
@@ -329,7 +365,41 @@ def main():
     ###########################################
 
     winkelverteilung()
-    return
+    #TODO beide Datensätze berücksichtigen
+
+    ###
+
+
+
+    pp = pprint.PrettyPrinter()
+
+
+    tot_daten = load_data('Daten/m03.01_run_151027_134606.root.js')
+    tot_label = ['run_151027_134606']
+
+    subset = tot_daten[:10]
+    #pp.pprint(subset)
+    #print()
+    #pp.pprint(filter_hits(subset, 60))
+
+    filtered = filter_hits(tot_daten, 60)
+
+    time_le_histogram(tot_daten, 
+            'Driftzeitsprektrum der Langzeitmessung',
+            'm03.01_time_le_hist.pdf')
+
+    tot_vs_time_le(tot_daten, 'tot_vs_time.pdf', 'Titel')
+    tot_vs_time_le(filtered, 'tot_vs_time_60.pdf', 'Titel')
+
+    wire_correlation(filtered, 'wire_correlation.pdf', 'Kabel Korrelation')
+
+    odb = time_le_hist_cdf(filtered, 'odb.pdf', 'ODB')
+    #odb(3 ns) -> ? mm
+
+
+    summe_differenz(filtered, odb, 'summe.pdf', 'summe')
+
+
 
     m2_1_filenames = [
         'm02.01_run_151027_132423.root.js',
@@ -347,35 +417,86 @@ def main():
         '3.021 kV',
     ]
 
-    pp = pprint.PrettyPrinter()
+    time_le_histograms(m2_1_events, m2_1_labels, 
+            'Driftzeitsprektrum bei verschiedenen Hochspannungen',
+            'm02.01_time_le_hist.pdf')
+
+    time_le_vs_wire_le(m2_1_events[0], 'm02.01_run_151027_132423_time_vs_wire.pdf', 
+            'Driftzeitverteilung 2.860 kV')
+    time_le_vs_wire_le(m2_1_events[1], 'm02.01_run_151027_133429_time_vs_wire.pdf',
+            'Driftzeitverteilung 2.900 kV')
+    time_le_vs_wire_le(m2_1_events[2], 'm02.01_run_151027_132711_time_vs_wire.pdf', 
+            'Driftzeitverteilung 2.950 kV')
+    time_le_vs_wire_le(m2_1_events[3], 'm02.01_run_151027_132851_time_vs_wire.pdf',
+            'Driftzeitverteilung 3.021 kV')
+
+    wire_le_hist(m2_1_events[0], 'm02.01_run_151027_132423_wire_le_hist.pdf',
+            'Eventverteilung 2.860 kV')
+    wire_le_hist(m2_1_events[1], 'm02.01_run_151027_133429_wire_le_hist.pdf',
+            'Eventverteilung 2.900 kV')
+    wire_le_hist(m2_1_events[2], 'm02.01_run_151027_132711_wire_le_hist.pdf',
+            'Eventverteilung 2.950 kV')
+    wire_le_hist(m2_1_events[3], 'm02.01_run_151027_132851_wire_le_hist.pdf',
+            'Eventverteilung 3.021 kV')
 
 
-    tot_daten = load_data('Daten/m03.01_run_151027_134606.root.js')
+    m2_2_filenames = [
+        'm02.02_run_151027_123323.root.js',
+        'm02.02_run_151027_125709.root.js',
+        'm02.02_run_151027_125014.root.js',
+        'm02.02_run_151027_125349.root.js',
+    ]
 
-    subset = tot_daten[:10]
-    pp.pprint(subset)
-    print()
-    pp.pprint(filter_hits(subset, 60))
+    m2_2_events = [load_data(os.path.join('Daten', x)) for x in m2_1_filenames]
 
-    filtered = filter_hits(tot_daten, 60)
+    m2_2_labels = [
+        '0x0020',
+        '0x0024',
+        '0x0028',
+        '0x0038',
+    ]
 
-    tot_vs_time_le(tot_daten, 'tot_vs_time.pdf', 'Titel')
-    tot_vs_time_le(filtered, 'tot_vs_time_60.pdf', 'Titel')
+    time_le_histograms(m2_2_events, m2_2_labels, 
+            'Driftzeitsprektrum bei verschiedenen Verzögerungen',
+            'm02.02_time_le_hist.pdf')
 
-    wire_correlation(filtered, 'wire_correlation.pdf', 'Kabel Korrelation')
+    wire_le_hist(m2_2_events[0], 'm02.02_run_151027_123323_wire_le_hist.pdf', '')
+    wire_le_hist(m2_2_events[1], 'm02.02_run_151027_125709_wire_le_hist.pdf', '')
+    wire_le_hist(m2_2_events[2], 'm02.02_run_151027_125014_wire_le_hist.pdf', '')
+    wire_le_hist(m2_2_events[3], 'm02.02_run_151027_125349_wire_le_hist.pdf', '')
+    
+    time_le_vs_wire_le(m2_2_events[0], 'm02.02_run_151027_123323_time_vs_wire.pdf', '')
+    time_le_vs_wire_le(m2_2_events[1], 'm02.02_run_151027_125709_time_vs_wire.pdf', '')
+    time_le_vs_wire_le(m2_2_events[2], 'm02.02_run_151027_125014_time_vs_wire.pdf', '')
+    time_le_vs_wire_le(m2_2_events[3], 'm02.02_run_151027_125349_time_vs_wire.pdf', '')
 
-    odb = time_le_hist_cdf(filtered, 'odb.pdf', 'ODB')
-    #odb(3 ns) -> ? mm
 
+    m2_3_filenames = [
+        'm02.03_run_151027_131731.root.js',
+        'm02.03_run_151027_130858.root.js',
+        'm02.03_run_151027_132034.root.js',
+    ]
 
-    summe_differenz(filtered, odb, 'summe.pdf', 'summe')
+    m2_3_events = [load_data(os.path.join('Daten', x)) for x in m2_1_filenames]
 
+    m2_3_labels = [
+        '0x0020',
+        '0x002D',
+        '0x0040',
+    ]
 
-    time_le_vs_wire_le(m2_1_events[0], 'time_vs_wire.pdf', 'Titel')
+    time_le_histograms(m2_3_events, m2_3_labels, 
+            'Driftzeitsprektrum bei verschiedenen Diskriminatorschwellen',
+            'm02.03_time_le_hist.pdf')
 
-    time_le_histograms(m2_1_events, m2_1_labels, 'Hochspannung', 'm2_1_time_le_hist.pdf')
+    wire_le_hist(m2_3_events[0], 'm02.03_run_151027_131731_wire_le_hist.pdf', 'Titel')
+    wire_le_hist(m2_3_events[1], 'm02.03_run_151027_130858_wire_le_hist.pdf', 'Titel')
+    wire_le_hist(m2_3_events[2], 'm02.03_run_151027_132034_wire_le_hist.pdf', 'Titel')
+    
+    time_le_vs_wire_le(m2_3_events[0], 'm02.03_run_151027_131731_time_vs_wire.pdf', 'Titel')
+    time_le_vs_wire_le(m2_3_events[1], 'm02.03_run_151027_130858_time_vs_wire.pdf', 'Titel')
+    time_le_vs_wire_le(m2_3_events[2], 'm02.03_run_151027_132034_time_vs_wire.pdf', 'Titel')
 
-    wire_le_hist(m2_1_events[0], 'm02.01_run_151027_132423_wire_le_hist.pdf', 'm02.01')
 
     ###########################################
 
