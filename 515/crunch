@@ -121,7 +121,7 @@ def time_le_hist_cdf(events, outfile, title):
 
     y_integrated *= 8.5 / np.max(y_integrated)
 
-    interpolated = scipy.interpolate.interp1d(x, y_integrated, kind='linear')
+    interpolated = scipy.interpolate.interp1d(x, y_integrated, kind='linear', bounds_error=False, fill_value=8.5)
 
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
@@ -257,15 +257,56 @@ def odb_wrapper(odb):
     return new_odb
 
 
+def distanz_histogram(events, odb, outfile, title, lineare_bins=True):
+    all_time_le = []
+    for event in events:
+        time_le = event[1]
+        all_time_le += time_le
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    distances = odb(np.array(all_time_le) * 2.5)
+    num_bins = bins(all_time_le)
+    bin_range = np.arange(num_bins)
+    transformed_bins = odb(bin_range * 2.5)
+    print(distances)
+    print(num_bins)
+
+    # Für lineare Bins `num_bins` bei `bins=` nutzen, für transformierte Bins
+    # `transformed_bins` nutzen.
+    if lineare_bins:
+        benutze_bins = transformed_bins
+    else:
+        benutze_bins = num_bins
+
+    ax.hist(distances, bins=benutze_bins)
+
+    ax.set_xlabel('Distanz / mm')
+    ax.set_ylabel('Anzahl Events')
+    ax.set_title(title)
+    ax.grid(True)
+    ax.margins(0.05)
+    ax.legend(loc='best')
+
+    fig.tight_layout()
+    fig.savefig(outfile)
+
+
 def summe_differenz(events, odb, outfile, title):
     pl.clf()
     x = []
     y = []
+    s = []
+    d = []
 
-    odb = odb_wrapper(odb)
+    all_time_le = []
+
+    #odb = odb_wrapper(odb)
 
     for event in events:
+        wire_le = event[0]
         time_le = event[1]
+        all_time_le += time_le
 
         if len(time_le) < 2:
             continue
@@ -274,6 +315,9 @@ def summe_differenz(events, odb, outfile, title):
             for j in range(len(time_le)):
                 if i == j:
                     continue
+
+                if not (wire_le[i] % 2 == 1 and wire_le[j] != wire_le[i] + 1):
+                    pass
 
                 t1 = time_le[i]
                 t2 = time_le[j]
@@ -290,12 +334,42 @@ def summe_differenz(events, odb, outfile, title):
                     print('t2 * 2.5:', t2 * 2.5)
                     raise
 
+                if d1 + d2 < 9:
+                    pass
 
-                x.append(d1-d2)
-                y.append(d1+d2)
+                x.append(d1)
+                y.append(d2)
 
-    #ax.plot(x, np.array(y) * 2.5, linestyle='none', marker='.', alpha=0.3)
-    pl.hist2d(np.array(x), np.array(y), bins=(80, 80))#, norm=matplotlib.colors.LogNorm())
+                s.append(d1 + d2)
+                d.append(d1 - d2)
+
+    stretch = 1
+
+    num_bins = bins(all_time_le)
+    bin_range = np.arange(num_bins/stretch)
+    transformed_bins = odb(bin_range * stretch * 2.5)
+
+    new_bins = []
+    for bin in transformed_bins:
+        if len(new_bins) == 0:
+            new_bins.append(bin)
+        elif bin > new_bins[-1]:
+            new_bins.append(bin)
+
+    #new_bins = 50
+
+    # --- Histogramme ---
+
+    # 2D Histogram mit Abstand gegen Abstand, transformierte Bins.
+    pl.hist2d(np.array(x), np.array(y), bins=(new_bins, new_bins))#, norm=matplotlib.colors.LogNorm())
+
+    # 2D Histogram mit Summe gegen Differenz, lineare Bins.
+    #pl.hist2d(np.array(d), np.array(s), bins=(80, 80))#, norm=matplotlib.colors.LogNorm())
+
+    # 2D Scatter Plot mit Transparenz.
+    #pl.plot(np.array(d), np.array(s), alpha=0.1, marker='.', linestyle='none')
+
+    # --- Ende Histogramme ---
 
     pl.colorbar()
     pl.xlabel('Differenz / mm')
@@ -402,6 +476,8 @@ def main():
 
 
     summe_differenz(filtered, odb, 'm03.01_summe_filtered.pdf', 'Titel')
+    distanz_histogram(filtered, odb, 'm03.01_distanz_hist-transformed.pdf', 'Distanz Häufigkeit', False)
+    distanz_histogram(filtered, odb, 'm03.01_distanz_hist-linear.pdf', 'Distanz Häufigkeit', True)
 
 
 
