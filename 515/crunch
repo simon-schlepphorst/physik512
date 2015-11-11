@@ -231,7 +231,8 @@ def wire_correlation(events, outfile, title):
                 y.append(w2)
 
     #ax.plot(x, np.array(y) * 2.5, linestyle='none', marker='.', alpha=0.3)
-    pl.hist2d(np.array(x), np.array(y), bins=(bins(x), bins(y)), norm=matplotlib.colors.LogNorm())
+    counts, xedges, yedges, image = pl.hist2d(np.array(x), np.array(y), bins=(bins(x), bins(y)), norm=matplotlib.colors.LogNorm())
+
 
     pl.colorbar()
     pl.xlabel('Wire ID')
@@ -244,6 +245,44 @@ def wire_correlation(events, outfile, title):
     pl.savefig(outfile)
 
     pl.clf()
+
+    print(counts)
+    print(xedges)
+    print(yedges)
+
+    shape = counts.shape
+
+    all_neighbors = {}
+
+    for wire in range(shape[0]):
+        neighbors = []
+        for wanted in range(4):
+            max = 0
+            argmax = None
+            for neighbor in range(shape[1]):
+                if counts[wire, neighbor] > max and neighbor not in neighbors:
+                    max = counts[wire, neighbor]
+                    argmax = neighbor
+            neighbors.append(argmax)
+
+        all_neighbors[wire + 1] = [x+1 for x in neighbors]
+
+    with open(outfile+'-neighbors.dot', 'w') as f:
+        f.write('digraph {')
+        f.write('''
+                ranksep=1.0
+                overlap=false
+                //nodesep=0.5
+                splines=true
+                //rankdir=LR
+                '''                )
+        for wire, neighbors in all_neighbors.items():
+            f.write('{} -> {};'.format(wire, ', '.join(map(str, neighbors))))
+        f.write('}')
+
+    print(all_neighbors)
+
+    print('done')
 
 
 def odb_wrapper(odb):
