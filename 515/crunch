@@ -421,6 +421,12 @@ def main():
         '3.021 kV',
     ]
 
+
+    tot_vs_time_le(m2_1_events[0], 'm02.01_tot_vs_time.pdf', 'Titel')
+    m2_filtered = filter_hits(m2_1_events[0], 5)
+    m2_odb = time_le_hist_cdf(m2_filtered, 'm02.01_odb_filtered.pdf', 'ODB')
+    summe_differenz(m2_filtered, m2_odb, 'm02.01_summe_filtered.pdf', 'Titel')
+
     time_le_histograms(m2_1_events, m2_1_labels, 
             'Driftzeitsprektrum bei verschiedenen Hochspannungen',
             'm02.01_time_le_hist.pdf')
