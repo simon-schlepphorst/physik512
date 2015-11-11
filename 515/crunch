@@ -156,23 +156,6 @@ def time_le_histograms(events_lists, labels, title, outfile):
     fig.savefig(outfile)
 
 
-def time_le_histogram(events, title, outfile):
-    fig = pl.figure()
-
-    ax = fig.add_subplot(1, 1, 1)
-    time_le_hist_into_axes_2(events, ax)
-
-    ax.set_xlabel('Driftzeit / ns')
-    ax.set_ylabel('Anzahl Events')
-    ax.set_title(title)
-    ax.grid(True)
-    ax.margins(0.05)
-    ax.legend(loc='best')
-
-    fig.tight_layout()
-    fig.savefig(outfile)
-
-
 def time_le_vs_wire_le(events, outfile, title):
     pl.clf()
     x = []
@@ -379,13 +362,15 @@ def main():
 
     filtered = filter_hits(tot_daten, 60)
 
-    time_le_histogram(tot_daten, 
-            'Driftzeitsprektrum der Langzeitmessung',
-            'm03.01_time_le_hist.pdf')
+    time_le_histograms([tot_daten], 
+                       [None],
+                       'Driftzeitsprektrum der Langzeitmessung',
+                       'm03.01_time_le_hist.pdf')
 
-    time_le_histogram(filtered, 
-            'Driftzeitsprektrum der Langzeitmessung',
-            'm03.01_time_le_hist_filtered.pdf')
+    time_le_histograms([filtered], 
+                       [None],
+                       'Driftzeitsprektrum der Langzeitmessung',
+                       'm03.01_time_le_hist_filtered.pdf')
 
 
     tot_vs_time_le(tot_daten, 'm03.01_tot_vs_time.pdf', 'Titel')
