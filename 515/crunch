@@ -80,12 +80,7 @@ def time_le_hist_into_axes(events, ax, label):
         for x in time_le:
             all_time_le.append(x)
 
-    dummy = pl.figure()
-    dummy_ax = dummy.add_subplot(1, 1, 1)
-
-    bins = max(all_time_le) - min(all_time_le) + 1
-
-    y, x, patches = dummy_ax.hist(all_time_le, bins=bins)
+    y, x = np.histogram(all_time_le, bins=bins(all_time_le))
     new_x = (x[1:] + x[:-1])/2
     ax.plot(new_x * 2.5, y, label=label)
 
