@@ -22,27 +22,10 @@
  * @return Transformed ID of wire
  */
 template <typename Integral> Integral wire_id_shift(const Integral &id) {
-    if (id <= 18) {
-        return id;
-    }
-    else if (id <= 38) {
-        if (id % 2 == 0) {
-            return id - 1;
-        } else {
-            return id + 1;
-        }
-    }
-    switch (id) {
-        case 39: return 41; break;
-        case 40: return 39; break;
-        case 41: return 43; break;
-        case 42: return 40; break;
-        case 43: return 45; break;
-        case 44: return 42; break;
-        case 45: return 47; break;
-        case 46: return 44; break;
-        case 47: return 48; break;
-        case 48: return 46; break;
+    if (id % 2 == 0) {
+        return id - 1;
+    } else {
+        return id + 1;
     }
 }
 

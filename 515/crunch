@@ -352,6 +352,11 @@ def driftzeit_nachbarn_2d(events, outfile, title):
                 if i == j:
                     continue
 
+                #if not 20 < wire_le[i] < 40:
+                #    continue
+                #if not 20 < wire_le[j] < 40:
+                #    continue
+
                 if abs(wire_le[i] - wire_le[j]) > 1:
                     pass
 
