@@ -90,16 +90,9 @@ def time_le_hist_into_axes_2(events, ax):
 
     for event in events:
         time_le = event[1]
+        all_time_le += time_le
 
-        for x in time_le:
-            all_time_le.append(x)
-
-    dummy = pl.figure()
-    dummy_ax = dummy.add_subplot(1, 1, 1)
-
-    bins = max(all_time_le) - min(all_time_le) + 1
-
-    y, x, patches = dummy_ax.hist(all_time_le, bins=bins)
+    y, x = np.histogram(all_time_le, bins=bins(all_time_le))
     new_x = (x[1:] + x[:-1])/2
     ax.plot(new_x * 2.5, y, label='...')
 
@@ -108,12 +101,12 @@ def time_le_hist_cdf(events, outfile, title):
     all_time_le = []
     for event in events:
         time_le = event[1]
-        for x in time_le:
-            all_time_le.append(x * 2.5)
-    dummy = pl.figure()
-    dummy_ax = dummy.add_subplot(1, 1, 1)
-    bins = max(all_time_le) - min(all_time_le) + 1
-    y, x, patches = dummy_ax.hist(all_time_le, bins=bins)
+        all_time_le += time_le
+
+    all_time_le = np.array(all_time_le) * 2.5
+
+
+    y, x = np.histogram(all_time_le, bins=bins(all_time_le))
     #x = (x[1:] + x[:-1])/2
     x = x[:-1]
 
@@ -246,9 +239,9 @@ def wire_correlation(events, outfile, title):
 
     pl.clf()
 
-    print(counts)
-    print(xedges)
-    print(yedges)
+    #print(counts)
+    #print(xedges)
+    #print(yedges)
 
     shape = counts.shape
 
@@ -280,15 +273,15 @@ def wire_correlation(events, outfile, title):
             f.write('{} -> {};'.format(wire, ', '.join(map(str, neighbors))))
         f.write('}')
 
-    print(all_neighbors)
+    #print(all_neighbors)
 
-    print('done')
+    #print('done')
 
 
 def odb_wrapper(odb):
     max_x = odb.x[-1]
     def new_odb(x):
-        if x > max_x:
+        if (x > max_x).any():
             print('Interpolation cropped from {} to {}.'.format(x, max_x))
             return odb(max_x)
         else:
@@ -308,8 +301,8 @@ def distanz_histogram(events, odb, outfile, title, lineare_bins=True):
     num_bins = bins(all_time_le)
     bin_range = np.arange(num_bins)
     transformed_bins = odb(bin_range * 2.5)
-    print(distances)
-    print(num_bins)
+    #print(distances)
+    #print(num_bins)
 
     # Für lineare Bins `num_bins` bei `bins=` nutzen, für transformierte Bins
     # `transformed_bins` nutzen.
@@ -505,7 +498,7 @@ def winkelverteilung():
     ax.margins(0.05)
     ax.grid(True)
     fig.tight_layout()
-    fig.savefig("hits-winkel.pdf")
+    fig.savefig("_build/hits-winkel.pdf")
 
 def test_keys(T):
     '''
@@ -544,7 +537,8 @@ def main():
     pp = pprint.PrettyPrinter()
 
 
-    tot_daten = load_data('Daten/m03.01_run_151027_134606.root.js')
+    tot_daten = load_data('Daten/m03.01_run_151027_134606.root.js') + load_data('Daten/m03.01_run_151028_002251.root.js')
+    #tot_daten = load_data('Daten/m03.01_run_151027_134606.root.js')
     tot_label = ['run_151027_134606']
 
     subset = tot_daten[:10]
@@ -552,32 +546,41 @@ def main():
     #print()
     #pp.pprint(filter_hits(subset, 60))
 
-    filtered = filter_hits(tot_daten, 70)
+    filtered = filter_hits(tot_daten, 60)
 
     time_le_histograms([tot_daten], 
                        [None],
                        'Driftzeitsprektrum der Langzeitmessung',
-                       'm03.01_time_le_hist.pdf')
+                       '_build/m03.01_time_le_hist.pdf')
 
     time_le_histograms([filtered], 
                        [None],
                        'Driftzeitsprektrum der Langzeitmessung',
-                       'm03.01_time_le_hist_filtered.pdf')
+                       '_build/m03.01_time_le_hist_filtered.pdf')
 
 
-    tot_vs_time_le(tot_daten, 'm03.01_tot_vs_time.pdf', 'Titel')
-    tot_vs_time_le(filtered, 'm03.01_tot_vs_time_filtered.pdf', 'Titel')
+    tot_vs_time_le(tot_daten, '_build/m03.01_tot_vs_time.pdf', 'Titel')
+    tot_vs_time_le(filtered, '_build/m03.01_tot_vs_time_filtered.pdf', 'Titel')
 
-    wire_correlation(filtered, 'm03.01_wire_correlation_filtered.pdf', 'Kabel Korrelation')
+    wire_correlation(filtered,
+            '_build/m03.01_wire_correlation_filtered.pdf',
+            'Kabel Korrelation')
 
-    odb = time_le_hist_cdf(filtered, 'm03.01_odb_filtered.pdf', 'ODB')
+    odb = time_le_hist_cdf(filtered, '_build/m03.01_odb_filtered.pdf', 'ODB')
     #odb(3 ns) -> ? mm
 
 
-    summe_differenz(filtered, odb, 'm03.01_summe_filtered.pdf', 'Titel')
-    distanz_histogram(filtered, odb, 'm03.01_distanz_hist-transformed.pdf', 'Distanz Häufigkeit', False)
-    distanz_histogram(filtered, odb, 'm03.01_distanz_hist-linear.pdf', 'Distanz Häufigkeit', True)
-    driftzeit_nachbarn_2d(filtered, 'm03.01_driftzeit_nachbarn_2d.pdf', 'Driftzeit Nachbarn')
+    summe_differenz(filtered, odb, '_build/m03.01_summe_filtered.pdf', 'Titel')
+    distanz_histogram(filtered, odb,
+            '_build/m03.01_distanz_hist-transformed.pdf',
+            'Distanz Häufigkeit', False)
+    distanz_histogram(filtered,
+            odb, 
+            '_build/m03.01_distanz_hist-linear.pdf',
+            'Distanz Häufigkeit', True)
+    driftzeit_nachbarn_2d(filtered,
+            '_build/m03.01_driftzeit_nachbarn_2d.pdf',
+            'Driftzeit Nachbarn')
 
 
 
@@ -598,31 +601,31 @@ def main():
     ]
 
 
-    tot_vs_time_le(m2_1_events[0], 'm02.01_tot_vs_time.pdf', 'Titel')
+    tot_vs_time_le(m2_1_events[0], '_build/m02.01_tot_vs_time.pdf', 'Titel')
     m2_filtered = filter_hits(m2_1_events[0], 5)
-    m2_odb = time_le_hist_cdf(m2_filtered, 'm02.01_odb_filtered.pdf', 'ODB')
-    summe_differenz(m2_filtered, m2_odb, 'm02.01_summe_filtered.pdf', 'Titel')
+    m2_odb = time_le_hist_cdf(m2_filtered, '_build/m02.01_odb_filtered.pdf', 'ODB')
+    summe_differenz(m2_filtered, m2_odb, '_build/m02.01_summe_filtered.pdf', 'Titel')
 
     time_le_histograms(m2_1_events, m2_1_labels, 
             'Driftzeitsprektrum bei verschiedenen Hochspannungen',
-            'm02.01_time_le_hist.pdf')
+            '_build/m02.01_time_le_hist.pdf')
 
-    time_le_vs_wire_le(m2_1_events[0], 'm02.01_run_151027_132423_time_vs_wire.pdf', 
+    time_le_vs_wire_le(m2_1_events[0], '_build/m02.01_run_151027_132423_time_vs_wire.pdf', 
             'Driftzeitverteilung 2.860 kV')
-    time_le_vs_wire_le(m2_1_events[1], 'm02.01_run_151027_133429_time_vs_wire.pdf',
+    time_le_vs_wire_le(m2_1_events[1], '_build/m02.01_run_151027_133429_time_vs_wire.pdf',
             'Driftzeitverteilung 2.900 kV')
-    time_le_vs_wire_le(m2_1_events[2], 'm02.01_run_151027_132711_time_vs_wire.pdf', 
+    time_le_vs_wire_le(m2_1_events[2], '_build/m02.01_run_151027_132711_time_vs_wire.pdf', 
             'Driftzeitverteilung 2.950 kV')
-    time_le_vs_wire_le(m2_1_events[3], 'm02.01_run_151027_132851_time_vs_wire.pdf',
+    time_le_vs_wire_le(m2_1_events[3], '_build/m02.01_run_151027_132851_time_vs_wire.pdf',
             'Driftzeitverteilung 3.021 kV')
 
-    wire_le_hist(m2_1_events[0], 'm02.01_run_151027_132423_wire_le_hist.pdf',
+    wire_le_hist(m2_1_events[0], '_build/m02.01_run_151027_132423_wire_le_hist.pdf',
             'Eventverteilung 2.860 kV')
-    wire_le_hist(m2_1_events[1], 'm02.01_run_151027_133429_wire_le_hist.pdf',
+    wire_le_hist(m2_1_events[1], '_build/m02.01_run_151027_133429_wire_le_hist.pdf',
             'Eventverteilung 2.900 kV')
-    wire_le_hist(m2_1_events[2], 'm02.01_run_151027_132711_wire_le_hist.pdf',
+    wire_le_hist(m2_1_events[2], '_build/m02.01_run_151027_132711_wire_le_hist.pdf',
             'Eventverteilung 2.950 kV')
-    wire_le_hist(m2_1_events[3], 'm02.01_run_151027_132851_wire_le_hist.pdf',
+    wire_le_hist(m2_1_events[3], '_build/m02.01_run_151027_132851_wire_le_hist.pdf',
             'Eventverteilung 3.021 kV')
 
 
@@ -644,17 +647,17 @@ def main():
 
     time_le_histograms(m2_2_events, m2_2_labels, 
             'Driftzeitsprektrum bei verschiedenen Verzögerungen',
-            'm02.02_time_le_hist.pdf')
+            '_build/m02.02_time_le_hist.pdf')
 
-    wire_le_hist(m2_2_events[0], 'm02.02_run_151027_123323_wire_le_hist.pdf', '')
-    wire_le_hist(m2_2_events[1], 'm02.02_run_151027_125709_wire_le_hist.pdf', '')
-    wire_le_hist(m2_2_events[2], 'm02.02_run_151027_125014_wire_le_hist.pdf', '')
-    wire_le_hist(m2_2_events[3], 'm02.02_run_151027_125349_wire_le_hist.pdf', '')
+    wire_le_hist(m2_2_events[0], '_build/m02.02_run_151027_123323_wire_le_hist.pdf', '')
+    wire_le_hist(m2_2_events[1], '_build/m02.02_run_151027_125709_wire_le_hist.pdf', '')
+    wire_le_hist(m2_2_events[2], '_build/m02.02_run_151027_125014_wire_le_hist.pdf', '')
+    wire_le_hist(m2_2_events[3], '_build/m02.02_run_151027_125349_wire_le_hist.pdf', '')
     
-    time_le_vs_wire_le(m2_2_events[0], 'm02.02_run_151027_123323_time_vs_wire.pdf', '')
-    time_le_vs_wire_le(m2_2_events[1], 'm02.02_run_151027_125709_time_vs_wire.pdf', '')
-    time_le_vs_wire_le(m2_2_events[2], 'm02.02_run_151027_125014_time_vs_wire.pdf', '')
-    time_le_vs_wire_le(m2_2_events[3], 'm02.02_run_151027_125349_time_vs_wire.pdf', '')
+    time_le_vs_wire_le(m2_2_events[0], '_build/m02.02_run_151027_123323_time_vs_wire.pdf', '')
+    time_le_vs_wire_le(m2_2_events[1], '_build/m02.02_run_151027_125709_time_vs_wire.pdf', '')
+    time_le_vs_wire_le(m2_2_events[2], '_build/m02.02_run_151027_125014_time_vs_wire.pdf', '')
+    time_le_vs_wire_le(m2_2_events[3], '_build/m02.02_run_151027_125349_time_vs_wire.pdf', '')
 
 
     m2_3_filenames = [
@@ -673,15 +676,15 @@ def main():
 
     time_le_histograms(m2_3_events, m2_3_labels, 
             'Driftzeitsprektrum bei verschiedenen Diskriminatorschwellen',
-            'm02.03_time_le_hist.pdf')
+            '_build/m02.03_time_le_hist.pdf')
 
-    wire_le_hist(m2_3_events[0], 'm02.03_run_151027_131731_wire_le_hist.pdf', 'Titel')
-    wire_le_hist(m2_3_events[1], 'm02.03_run_151027_130858_wire_le_hist.pdf', 'Titel')
-    wire_le_hist(m2_3_events[2], 'm02.03_run_151027_132034_wire_le_hist.pdf', 'Titel')
+    wire_le_hist(m2_3_events[0], '_build/m02.03_run_151027_131731_wire_le_hist.pdf', 'Titel')
+    wire_le_hist(m2_3_events[1], '_build/m02.03_run_151027_130858_wire_le_hist.pdf', 'Titel')
+    wire_le_hist(m2_3_events[2], '_build/m02.03_run_151027_132034_wire_le_hist.pdf', 'Titel')
     
-    time_le_vs_wire_le(m2_3_events[0], 'm02.03_run_151027_131731_time_vs_wire.pdf', 'Titel')
-    time_le_vs_wire_le(m2_3_events[1], 'm02.03_run_151027_130858_time_vs_wire.pdf', 'Titel')
-    time_le_vs_wire_le(m2_3_events[2], 'm02.03_run_151027_132034_time_vs_wire.pdf', 'Titel')
+    time_le_vs_wire_le(m2_3_events[0], '_build/m02.03_run_151027_131731_time_vs_wire.pdf', 'Titel')
+    time_le_vs_wire_le(m2_3_events[1], '_build/m02.03_run_151027_130858_time_vs_wire.pdf', 'Titel')
+    time_le_vs_wire_le(m2_3_events[2], '_build/m02.03_run_151027_132034_time_vs_wire.pdf', 'Titel')
 
 
     ###########################################
