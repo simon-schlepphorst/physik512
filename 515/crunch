@@ -42,6 +42,9 @@ def load_data(filename):
 
     return data
 
+def num_hits(events):
+    return sum([len(event[0]) for event in events])
+
 
 def wire_le_hist(events, outfile):
     fig = pl.figure()
@@ -50,12 +53,13 @@ def wire_le_hist(events, outfile):
     wire_le_hist_into_axes(events, ax)
 
     ax.set_xlabel('Drahtnummer')
-    ax.set_ylabel('Anzahl Events')
+    ax.set_ylabel('Anzahl Hits')
+    ax.set_title('{} Hits'.format(num_hits(events)))
 
     fig.savefig(outfile)
 
 
-def wire_le_hist_into_axes(events, ax):
+def wire_le_hist_into_axes(events, ax, **kwargs):
     all_wire_le = []
 
     for event in events:
@@ -65,10 +69,10 @@ def wire_le_hist_into_axes(events, ax):
             all_wire_le.append(x)
 
     bins = max(all_wire_le) - min(all_wire_le) + 1
-    ax.hist(all_wire_le, bins=bins)
+    ax.hist(all_wire_le, bins=bins, **kwargs)
 
 
-def time_le_hist_into_axes(events, ax, label):
+def time_le_hist_into_axes(events, ax, **kwargs):
     all_time_le = []
 
     for event in events:
@@ -79,7 +83,7 @@ def time_le_hist_into_axes(events, ax, label):
 
     y, x = np.histogram(all_time_le, bins=bins(all_time_le))
     new_x = (x[1:] + x[:-1])/2
-    ax.plot(new_x * 2.5, y, label=label)
+    ax.plot(new_x * 2.5, y, **kwargs)
 
 
 def time_le_hist_cdf(events, outfile):
@@ -120,13 +124,20 @@ def time_le_histograms(events_lists, labels, outfile):
 
     ax = fig.add_subplot(1, 1, 1)
     for events, label in zip(events_lists, labels):
-        time_le_hist_into_axes(events, ax, label)
+        kwargs = {}
+        if label is not None:
+            kwargs['label'] = label
+        time_le_hist_into_axes(events, ax, **kwargs)
 
     ax.set_xlabel('Driftzeit / ns')
     ax.set_ylabel('Anzahl Events')
     ax.grid(True)
     ax.margins(0.05)
-    ax.legend(loc='best')
+    if any([label is not None for label in labels]):
+        ax.legend(loc='best')
+    else:
+        ax.set_title('{} Hits'.format(num_hits(events)))
+
 
     fig.tight_layout()
     fig.savefig(outfile)
@@ -152,6 +163,7 @@ def time_le_vs_wire_le(events, outfile):
     pl.ylabel('Driftzeit / ns')
     pl.grid(True)
     pl.margins(0.05)
+    pl.title('{} Hits'.format(num_hits(events)))
 
     pl.tight_layout()
     pl.savefig(outfile)
@@ -175,9 +187,10 @@ def tot_vs_time_le(events, outfile):
 
     pl.colorbar()
     pl.xlabel('Driftzeit / ns')
-    pl.ylabel('Time over Threshold')
+    pl.ylabel('Time over Threshold / 2.5 ns')
     pl.grid(True)
     pl.margins(0.05)
+    pl.title('{} Hits'.format(num_hits(events)))
 
     pl.tight_layout()
     pl.savefig(outfile)
@@ -279,17 +292,17 @@ def distanz_histogram(events, odb, outfile, lineare_bins=True):
     # Für lineare Bins `num_bins` bei `bins=` nutzen, für transformierte Bins
     # `transformed_bins` nutzen.
     if lineare_bins:
-        benutze_bins = transformed_bins
-    else:
         benutze_bins = num_bins
+    else:
+        benutze_bins = transformed_bins
 
     ax.hist(distances, bins=benutze_bins)
 
     ax.set_xlabel('Distanz / mm')
-    ax.set_ylabel('Anzahl Events')
+    ax.set_ylabel('Anzahl Hits')
     ax.grid(True)
     ax.margins(0.05)
-    ax.legend(loc='best')
+    ax.set_title('{} Hits'.format(num_hits(events)))
 
     fig.tight_layout()
     fig.savefig(outfile)
@@ -652,7 +665,7 @@ def main():
     wire_le_hist(m2_1_events[1], '_build/m02_01_run_2900V_wire_le_hist.pdf')
     wire_le_hist(m2_1_events[2], '_build/m02_01_run_2950V_wire_le_hist.pdf')
     wire_le_hist(m2_1_events[3], '_build/m02_01_run_3021V_wire_le_hist.pdf')
-    
+
     tot_vs_time_le(m2_1_events[0], '_build/m02_01_run_2860V_tot_vs_time.pdf')
     tot_vs_time_le(m2_1_events[1], '_build/m02_01_run_2900V_tot_vs_time.pdf')
     tot_vs_time_le(m2_1_events[2], '_build/m02_01_run_2950V_tot_vs_time.pdf')
@@ -699,7 +712,7 @@ def main():
     tot_vs_time_le(m2_2_events[1], '_build/m02_02_run_0x0024_tot_vs_time.pdf')
     tot_vs_time_le(m2_2_events[2], '_build/m02_02_run_0x0028_tot_vs_time.pdf')
     tot_vs_time_le(m2_2_events[3], '_build/m02_02_run_0x0038_tot_vs_time.pdf')
- 
+
     ###########################################
 
 
