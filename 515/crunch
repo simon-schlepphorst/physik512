@@ -478,7 +478,7 @@ def winkelverteilung(events, outfile, title):
     fig.savefig(outfile)
 
 
-def spannung_vs_strom(datei, outfile, title):
+def spannung_vs_strom(datei, outfile):
     pl.clf()
 
     data = np.loadtxt(datei)
@@ -494,7 +494,6 @@ def spannung_vs_strom(datei, outfile, title):
 
     pl.xlabel('Anodenspannung / kV')
     pl.ylabel('Kammerstrom / nA')
-    pl.title(title)
     pl.grid(True)
     pl.legend(loc='best')
     pl.margins(0.05)
@@ -502,7 +501,7 @@ def spannung_vs_strom(datei, outfile, title):
     pl.tight_layout()
     pl.savefig(outfile)
 
-def spannung_vs_strom_verh(datei, outfile, title):
+def spannung_vs_strom_verh(datei, outfile):
     pl.clf()
 
     data = np.loadtxt(datei)
@@ -515,7 +514,6 @@ def spannung_vs_strom_verh(datei, outfile, title):
 
     pl.xlabel('Anodenspannung / kV')
     pl.ylabel('Verhältnis Probe / Hintergrund')
-    pl.title(title)
     pl.grid(True)
     pl.margins(0.05)
 
@@ -561,11 +559,11 @@ def main():
     m01_filenames = ['Daten/m01.01_151026.dat',
                     'Daten/m01.02_151027.dat']
 
-    spannung_vs_strom(m01_filenames[0], '_build/m01_01_151026.pdf', 'Titel')
-    spannung_vs_strom_verh(m01_filenames[0], '_build/m01_01_151026_2.pdf', 'Titel')
+    spannung_vs_strom(m01_filenames[0], '_build/m01_01_151026.pdf')
+    spannung_vs_strom_verh(m01_filenames[0], '_build/m01_01_151026_2.pdf')
 
-    spannung_vs_strom(m01_filenames[1], '_build/m01_02_151027.pdf', 'Titel')
-    spannung_vs_strom_verh(m01_filenames[1], '_build/m01_02_151027_2.pdf', 'Titel')
+    spannung_vs_strom(m01_filenames[1], '_build/m01_02_151027.pdf')
+    spannung_vs_strom_verh(m01_filenames[1], '_build/m01_02_151027_2.pdf')
 
 
     ###########################################
