@@ -66,7 +66,11 @@
 \maketitle
 
 \begin{abstract}
-%TODO
+In diesen Versuch geht es darum die Eigenschaften von einem
+Szintillationsdetektor und einem Ge-Halbleiterdetektor bei der
+$\gamma$-Spektroskopie zu vergleiche.
+Dabei sind die Energieauflösung und die Nachweiswahrscheinlichkeit die
+zu untersuchenden Eigenschaften.
 \end{abstract}
 
 
@@ -74,7 +78,57 @@
 
 \chapter{Theorie}
 
-%TODO
+\section{Wechselwirkung von $\gamma$-Strahlung mit Materie}
+In der Materie kann die $gamma$-Strahlung auf verschiedene Weise mit der
+Materie wechselwirken.
+
+\subsection{Photoeffekt}
+Der Photoeffekt beschreibt den Vorgang, wie ein Photon ein Elektron aus dem
+Atom auslöst. 
+Hierbei gibt ein Elektron seine komplette Energie ab.
+Die kinetische Energie des ausgelösten Elektrons hängt nur über die
+Bindungsenergie ($E_\text{Bind.}$) mit dem der Energie des Photons ($h\nu$), also dessen Frequenz ($\nu$) zusammen.
+Dieser Prozess kann nur in der nähe eines Atomkerns statt finden, weil dieser
+den Rückstoß aufnimmt.
+So bleibt bei diesen Vorgang Energie und Impuls erhalten. 
+\[ 
+    E = h\nu - E_\text{Bind.}
+\]
+Wenn man sich den Wirkungsquerschnitt $\sigma$ für diesen Prozess anschaut,
+dann stellt man eine große Abhängigkeit von der Ordnungszahl $Z$ fest.
+\[
+    \sigma \propto Z^5 E_\gamma^{\frac 72}
+\]
+Deshalb kommt dieser Effekt besonders häufig in Stoffen mit hoher Ordnungszahl
+vor.
+
+\subsection{Paarerzeugung}
+Ein weiterer Effekt der bei Energien $E_\gamma \ge 2m_\text ec^2$ auftreten
+kann, ist die Elektron- Positron Paarbildung.
+Dieser Effekt ist allerdings erst ab einer Energie von
+\SI{}{\mega\electron\volt} relevant.
+% Für den Wirkungsquerschnitt gilt $\sigma_\text{Pc} \propto Z^2\ln(E_\gamma)$
+
+\subsection{Comptonstreuung}
+Wenn Photonen an einem Elektron streuen, dann spricht man von dem
+Comptoneffekt. 
+Hierbei gibt das Photon ein Teil seiner an das Elektron ab und ändert dabei
+seine Frequenz.
+Wie viel seiner Energie das Photon abgibt hängt dabei vom Winkel ab.
+Für die geänderte Energie gilt:
+\[
+    E_\nu'(\phi) = \frac{E_\nu}{1+\frac{E_\nu}{m_\text ec^2}(1+\cos(\phi))}
+\]
+Die größte Energieänderung erhält man also bei einem Winkel von
+$\phi=\SI{180}{\degree}$.
+Der Wirkungsquerschnitt entspricht $\sigma_\text C \propto \frac{Z}{E_\gamma}$.
+
+\section{Szintillationdetektor}
+Mit einem Szintillationsdetektor lassen sich die Intensität und Energie von
+ionisierender Strahlung messen.
+Er besteht aus einem Szintilator und einem Photomultiplier, der das Signal
+verstärkt.
+
 
 \chapter{Durchführung}
 
