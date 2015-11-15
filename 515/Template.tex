@@ -130,33 +130,32 @@ Mit Hilfe der Orts-Driftzeitbeziehung, auch ODB genannt, lässt sich aus der Dri
 \fehlt %TODO mittlere freie Weglänge
 %TODO Ortsbestimmung
 
-\chapter{Durchführung}
+\chapter{Bestimmung der Betriebsparameter}
 
 \section{Aufnahme analoger Größen}
-Zunächst sollen die Hochspannung und die Diskriminatorschwelle des
-Szintillatorzählers engestellt werden.
-Die Einstellung soll so gewählt werden, dass mit dem Aufbau sowohl die
+Zunächst soll eine Hochspannung an der Driftkammer ermittelt werden, mit 
+der sowohl die
 Strahlung des $ ^{90}\text{Sr}$-Präperat, als auch die kosmische Strahlung
 detektiert werden kann.
 Hierzu wird der Kammerstrom  in Abhängigkeit von der Hochspannung, die an den
-Potentialdrähten anliegt, gemessen.
-Über einen \SI{1}{\mega\ohm} Widerstand fällt hierbei die Spannung aus der Driftkammer
-ab.
-Um die Messfehler möglichst klein zu halten, muss nach jeder Änderung der
+Potentialdrähten anliegt, gemessen. 
+Dies wird dadurch realisiert, dass die über einem \SI{1}{\mega\ohm} Widerstand
+abfallende  Spannung aus der Driftkammer gemessen wird.
+Da die Kabel und die Driftkammer eine Kapazität aufweisen, muss nach jeder Änderung der
 Hochspannung gewartet werde, bis die Spannung sich auf einen Wert eingestellt
-hat.
+hat, bevor die Messung beginnen kann.
 
-\begin{figure}[htbp]
+\begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{m01_01_151026.pdf}
+    \includegraphics[width=0.8 \linewidth]{m01_01_151026.pdf}
     \caption{%
 	    Messung analoger Größen mit defektem Aufbau
    }
     \label{fig:m01_01-messdaten}
 \end{figure}
-\begin{figure}[htbp]
+\begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{m01_01_151026_2.pdf}
+    \includegraphics[width=0.8 \linewidth]{m01_01_151026_2.pdf}
     \caption{%
 	    Relevanz der Messung analoger Größen mit defektem Aufbau
    }
@@ -164,43 +163,78 @@ hat.
 \end{figure}
 
 
-
-Bei dem Vergleich des der beiden Kennlinien, Kammerstrom gegen Hochspannung,
+Bei dem Vergleich der beiden Kennlinien, Kammerstrom gegen Hochspannung,
 des Versuchs mit und ohne Bestrahlung fiel auf, dass es zunächst keinen
 erkennbaren unterschied der Kennlinien gab.
-Nach Überprüfung des Aufbaus, stellte sich raus, dass die Kammer nicht an die
-Versorgung durch das Gasgemisch angeschlossen war.
-Nach dem die Kammer über Nacht mit dem Gasgemisch gespült wurde, lieferte der
-Versuch dirket bessere Ergebnisse.
+Nach Überprüfung des Aufbaus, stellte sich raus, dass die Kammer nicht mit dem 
+gewünschten Gasgemisch gefüllt war.
 
-\begin{figure}[htbp]
+Nach dem die Kammer über Nacht mit dem Gasgemisch gespült wurde, lieferte der
+Versuch dirket sinnvolle Ergebnisse.
+
+\begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{m01_02_151027.pdf}
+    \includegraphics[width=0.8 \linewidth]{m01_02_151027.pdf}
     \caption{%
 	    Messung analoger Größen
     }
     \label{fig:m01_02-messdaten}
 \end{figure}
-\begin{figure}[htbp]
+\begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{m01_02_151027_2.pdf}
+    \includegraphics[width=0.8 \linewidth]{m01_02_151027_2.pdf}
     \caption{%
 	    Relevanz der Messung analoger Größen
    }
     \label{fig:m01_02-relevanz}
 \end{figure}
 
+Bei niedrigen Spannungen ist lassen sich die Ereignisse nicht vom Hintergrund
+trennen. Dies lässt sich auf den ausbleibenden Lawineneffekt in der Driftkammer
+zurückführen.
+Ab etwa \SI{2.5}{\kilo\volt} hebt sich das Signal mit der Probe deutlich vom
+Untergrund ab. Der Signal-zu-Rausch-Abstand ist bei einer Spannung größer
+\SI{2.8}{\kilo\volt} ausreichend für genauere Messungen.
 
-%TODO Plot Halblog
+
+
 
 \section{Driftzeitspektren}
-Im nächsten Versuchsteil nehmen wir mit dem \emph{fpexperiment}-Programm
-Driftzeitspektren bei verschiedenen Hochspannungen auf.
+Nun nehmen wir mit dem \emph{fpexperiment}-Programm
+Driftzeitspektren bei verschiedenen Parametern auf.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8 \linewidth]{m02_01_time_le_hist.pdf}
+    \caption{%
+	    Driftzeitspektren unter verschiedenen Hochspannungen
+   }
+    \label{fig:m02_01-driftzeitspektrum}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8 \linewidth]{m02_02_time_le_hist.pdf}
+    \caption{%
+	    Driftzeitspektren unter verschiedenen Verzögerungen
+   }
+    \label{fig:m02_03-driftzeitspektrum}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8 \linewidth]{m02_03_time_le_hist.pdf}
+    \caption{%
+	    Driftzeitspektren unter verschiedenen Diskriminatorschwellen
+   }
+    \label{fig:m02_03-driftzeitspektrum}
+\end{figure}
 
 
 
+%TODO verschieben der Probe > kaputter Szintilationszähler
 
-\chapter{Auswertung}
+\chapter{Auswertung der Langzeitmessung}
 
 %TODO
 
