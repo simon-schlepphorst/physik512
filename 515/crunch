@@ -83,18 +83,6 @@ def time_le_hist_into_axes(events, ax, label):
     ax.plot(new_x * 2.5, y, label=label)
 
 
-def time_le_hist_into_axes_2(events, ax):
-    all_time_le = []
-
-    for event in events:
-        time_le = event[1]
-        all_time_le += time_le
-
-    y, x = np.histogram(all_time_le, bins=bins(all_time_le))
-    new_x = (x[1:] + x[:-1])/2
-    ax.plot(new_x * 2.5, y, label='...')
-
-
 def time_le_hist_cdf(events, outfile, title):
     all_time_le = []
     for event in events:
@@ -489,6 +477,53 @@ def winkelverteilung(events, outfile, title):
     fig.tight_layout()
     fig.savefig(outfile)
 
+
+def spannung_vs_strom(datei, outfile, title):
+    pl.clf()
+
+    data = np.loadtxt(datei)
+    x = data[:, 0]
+    y = data[:, 1]
+    yerr = data[:, 2]
+    z = data[:, 3]
+    zerr = data[:, 4]
+
+    pl.figure()
+    pl.errorbar(x, z, yerr=zerr, label='Probe', fmt='x')
+    pl.errorbar(x, y, yerr=yerr, label='Hintergrund', fmt='x')
+
+    pl.xlabel('Anodenspannung / kV')
+    pl.ylabel('Kammerstrom / nA')
+    pl.title(title)
+    pl.grid(True)
+    pl.legend(loc='best')
+    pl.margins(0.05)
+
+    pl.tight_layout()
+    pl.savefig(outfile)
+
+def spannung_vs_strom_verh(datei, outfile, title):
+    pl.clf()
+
+    data = np.loadtxt(datei)
+    x = data[:, 0]
+    y = data[:, 3] / data[:, 1]
+    yerr = np.sqrt((data[:, 4] / data[:, 1])**2 + (data[:, 3] / (data[:, 1])**2 * data[:, 2])**2)
+
+    pl.figure()
+    pl.errorbar(x, y, yerr=yerr, label='Probe / Hintergrund')
+
+    pl.xlabel('Anodenspannung / kV')
+    pl.ylabel('Kammerstrom / nA')
+    pl.title(title)
+    pl.grid(True)
+    pl.legend(loc='best')
+    pl.margins(0.05)
+
+    pl.tight_layout()
+    pl.savefig(outfile)
+
+
 def test_keys(T):
     '''
     Testet das dict auf Schlüssel mit Bindestrichen.
@@ -519,6 +554,21 @@ def main():
 
     pp = pprint.PrettyPrinter()
 
+
+    ###########################################
+    # Messung 1                               #
+    ###########################################
+
+    m01_filenames = ['Daten/m01.01_151026.dat',
+                    'Daten/m01.02_151027.dat']
+
+    spannung_vs_strom(m01_filenames[0], '_build/m01.01_151026.pdf', 'Titel')
+    spannung_vs_strom_verh(m01_filenames[0], '_build/m01.01_151026_2.pdf', 'Titel')
+
+    spannung_vs_strom(m01_filenames[1], '_build/m01.01_151027.pdf', 'Titel')
+    spannung_vs_strom_verh(m01_filenames[1], '_build/m01.01_151027_2.pdf', 'Titel')
+
+
     ###########################################
     # Messung 3                               #
     ###########################################
@@ -542,10 +592,10 @@ def main():
 
     tot_vs_time_le(tot_daten, 
                 '_build/m03.01_tot_vs_time.pdf',
-                'Titel')
+                'tot gegen Driftzeit')
     tot_vs_time_le(filtered,
                 '_build/m03.01_tot_vs_time_filtered.pdf',
-                'Titel')
+                'tot gegen Driftzeit')
     
     wire_correlation(tot_daten,
                 '_build/m03.01_wire_correlation.pdf',
@@ -561,7 +611,7 @@ def main():
 
     summe_differenz(filtered, odb,
                 '_build/m03.01_summe_filtered.pdf',
-                'Titel')
+                'Abstandssumme gegen Abstandsdifferenz')
 
     distanz_histogram(filtered, odb,
                 '_build/m03.01_distanz_hist-transformed.pdf',
