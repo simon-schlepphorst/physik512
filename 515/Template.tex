@@ -41,6 +41,8 @@
 
 \usepackage{booktabs}
 
+\usepackage{subcaption}
+
 \hypersetup{
     pdftitle=
 }
@@ -218,7 +220,7 @@ verzichtet.
     \caption{%
 	    Driftzeitspektren unter verschiedenen Hochspannungen
    }
-    \label{fig:m02_01-driftzeitspektrum}
+    \label{fig:m02_01_driftzeitspektrum}
 \end{figure}
 
 
@@ -228,7 +230,7 @@ verzichtet.
     \caption{%
 	    Driftzeitspektren unter verschiedenen Verzögerungen
    }
-    \label{fig:m02_03-driftzeitspektrum}
+    \label{fig:m02_02_driftzeitspektrum}
 \end{figure}
 
 
@@ -238,7 +240,7 @@ verzichtet.
     \caption{%
 	    Driftzeitspektren unter verschiedenen Diskriminatorschwellen
    }
-    \label{fig:m02_03-driftzeitspektrum}
+    \label{fig:m02_03_driftzeitspektrum}
 \end{figure}
 
 
@@ -260,10 +262,304 @@ verzichtet.
 
 \begin{appendix}
 
+	\chapter{Graphen zur Bestimmung der Betriebsparameter}
+
+	%m02.01
+
+	%Ansprecher / Kabel Histogramme
+	\begin{figure}
+		\centering
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_01_run_2860V_wire_le_hist.pdf}
+		\caption{%
+		}
+		\label{fig:m02_01_run_2860V_wire_le_hist}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_01_run_2900V_wire_le_hist.pdf}
+		\caption{%
+		}
+		\label{fig:m02_01_run_2900V_wire_le_hist}
+	\end{subfigure}\\
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_01_run_2950V_wire_le_hist.pdf}
+		\caption{%
+		}
+		\label{fig:m02_01_run_2950V_wire_le_hist}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_01_run_3021V_wire_le_hist.pdf}
+		\caption{%
+		}
+		\label{fig:m02_01_run_3021V_wire_le_hist}
+	\end{subfigure}
+	\caption{%
+	}
+	\label{fig:m02_01_wire_le_hist}
+	\end{figure}
+
+
+	%Driftzeit / Kabel Histogramme
+	\begin{figure}
+		\centering
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_01_run_2860V_time_vs_wire.pdf}
+		\caption{%
+		}
+		\label{fig:m02_01_run_2860V_time_vs_wire}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_01_run_2900V_time_vs_wire.pdf}
+		\caption{%
+		}
+		\label{fig:m02_01_run_2900V_time_vs_wire}
+	\end{subfigure}
+	\\
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_01_run_2950V_time_vs_wire.pdf}
+		\caption{%
+		}
+		\label{fig:m02_01_run_2950V_time_vs_wire}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_01_run_3021V_time_vs_wire.pdf}
+		\caption{%
+		}
+		\label{fig:m02_01_run_3021V_time_vs_wire}
+	\end{subfigure}
+	\caption{%
+	}
+	\label{fig:m02_01_time_vs_wire}
+	\end{figure}
+
+
+
+	%Time over Treshold / Driftzeit  Histogramme
+	\begin{figure}
+		\centering
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_01_run_2860V_tot_vs_time.pdf}
+		\caption{%
+		}
+		\label{fig:m02_01_run_2860V_tot_vs_time}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_01_run_2900V_tot_vs_time.pdf}
+		\caption{%
+		}
+		\label{fig:m02_01_run_2900V_tot_vs_time}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_01_run_2950V_tot_vs_time.pdf}
+		\caption{%
+		}
+		\label{fig:m02_01_run_2950V_tot_vs_time}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_01_run_3021V_tot_vs_time.pdf}
+		\caption{%
+		}
+		\label{fig:m02_01_run_3021V_tot_vs_time}
+	\end{subfigure}
+	\caption{%
+	}
+	\label{fig:m02_01_tot_vs_time}
+	\end{figure}
+
+	\clearpage
+
+
+	%m02.02
+
+	%Ansprecher / Kabel Histogramme
+	\begin{figure}
+		\centering
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_02_run_0x0020_wire_le_hist.pdf}
+		\caption{%
+		}
+		\label{fig:m02_02_run_0x0020_wire_le_hist}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_02_run_0x0024_wire_le_hist.pdf}
+		\caption{%
+		}
+		\label{fig:m02_02_run_0x0024_wire_le_hist}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_02_run_0x0028_wire_le_hist.pdf}
+		\caption{%
+		}
+		\label{fig:m02_02_run_0x0028_wire_le_hist}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_02_run_0x0038_wire_le_hist.pdf}
+		\caption{%
+		}
+		\label{fig:m02_02_run_0x0038_wire_le_hist}
+	\end{subfigure}
+	\caption{%
+	}
+	\label{fig:m02_02_wire_le_hist}
+	\end{figure}
+
+
+	%Driftzeit / Kabel Histogramme
+	\begin{figure}
+		\centering
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_02_run_0x0020_time_vs_wire.pdf}
+		\caption{%
+		}
+		\label{fig:m02_02_run_0x0020_time_vs_wire}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_02_run_0x0024_time_vs_wire.pdf}
+		\caption{%
+		}
+		\label{fig:m02_02_run_0x0024_time_vs_wire}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_02_run_0x0028_time_vs_wire.pdf}
+		\caption{%
+		}
+		\label{fig:m02_02_run_0x0028_time_vs_wire}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_02_run_0x0038_time_vs_wire.pdf}
+		\caption{%
+		}
+		\label{fig:m02_02_run_0x0038_time_vs_wire}
+	\end{subfigure}
+	\caption{%
+	}
+	\label{fig:m02_02_time_vs_wire}
+	\end{figure}
+
+	%Time over Treshold / Driftzeit  Histogramme
+	\begin{figure}
+		\centering
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_02_run_0x0020_tot_vs_time.pdf}
+		\caption{%
+		}
+		\label{fig:m02_02_run_0x0020_tot_vs_time}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_02_run_0x0024_tot_vs_time.pdf}
+		\caption{%
+		}
+		\label{fig:m02_02_run_0x0024_tot_vs_time}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_02_run_0x0028_tot_vs_time.pdf}
+		\caption{%
+		}
+		\label{fig:m02_02_run_0x0028_tot_vs_time}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_02_run_0x0038_tot_vs_time.pdf}
+		\caption{%
+		}
+		\label{fig:m02_02_run_0x0038_tot_vs_time}
+	\end{subfigure}
+	\caption{%
+	}
+	\label{fig:m02_02_tot_vs_time}
+	\end{figure}
+	\clearpage
+
+
+	%m02.03
+
+	%Ansprecher / Kabel Histogramme
+	\begin{figure}
+		\centering
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_03_run_0x0020_wire_le_hist.pdf}
+		\caption{%
+		}
+		\label{fig:m02_03_run_0x0020_wire_le_hist}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{m02_03_run_0x002D_wire_le_hist.pdf}
+		\caption{%
+		}
+		\label{fig:m02_03_run_0x002D_wire_le_hist}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{m02_03_run_0x0040_wire_le_hist.pdf}
+		\caption{%
+		}
+		\label{fig:m02_03_run_0x0040_wire_le_hist}
+	\end{subfigure}
+	\caption{%
+	}
+	\label{fig:m02_03_wire_le_hist}
+	\end{figure}
+
+
+	%Driftzeit / Kabel Histogramme
+	\begin{figure}
+		\centering
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_03_run_0x0020_time_vs_wire.pdf}
+		\caption{%
+		}
+		\label{fig:m02_03_run_0x0020_time_vs_wire}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_03_run_0x002D_time_vs_wire.pdf}
+		\caption{%
+		}
+		\label{fig:m02_03_run_0x002D_time_vs_wire}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_03_run_0x0040_time_vs_wire.pdf}
+		\caption{%
+		}
+		\label{fig:m02_03_run_0x0040_time_vs_wire}
+	\end{subfigure}
+	\caption{%
+	}
+	\label{fig:m02_03_time_vs_wire}
+	\end{figure}
+
+
+	%Time over Treshold / Driftzeit  Histogramme
+	\begin{figure}
+		\centering
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_03_run_0x0020_tot_vs_time.pdf}
+		\caption{%
+		}
+		\label{fig:m02_03_run_0x0020_tot_vs_time}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_03_run_0x002D_tot_vs_time.pdf}
+		\caption{%
+		}
+		\label{fig:m02_03_run_0x002D_tot_vs_time}
+	\end{subfigure}
+	\begin{subfigure}[a]{0.45 \textwidth}
+		\includegraphics[width=\textwidth]{m02_03_run_0x0040_tot_vs_time.pdf}
+		\caption{%
+		}
+		\label{fig:m02_03_run_0x0040_tot_vs_time}
+	\end{subfigure}
+	\caption{%
+	}
+	\label{fig:m02_03_tot_vs_time}
+	\end{figure}
+
+
+
+
 %TODO
 
 \end{appendix}
-
 \end{document}
 
 % vim: spell spelllang=de tw=79
