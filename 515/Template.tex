@@ -260,9 +260,129 @@ verzichtet.
 
 %TODO verschieben der Probe > kaputter Szintilationszähler
 
+\clearpage
 \chapter{Auswertung der Langzeitmessung}
 
-%TODO
+Mit den im letzten Kapitel ermittelten Parametern wurde eine Langzeitmessung
+der Höhenstrahlung durchgeführt.
+
+Der Szintilationszähler wurde dazu parallel zu den Drähten oberhalb der
+Driftkammer positioniert.
+
+Um das immer noch vorhandene Hintergrundrauschen von den deutlichen
+Ereignissen zu trennen wurden alle Ereignisse mit einer \emph{Time over
+Treshold}$ < 60 \cdot \SI{2.5}{\nano\second}$ verworfen. 
+Die Ansprecher auf den einzelnen Drähten sind um die Position des
+Szintilationszählers auf der Driftkammer verteilt.
+
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_tot_vs_time.pdf}
+		\caption{%
+			ungefiltert
+		}
+		\label{fig:m03_tot_vs_time_unfiltered}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_tot_vs_time_filtered.pdf}
+		\caption{%
+			nach Time over Treshold gefiltert
+		}
+		\label{fig:m03_tot_vs_time_filtered}
+	\end{subfigure}
+	\caption{%
+		Langszeitmessung: Time over Treshold / Driftzeit Histogramme
+	}
+	\label{fig:m03_tot_vs_time}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_wire_le_hist_filtered.pdf}
+		\caption{%
+			Verteilung der Ansprecher auf die Drähte
+		}
+		\label{fig:m03_wire_le_hist_filtered}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_time_vs_wire_filtered.pdf}
+		\caption{%
+			Verteilung der Driftzeiten auf die Drähte
+		}
+		\label{fig:m03_time_vs_wire_filtered}
+	\end{subfigure}
+	\caption{%
+		Langzeitmessung: Verteilung der Ansprecher und Driftzeiten in der Kammer
+	}
+	\label{fig:m03_verteilung_in_der_kammer}
+\end{figure}
+
+
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{m03_01_wire_correlation_filtered.pdf}
+	\caption{%
+		Langzeitmessung: Korrelation benachbarter Drähte
+	}
+	\label{fig:m03_wire_correlation}
+\end{figure}
+
+An der Korrelation der benachbarten Drähte ist zu sehen, dass mit zunehmendem
+Abstand zu Draht 34, nicht mehr die unmittelbaren Nachbarn korrelieren. Das
+lässt auf einen zunehmenden Winkel schließen, unter dem die ionisierenden
+Teilchen die Driftkammer durchquerten, nachdem sie den Szintilationszähler
+ausgelößt haben.
+
+
+Anschließend wurde aus dem Driftzeitspektrum der verbliebenden Daten die ODB bestimmt
+
+
+\begin{figure}
+	\begin{subfigure}{0.49 \linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{m03_01_time_le_hist_filtered.pdf}
+		\caption{%
+			Driftzeitspektrum
+		}
+		\label{fig:m03_time_le_hist_filtered}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{m03_01_odb_filtered.pdf}
+		\caption{%
+			ODB: Aufintegriertes Driftzeitspektrum
+		}
+		\label{fig:m03_odb_filtered}
+	\end{subfigure}
+	\caption{%
+		Langszeitmessung: Bestimmung der ODB aus dem Driftzeitspektrum
+	}
+	\label{fig:m03_odb_bestimmung}
+\end{figure}
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{m03_01_summe_filtered.pdf}
+	\caption{%
+		Langszeitmessung: Abstandssumme gegen Abstandsdifferenz
+	}
+	\label{fig:m03_ort_driftzeit}
+\end{figure}
+
+Mit der Abstandsbeziehung aus der ODB wurden nun die Abstandssummen und
+Abstandsdifferenzen benachbarter Drahtpaare in einem 2D Histogramm
+aufgetragen.
+Hier zeigt sich sehr neben einem starken Hintergrund auch ein
+ausgewachsenens Binningproblem im Graphen selbst.
+
+
+%TODO mehr Inhalte
 
 \chapter{Ergebnis}
 
