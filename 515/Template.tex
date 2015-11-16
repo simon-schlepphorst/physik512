@@ -204,28 +204,55 @@ Versuch dirket sinnvolle Ergebnisse.
     \label{fig:m01_02_plots}
 \end{figure}
 
-Bei niedrigen Spannungen ist lassen sich die Ereignisse nicht vom Hintergrund
-trennen. Dies lässt sich auf den ausbleibenden Lawineneffekt in der Driftkammer
+Bei niedrigen Spannungen lassen sich die Ereignisse nicht vom Hintergrund
+trennen. 
+Dies lässt sich auf den ausbleibenden Lawineneffekt in der Driftkammer
 zurückführen.
+Für hohe Spannungen lässt sich auch für den Hintergrund ein leichter
+Anstieg des Anodenstroms erkennen, allerdings bleibt dieser deutlich hinter der
+Probe zurück.
 Ab etwa \SI{2.5}{\kilo\volt} hebt sich das Signal mit der Probe deutlich vom
 Untergrund ab. Der Signal-zu-Rausch-Abstand ist bei einer Spannung größer
 \SI{2.8}{\kilo\volt} ausreichend für genauere Messungen.
 
-
-
-
 \section{Driftzeitspektren}
-Nun wurden mit dem \emph{fpexperiment}-Programm
+Nun wurden mit der $^{90}\text{Sr}$ Quelle und dem \emph{fpexperiment}-Programm
 Driftzeitspektren bei verschiedenen Parametern aufgenommen.
-Dazu wurde der Szintilationszähler unterhalbt der Driftkammer und orthogonal zu
+Variiert wurden dabei nacheinander die Hochspannung, die Verzögerung und die
+Diskriminatorschwelle.
+Ziel ist es eine möglichst sinnvolle Einstellung zu finden, mit der die
+Langzeitmessung aufgenommen wird.
+
+Der Szintilationszähler wurde unterhalbt der Driftkammer und orthogonal zu
 den Drähten positioniert.
 Dabei fiel auf, dass der Szintilationszähler näher an seiner Basis um
 Größenordnungen  besser ansprach.
 Die folgenden Messreihen wurden deshalb mit der Probe am Rand der
 Driftkammer aufgenommen.
 
-Bei den folgenden Plots wurde der Übersichtlichkeit halber auf Fehlerbalken
-verzichtet.
+Bei dem erstellen der Plots fiel auf, dass die Draht Nummerierung paarweise
+vertauscht war.
+Nach Anpassung der Nummerierung erhielten wir folgende Plots bei denen der Übersichtlichkeit halber auf Fehlerbalken
+verzichtet wurde. 
+Bei der Korrelation der Ansprecher wird dies besonders deutlich.
+
+Als erstes haben wir Driftzeitspektren für verschiedene Hochspannungen
+aufgenommen.
+Als Hochspannungen haben wir \SI{2,86}{\kilo\volt},
+\SI{2,9}{\kilo\volt}, \SI{2,95}{\kilo\volt} und \SI{3,021}{\kilo\volt}.
+Im Vergleich sieht man, dass wir uns mit den gewählten Spannungen in einen
+Bereich bewegen, indem es kaum Unterschiede gibt.
+Deshalb haben wir uns für die weiteren Messungen für den mittleren Wert von
+\SI{2,9}{\kilo\volt} entschieden.
+Gut deutlich wird allerdings, dass man für kurze Driftzeiten die meisten
+Ansprecher erhält. Da dies die Ansprecher für den Durchgang nahe des
+Anodendrahtes, also im Bereich der hohen Feldstärke ist, ist es sinnvoll das
+diese Ereignisse bevorzugt detektiert werden.
+In diesen Bereich ist die Wahrscheinlichkeit eine Lawine auszulösen
+besonders hoch.
+Das zweite Maximum verschiebt sich mit steigender Spannung
+weiter Richtung kürzerer Driftzeit. Das lässt sich damit begründen, dass das
+Feld ansteigt und dadurch die Elektronen stärker beschleunigt werden.
 
 \begin{figure}
     \centering
@@ -236,6 +263,10 @@ verzichtet.
     \label{fig:m02_01_driftzeitspektrum}
 \end{figure}
 
+Als nächstes betrachten wir den Einfluss der unterschiedlichen Verzögerungen.
+Da wir wollen, dass das Driftzeitspektrum bei einer Driftzeit von
+\SI{100}{\nano\second} beginnt haben wir uns für die Verzögerung von
+$0x0028$, also das Rote, entschieden.
 
 \begin{figure}
     \centering
@@ -246,6 +277,7 @@ verzichtet.
     \label{fig:m02_02_driftzeitspektrum}
 \end{figure}
 
+%TODO Wenn man Diskriminatorschwelle ändert, dann
 
 \begin{figure}
     \centering
