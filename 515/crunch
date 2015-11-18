@@ -226,6 +226,7 @@ def wire_correlation(events, outfile):
     pl.ylabel('Wire ID')
     pl.grid(True)
     pl.margins(0.05)
+    pl.title('{} Hits'.format(num_hits(events)))
 
     pl.tight_layout()
     pl.savefig(outfile)
@@ -365,12 +366,14 @@ def driftzeit_nachbarn_2d(events, outfile):
     pl.clf()
 
 
-def summe_differenz(events, odb, outfile):
+def summe_differenz(events, odb, wire_1, wire_2, outfile):
     pl.clf()
     x = []
     y = []
     s = []
     d = []
+
+    hits = 0
 
     all_time_le = []
 
@@ -384,16 +387,28 @@ def summe_differenz(events, odb, outfile):
         if len(time_le) < 2:
             continue
 
+
         for i in range(len(time_le)):
             for j in range(len(time_le)):
                 if i == j:
                     continue
 
-                if not (wire_le[i] % 2 == 1 and wire_le[j] != wire_le[i] + 1):
-                    pass
+                if not (wire_le[i] == wire_1 or  wire_le[j] == wire_1):
+                    continue
 
-                t1 = time_le[i]
-                t2 = time_le[j]
+                if not (wire_le[i] == wire_2 or  wire_le[j] == wire_2):
+                    continue
+
+
+                #if not (wire_le[i] % 2 == 1 and wire_le[j] != wire_le[i] + 1):
+                #    pass
+
+                if wire_le[i] < wire_le[j]:
+                    t1 = time_le[i]
+                    t2 = time_le[j]
+                if wire_le[j] < wire_le[i]:
+                    t1 = time_le[j]
+                    t2 = time_le[i]
 
                 #if t1 == 0 or t2 == 0:
                 #    continue
@@ -407,14 +422,16 @@ def summe_differenz(events, odb, outfile):
                     print('t2 * 2.5:', t2 * 2.5)
                     raise
 
-                if d1 + d2 < 9:
-                    pass
+                #if d1 + d2 < 9:
+                #    pass
 
                 x.append(d1)
                 y.append(d2)
 
                 s.append(d1 + d2)
                 d.append(d1 - d2)
+
+                hits += 1
 
     stretch = 1
 
@@ -437,7 +454,7 @@ def summe_differenz(events, odb, outfile):
     #pl.hist2d(np.array(x), np.array(y), bins=(new_bins, new_bins))#, norm=matplotlib.colors.LogNorm())
 
     # 2D Histogram mit Summe gegen Differenz, lineare Bins.
-    pl.hist2d(np.array(d), np.array(s), bins=(80, 80))#, norm=matplotlib.colors.LogNorm())
+    pl.hist2d(np.array(d), np.array(s), bins=(50, 50), range=[[-8.5, 8.5], [0, 17]])#, norm=matplotlib.colors.LogNorm())
 
     # 2D Scatter Plot mit Transparenz.
     #pl.plot(np.array(d), np.array(s), alpha=0.1, marker='.', linestyle='none')
@@ -449,6 +466,7 @@ def summe_differenz(events, odb, outfile):
     pl.ylabel('Summe / mm')
     pl.grid(True)
     pl.margins(0.05)
+    pl.title('{} Hits'.format(hits))
 
     pl.tight_layout()
     pl.savefig(outfile)
@@ -605,8 +623,17 @@ def main():
     odb = time_le_hist_cdf(filtered,
                 '_build/m03_01_odb_filtered.pdf')
 
-    summe_differenz(filtered, odb,
-                '_build/m03_01_summe_filtered.pdf')
+    summe_differenz(filtered, odb, 32, 33,
+                '_build/m03_01_summe_32_33_filtered.pdf')
+
+    summe_differenz(filtered, odb, 33, 34,
+                '_build/m03_01_summe_33_34_filtered.pdf')
+
+    summe_differenz(filtered, odb, 34, 35,
+                '_build/m03_01_summe_34_35_filtered.pdf')
+
+    summe_differenz(filtered, odb, 35, 36,
+                '_build/m03_01_summe_35_36_filtered.pdf')
 
     distanz_histogram(filtered, odb,
                 '_build/m03_01_distanz_hist-transformed.pdf', False)
@@ -673,7 +700,8 @@ def main():
 
     m2_filtered = filter_hits(m2_1_events[0], 5)
     m2_odb = time_le_hist_cdf(m2_filtered, '_build/m02_01_odb_filtered.pdf')
-    summe_differenz(m2_filtered, m2_odb, '_build/m02_01_summe_filtered.pdf')
+    summe_differenz(m2_filtered, m2_odb, 33, 34,
+            '_build/m02_01_summe_33_34_filtered.pdf')
 
 
     ###########################################
