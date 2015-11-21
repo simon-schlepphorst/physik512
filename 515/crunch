@@ -367,6 +367,8 @@ def driftzeit_nachbarn_2d(events, outfile):
 
 
 def summe_differenz(events, odb, wire_1, wire_2, outfile):
+    #wire_1 < wire_2 wird vorausgesetzt, keine Überprüfung
+
     pl.clf()
     x = []
     y = []
@@ -393,10 +395,10 @@ def summe_differenz(events, odb, wire_1, wire_2, outfile):
                 if i == j:
                     continue
 
-                if not (wire_le[i] == wire_1 or  wire_le[j] == wire_1):
+                if not (wire_le[i] >= wire_1 and  wire_le[j] >= wire_1):
                     continue
 
-                if not (wire_le[i] == wire_2 or  wire_le[j] == wire_2):
+                if not (wire_le[i] <= wire_2 and  wire_le[j] <= wire_2):
                     continue
 
 
@@ -623,8 +625,17 @@ def main():
     odb = time_le_hist_cdf(filtered,
                 '_build/m03_01_odb_filtered.pdf')
 
-    summe_differenz(filtered, odb, 32, 33,
-                '_build/m03_01_summe_32_33_filtered.pdf')
+
+    summe_differenz(filtered, odb, 29, 30,
+                '_build/m03_01_summe_29_30_filtered.pdf')
+
+    summe_differenz(filtered, odb, 30, 31,
+                '_build/m03_01_summe_30_31_filtered.pdf')
+
+    summe_differenz(filtered, odb, 29, 31,
+                '_build/m03_01_summe_29_31_filtered.pdf')
+
+
 
     summe_differenz(filtered, odb, 33, 34,
                 '_build/m03_01_summe_33_34_filtered.pdf')
@@ -632,8 +643,11 @@ def main():
     summe_differenz(filtered, odb, 34, 35,
                 '_build/m03_01_summe_34_35_filtered.pdf')
 
-    summe_differenz(filtered, odb, 35, 36,
-                '_build/m03_01_summe_35_36_filtered.pdf')
+
+    summe_differenz(filtered, odb, 20, 40,
+                '_build/m03_01_summe_20_40_filtered.pdf')
+
+
 
     distanz_histogram(filtered, odb,
                 '_build/m03_01_distanz_hist-transformed.pdf', False)
