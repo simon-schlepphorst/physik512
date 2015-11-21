@@ -6,6 +6,7 @@
 
 import json
 import os.path
+import re
 import sys
 import pprint
 
@@ -20,7 +21,30 @@ import scipy.integrate
 import scipy.interpolate
 import unitprint
 
+_livetime_pattern = re.compile(r'LIVETIME: (\d+\.?\d*)')
 
+def extract_livetime(metafile):
+    with open(metafile) as f:
+        for line in f:
+            m = _livetime_pattern.search(line)
+            if m:
+                return float(m.group(1))
+
+
+def load_data_normalized(basename):
+    '''
+    Loads the data and normalizes it to give events per second.
+    '''
+    datafile = basename + '.txt'
+    metafile = basename + '.mcd'
+
+    livetime = extract_livetime(metafile)
+
+    data = np.loadtxt(datafile)
+
+    data[:, 1] /= livetime
+
+    return data
 
 def test_keys(T):
     '''
@@ -48,8 +72,6 @@ def main():
     T = {}
 
     ###########################################
-
-
 
     ###########################################
 
