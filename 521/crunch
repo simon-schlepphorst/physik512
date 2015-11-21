@@ -4,11 +4,12 @@
 # Copyright © 2013-2015 Martin Ueding <dev@martin-ueding.de>
 # Licensed under The GNU Public License Version 2 (or later)
 
+import itertools
 import json
 import os.path
+import pprint
 import re
 import sys
-import pprint
 
 import matplotlib.pyplot as pl
 import matplotlib.colors
@@ -35,8 +36,8 @@ def load_data_normalized(basename):
     '''
     Loads the data and normalizes it to give events per second.
     '''
-    datafile = basename + '.txt'
-    metafile = basename + '.mcd'
+    datafile = 'Daten/' + basename + '.txt'
+    metafile = 'Daten/' + basename + '.mcd'
 
     livetime = extract_livetime(metafile)
 
@@ -45,6 +46,67 @@ def load_data_normalized(basename):
     data[:, 1] /= livetime
 
     return data
+
+
+def plot_pair(basename, underground_basename):
+    data = load_data_normalized(basename)
+    underground = load_data_normalized(underground_basename)
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(data[:, 0], data[:, 1], marker=None)
+    ax.plot(underground[:, 0], underground[:, 1], marker=None)
+    ax.margins(0.05)
+    ax.set_xlabel('')
+    ax.set_ylabel('')
+    fig.tight_layout()
+    fig.savefig('_build/' + basename + '.pdf')
+
+
+def calibrate_ge():
+    co = load_data_normalized('Ge_EU')
+    underground = load_data_normalized('Ge_Untergrund')
+
+    # Subtract underground from measurements.
+    co[:, 1] -= underground[:, 1]
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(co[:, 0], co[:, 1], marker=None)
+    ax.margins(0.05)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Ereignisse')
+    fig.tight_layout()
+    fig.savefig('_build/Ge_calib.pdf')
+    fig.clear()
+
+
+    fit_ranges = [
+        (625, 716),
+        (1318, 1407),
+        (1878, 1971),
+        (4333, 4423),
+        (5380, 5466),
+        (6212, 6295),
+        (7883, 7970),
+    ]
+
+    fig = pl.figure()
+    
+    for i, (first, last) in zip(itertools.count(1), fit_ranges):
+        ax = fig.add_subplot(3, (len(fit_ranges) + 2)//3, i)
+        ax.plot(co[first:last, 0], co[first:last, 1], marker=None)
+        ax.margins(0.05)
+        for label in ax.get_xticklabels():
+            #label.set_fontsize(9)
+            label.set_rotation(45)
+
+    fig.tight_layout()
+    fig.savefig('_build/Ge_calib-peaks.pdf')
+    fig.clear()
+
+
+
 
 def test_keys(T):
     '''
@@ -72,6 +134,9 @@ def main():
     T = {}
 
     ###########################################
+
+    calibrate_ge()
+    plot_pair('Ge_CO', 'Ge_Untergrund')
 
     ###########################################
 
