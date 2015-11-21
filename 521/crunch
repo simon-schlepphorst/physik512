@@ -346,6 +346,50 @@ def calibrate_ge(T):
     T['ge_const'] = unitprint.siunitx(const_val, const_err)
     T['ge_electronic_width'] = unitprint.siunitx(electronic_width_val, electronic_width_err)
 
+    # Langzeitmessung
+
+    langzeit_daten = load_data_normalized('Langzeit_Probe')
+    langzeit_untergrund = load_data_normalized('Langzeit_Untergrund')
+
+    events = langzeit_daten[:, 1] - langzeit_untergrund[:, 1]
+    channel = langzeit_daten[:, 0]
+    energy = linear(channel, slope_val, offset_val)
+
+    print(np.max(langzeit_daten[:, 1]))
+    print(np.max(langzeit_untergrund[:, 1]))
+
+    print(np.max(events))
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(energy, langzeit_daten[:, 1])
+    ax.plot(energy, langzeit_untergrund[:, 1])
+    ax.set_yscale('log')
+    fig.savefig('_build/langzeit.pdf')
+
+    events_smooth = scipy.ndimage.filters.gaussian_filter(langzeit_daten[:, 1], 200)
+    events = langzeit_daten[:, 1] - events_smooth
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(energy, langzeit_daten[:, 1])
+    ax.plot(energy, events_smooth)
+    #ax.plot(energy, events)
+    ax.set_yscale('log')
+    fig.savefig('_build/langzeit2.pdf')
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(energy[energy > 50], events[energy > 50])
+    ax.set_xlabel('Energie / keV')
+    ax.set_ylabel('Ereignisse')
+    ax.margins(0.05)
+    ax.grid(True)
+    fig.tight_layout()
+    fig.savefig('_build/langzeit3.pdf')
+
+    np.savetxt('_build/langzeit.tsv', np.column_stack([energy, events]))
+
 def test_keys(T):
     '''
     Testet das dict auf Schlüssel mit Bindestrichen.
