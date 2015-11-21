@@ -27,13 +27,15 @@ _livetime_pattern = re.compile(r'LIVETIME: (\d+\.?\d*)')
 def lorentz_peak(x, mean, width, area, offset):
     return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2) + offset
 
+def linear(x, slope, offset):
+    return x * slope + offset
+
 def extract_livetime(metafile):
     with open(metafile) as f:
         for line in f:
             m = _livetime_pattern.search(line)
             if m:
                 return float(m.group(1))
-
 
 def load_data_normalized(basename):
     '''
@@ -50,7 +52,6 @@ def load_data_normalized(basename):
 
     return data
 
-
 def plot_pair(basename, underground_basename):
     data = load_data_normalized(basename)
     underground = load_data_normalized(underground_basename)
@@ -64,7 +65,6 @@ def plot_pair(basename, underground_basename):
     ax.set_ylabel('')
     fig.tight_layout()
     fig.savefig('_build/' + basename + '.pdf')
-
 
 def calibrate_ge(T):
     co = load_data_normalized('Ge_EU')
@@ -82,7 +82,6 @@ def calibrate_ge(T):
     fig.tight_layout()
     fig.savefig('_build/Ge_calib.pdf')
     fig.clear()
-
 
     fit_ranges = [
         (625, 716, 121.7825),
@@ -147,8 +146,6 @@ def calibrate_ge(T):
         + (list_area_val * list_mean_err)**2
     )
 
-    
-
     rescale = list_intensity_val[-1] / 1000
 
     list_intensity_val /= rescale
@@ -163,16 +160,11 @@ def calibrate_ge(T):
         unitprint.siunitx(list_expected_energy),
     ))
 
-
-
     T['ge_co_fits_table'] = fit_data
-
 
     fig.tight_layout()
     fig.savefig('_build/Ge_calib-peaks.pdf')
     fig.clear()
-
-
 
     expected_rel_intensity = np.array([
         1362.0,
@@ -204,7 +196,27 @@ def calibrate_ge(T):
         unitprint.siunitx(efficiency_val, efficiency_err),
     ))
 
-
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    x = list_mean_val
+    y = list_expected_energy
+    popt, pconv = op.curve_fit(linear, x, y)
+    fit_x = np.linspace(np.min(x), np.max(x), 10)
+    fit_y = linear(fit_x, *popt)
+    ax.plot(fit_x, fit_y)
+    ax.errorbar(list_mean_val, list_expected_energy, xerr=list_mean_err, marker='+', linestyle='none')
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Energie / keV')
+    ax.margins(0.05)
+    ax.grid(True)
+    perr = np.sqrt(pconv.diagonal())
+    parameters = list(zip(popt, perr))
+    slope_val, slope_err = parameters[0]
+    offset_val, offset_err = parameters[1]
+    fig.tight_layout()
+    fig.savefig('_build/ge_channels.pdf')
+    T['ge_slope'] = unitprint.siunitx(slope_val, slope_err)
+    T['ge_offset'] = unitprint.siunitx(offset_val, offset_err)
 
 def test_keys(T):
     '''
@@ -227,7 +239,6 @@ def test_keys(T):
         print()
         sys.exit(100)
 
-
 def main():
     T = {}
 
@@ -241,7 +252,6 @@ def main():
     test_keys(T)
     with open('_build/template.js', 'w') as f:
         json.dump(dict(T), f, indent=4, sort_keys=True)
-
 
 if __name__ == "__main__":
     main()
