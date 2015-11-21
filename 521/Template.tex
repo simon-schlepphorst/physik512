@@ -160,7 +160,7 @@ verstärkt.
 
 \begin{tabular}{SSSSSS}
     {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
-    {Energie / \si{\kilo\electronvolt}} \\
+    {$E_\gamma$ / \si{\kilo\electronvolt}} \\
     \midrule
     %< for row in ge_co_fits_table >%
     << ' & '.join(row) >> \\
@@ -191,6 +191,12 @@ Szintillationszähler
     \text{Kanalnummer} \cdot \SI{<< sz_slope >>}{\kilo\electronvolt}
     +
     \SI{<< sz_offset >>}{\kilo\electronvolt} \,.
+\]
+
+\[
+    \text{Const} = \num{<< ge_const >>}\,\sqrt{\si{\kilo\electronvolt}}
+    ,\qquad
+    \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
 \]
 
 \begin{figure}
