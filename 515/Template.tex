@@ -79,25 +79,44 @@ und ermitteln seine Orts-Driftzeitbeziehung.
 \chapter{Theorie}
 
 \section{Einführung}
-In der modernen Physik spielen Teilchenbeschleuniger eine wichtige Rolle und mit ihnen auch verschiedene Teilchendetektoren.
-Wir beschäftigen uns im folgenden mit einer Driftkammer als Beispiel für ein gasbasierter Teilchendetektor.
-Aufgabe der Driftkammer ist es den Ort eines bewegten Teilchen zu bestimmen.
-In diesen Versuch werden die charaktristischen Eigenschaften des Prototypen einer Driftkammer des BGO-OD-Experimentes untersucht.
+In der modernen Physik spielen Teilchenbeschleuniger eine wichtige Rolle und 
+mit ihnen auch verschiedene Teilchendetektoren.
+Wir beschäftigen uns im folgenden mit einer Driftkammer als Beispiel für einen 
+gasbasierten Teilchendetektor.
+Im Gegensatz zur Nebelkammer lässt sich der Durchgangsort ionisierender
+Strahlung in einer Driftkammer elektronisch auslesen.
+In diesem Versuch werden die charaktristischen Eigenschaften des Prototypen 
+einer Driftkammer des BGO-OD-Experimentes untersucht.
 Hierbei wird zum einen das Verhalten der Driftkammer mit und ohne
-$^90\text{Sr}$-Präperat unter verschiedenen Parametern verglichen.
-Außerdem wird eine Langzeitmessung ohne Präperat durchgeführt, bei der die Winkelverteilung der kosmischen Strahlung vermessen wird.
+Strahlungsqulle ($^{90}\text{Sr}$-Präperat) unter verschiedenen Parametern verglichen.
+Außerdem wird eine Langzeitmessung ohne Präperat durchgeführt, bei der die 
+Winkelverteilung der kosmischen Strahlung vermessen wird.
 
 \section{Theorie}
 \subsection{Aufbau der Driftkammer}
-Die Driftkammer besteht aus mit Agon-Kohlenstoffdioxidgemisch (im Verhältnis $ 82\%-18\% $ ) gefüllten Kammer, welche mit Drähten durchspannt ist. 
-Hierbei bilden jeweils sechs hexagonal angeordnten Potentialdrähte, an denen
-eine hohe negative spannung anliegt, und der in der Mitte liegede geerdete Anodendraht eine Driftzelle.
-Die Potentialdrähte erfüllen hierbei die Aufgabe ein zylindrisches Feld zu erzeugen. 
-Dieses soll die, durch Ionisierung frei werdenen Elektronen in die Richtung
-des Anodendraht zu beschleunigen und verhindern, dass das Elektron in einer anderen Zelle detektiert wird.
-Die Spannung der Potentialdrähte kann zwischen \SIrange{0}{3000}{\volt} variiert werden.
+Die Driftkammer besteht aus einer mit Argon-Kohlenstoffdioxidgemisch 
+(im Verhältnis $ 82\%-18\% $) gefüllten Kammer, welche mit Drähten durchspannt
+ist. Hierbei bilden jeweils sechs hexagonal angeordnten Potentialdrähte, an
+denen eine hohe negative Spannung anliegt, und der in der Mitte liegede geerdete 
+Anodendraht eine Driftzelle.
+Die Potentialdrähte erfüllen hierbei die Aufgabe ein zylindrisches Feld zu 
+erzeugen. Dieses soll die, durch Ionisierung frei werdenen Elektronen in die 
+Richtung des Anodendraht zu beschleunigen und verhindern, dass das Elektron in 
+einer anderen Zelle detektiert wird.
+Die Spannung der Potentialdrähte kann von \SIrange{0}{3000}{\volt} variiert werden.
 
-Ordnet man die einzelnen Driftzellen wie in Abbildung \fehlt an, so erhält man eine Driftkammer.
+\begin{figure}
+	\centering
+	%\includegraphics[width=\linewidth]{}
+	\caption{%
+		Anordnung der Drähte in der Driftkammer
+	}
+	\label{fig:aufbau_driftkammer}
+\end{figure}
+
+Ordnet man die einzelnen Driftzellen wie in Abbildung \fehlt an, so erhält man 
+eine Driftkammer.
+%TODO Mittlere Freie Weglänge, Gasentladung, Dämpfung
 Da das Verhältnis der Gaszusammensetzung, dessen Druck und Temperatur
 entscheidend für die Driftgeschwindigkeit der Elektronen ist, wird das Gasgemisch kontinuierlich getauscht. 
 Die longitudinale Diffusion soll dabei möglichst klein gehalten werden,
@@ -320,12 +339,12 @@ Szintilationszählers auf der Driftkammer verteilt.
 	\begin{subfigure}{0.49 \linewidth}
 		\includegraphics[width=\linewidth]{m03_01_tot_vs_time_filtered.pdf}
 		\caption{%
-			nach Time over Treshold gefiltert
+			gefiltert
 		}
 		\label{fig:m03_tot_vs_time_filtered}
 	\end{subfigure}
 	\caption{%
-		Langszeitmessung: Time over Treshold / Driftzeit Histogramme
+		Time over Treshold Histogramme
 	}
 	\label{fig:m03_tot_vs_time}
 \end{figure}
@@ -347,11 +366,33 @@ Szintilationszählers auf der Driftkammer verteilt.
 		\label{fig:m03_time_vs_wire_filtered}
 	\end{subfigure}
 	\caption{%
-		Langzeitmessung: Verteilung der Ansprecher und Driftzeiten in der Kammer
+		Verteilung der Hits in der Kammer nach ToT-Filterung
 	}
 	\label{fig:m03_verteilung_in_der_kammer}
 \end{figure}
 
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_wire_le_hist.pdf}
+		\caption{%
+			Verteilung der Ansprecher auf die Drähte
+		}
+		\label{fig:m03_wire_le_hist_filtered}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_time_vs_wire.pdf}
+		\caption{%
+			Verteilung der Driftzeiten auf die Drähte
+		}
+		\label{fig:m03_time_vs_wire_filtered}
+	\end{subfigure}
+	\caption{%
+		Verteilung der ungefilterten Hits in der Kammer
+	}
+	\label{fig:m03_verteilung_in_der_kammer}
+\end{figure}
 
 
 
@@ -359,7 +400,7 @@ Szintilationszählers auf der Driftkammer verteilt.
 	\centering
 	\includegraphics[width=\linewidth]{m03_01_wire_correlation_filtered.pdf}
 	\caption{%
-		Langzeitmessung: Korrelation benachbarter Drähte
+		Korrelation benachbarter Drähte
 	}
 	\label{fig:m03_wire_correlation}
 \end{figure}
@@ -375,8 +416,8 @@ Anschließend wurde aus dem Driftzeitspektrum der verbliebenden Daten die ODB be
 
 
 \begin{figure}
+	\centering
 	\begin{subfigure}{0.49 \linewidth}
-		\centering
 		\includegraphics[width=\linewidth]{m03_01_time_le_hist_filtered.pdf}
 		\caption{%
 			Driftzeitspektrum
@@ -384,7 +425,6 @@ Anschließend wurde aus dem Driftzeitspektrum der verbliebenden Daten die ODB be
 		\label{fig:m03_time_le_hist_filtered}
 	\end{subfigure}
 	\begin{subfigure}{0.49 \linewidth}
-		\centering
 		\includegraphics[width=\linewidth]{m03_01_odb_filtered.pdf}
 		\caption{%
 			ODB: Aufintegriertes Driftzeitspektrum
@@ -392,17 +432,45 @@ Anschließend wurde aus dem Driftzeitspektrum der verbliebenden Daten die ODB be
 		\label{fig:m03_odb_filtered}
 	\end{subfigure}
 	\caption{%
-		Langszeitmessung: Bestimmung der ODB aus dem Driftzeitspektrum
+		Bestimmung der ODB aus dem Driftzeitspektrum
 	}
 	\label{fig:m03_odb_bestimmung}
 \end{figure}
 
 
+
 \begin{figure}
 	\centering
-	\includegraphics[width=\linewidth]{m03_01_summe_filtered.pdf}
-	\caption{%
-		Langszeitmessung: Abstandssumme gegen Abstandsdifferenz
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_summe_29_30_filtered.pdf}
+		\caption{%
+			Drahtpaar 29-30
+		}
+		\label{fig:m03_summe_29_30}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_summe_30_31_filtered.pdf}
+		\caption{%
+			Drahtpaar 30-31
+		}
+		\label{fig:m03_summe_30_31}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_summe_33_34_filtered.pdf}
+		\caption{%
+			Drahtpaar 33-34
+		}
+		\label{fig:m03_summe_33_34}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_summe_34_35_filtered.pdf}
+		\caption{%
+			Drahtpaar 34-35
+		}
+		\label{fig:m03_summe_34_35}
+	\end{subfigure}
+\caption{%
+		Abstandssumme zweier benachbarter Drähte
 	}
 	\label{fig:m03_ort_driftzeit}
 \end{figure}
