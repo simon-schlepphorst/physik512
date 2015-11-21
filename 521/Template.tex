@@ -45,6 +45,8 @@
     pdftitle=
 }
 
+\newcommand{\plotwidth}{0.8\linewidth}
+
 \subject{Praktikumsprotokoll}
 \title{$\gamma$-Spektroskopie mit Szintillations- und Halbleiterdetektoren}
 \subtitle{Versuch P515 -- Universität Bonn}
@@ -138,6 +140,24 @@ verstärkt.
 
 %TODO
 
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{Ge_calib}
+    \caption{%
+        %
+    }
+    \label{fig:}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{Ge_calib-peaks}
+    \caption{%
+        %
+    }
+    \label{fig:}
+\end{figure}
+
 \begin{tabular}{SSSSSS}
     {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
     {Energie / \si{\kilo\electronvolt}} \\
@@ -146,6 +166,15 @@ verstärkt.
     << ' & '.join(row) >> \\
     %< endfor >%
 \end{tabular}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{ge_efficiency}
+    \caption{%
+        %
+    }
+    \label{fig:}
+\end{figure}
 
 \begin{tabular}{SSSS}
     {Energie / \si{\kilo\electronvolt}} & {rel.\ Intens. erw.} & {rel.\ Intens.

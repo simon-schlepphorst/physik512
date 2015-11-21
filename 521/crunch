@@ -190,6 +190,11 @@ def calibrate_ge(T):
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
     ax.errorbar(list_expected_energy, efficiency_val, efficiency_err, marker='+', linestyle='none')
+    ax.set_xlabel('Energie / keV')
+    ax.set_ylabel('Effizienz')
+    ax.margins(0.05)
+    ax.grid(True)
+    fig.tight_layout()
     fig.savefig('_build/ge_efficiency.pdf')
 
     T['ge_efficiency_table'] = list(zip(
