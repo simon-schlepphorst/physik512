@@ -24,6 +24,9 @@ import unitprint
 
 _livetime_pattern = re.compile(r'LIVETIME: (\d+\.?\d*)')
 
+def lorentz_peak(x, mean, width, area, offset):
+    return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2) + offset
+
 def extract_livetime(metafile):
     with open(metafile) as f:
         for line in f:
@@ -63,7 +66,7 @@ def plot_pair(basename, underground_basename):
     fig.savefig('_build/' + basename + '.pdf')
 
 
-def calibrate_ge():
+def calibrate_ge(T):
     co = load_data_normalized('Ge_EU')
     underground = load_data_normalized('Ge_Untergrund')
 
@@ -82,29 +85,119 @@ def calibrate_ge():
 
 
     fit_ranges = [
-        (625, 716),
-        (1318, 1407),
-        (1878, 1971),
-        (4333, 4423),
-        (5380, 5466),
-        (6212, 6295),
-        (7883, 7970),
+        (625, 716, 121.7825),
+        (1318, 1407, 244.6989),
+        (1878, 1971, 344.281),
+        (4333, 4423, 778.903),
+        (5380, 5466, 964.131),
+        (6212, 6295, 1112.116),
+        (7883, 7970, 1408.011),
     ]
 
     fig = pl.figure()
+
+    list_mean_val = np.array([])
+    list_mean_err = np.array([])
+    list_width_val = np.array([])
+    list_width_err = np.array([])
+    list_area_val = np.array([])
+    list_area_err = np.array([])
+    list_offset_val = np.array([])
+    list_offset_err = np.array([])
+    list_expected_energy = np.array([])
     
-    for i, (first, last) in zip(itertools.count(1), fit_ranges):
+    for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
+        x, y = co[first:last, 0], co[first:last, 1]
+        popt, pconv = op.curve_fit(lorentz_peak, x, y, p0=[np.mean(x), 12, 500, 0])
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = lorentz_peak(fit_x, *popt)
+
         ax = fig.add_subplot(3, (len(fit_ranges) + 2)//3, i)
-        ax.plot(co[first:last, 0], co[first:last, 1], marker=None)
+        ax.plot(x, y, marker=None)
+        ax.plot(fit_x, fit_y, marker=None)
         ax.margins(0.05)
         for label in ax.get_xticklabels():
             #label.set_fontsize(9)
             label.set_rotation(45)
 
+        perr = np.sqrt(pconv.diagonal())
+
+        parameters = list(zip(popt, perr))
+
+        mean_val, mean_err = parameters[0]
+        width_val, width_err = parameters[1]
+        area_val, area_err = parameters[2]
+        offset_val, offset_err = parameters[3]
+
+        list_mean_val = np.append(list_mean_val, mean_val)
+        list_mean_err = np.append(list_mean_err, mean_err)
+        list_width_val = np.append(list_width_val, width_val)
+        list_width_err = np.append(list_width_err, width_err)
+        list_area_val = np.append(list_area_val, area_val)
+        list_area_err = np.append(list_area_err, area_err)
+        list_offset_val = np.append(list_offset_val, offset_val)
+        list_offset_err = np.append(list_offset_err, offset_err)
+        list_expected_energy = np.append(list_expected_energy, expected_energy)
+
+    print(len(list_area_val))
+
+    list_intensity_val = list_area_val * list_mean_val
+    list_intensity_err = np.sqrt(
+        (list_area_err * list_mean_val)**2
+        + (list_area_val * list_mean_err)**2
+    )
+
+    
+
+    rescale = list_intensity_val[-1] / 1000
+
+    list_intensity_val /= rescale
+    list_intensity_err /= rescale
+
+    fit_data = list(zip(
+        [str(i) for i in range(1, len(list_mean_val) +1)],
+        unitprint.siunitx(list_mean_val, list_mean_err),
+        unitprint.siunitx(list_width_val, list_width_err),
+        unitprint.siunitx(list_area_val, list_area_err),
+        unitprint.siunitx(list_intensity_val, list_intensity_err),
+        unitprint.siunitx(list_expected_energy),
+    ))
+
+
+
+    T['ge_co_fits_table'] = fit_data
+
+
     fig.tight_layout()
     fig.savefig('_build/Ge_calib-peaks.pdf')
     fig.clear()
 
+
+
+    expected_rel_intensity = np.array([
+        1362.0,
+        359.0,
+        1275.0,
+        621.6,
+        693.4,
+        689.0,
+        1000.0,
+    ])
+
+    efficiency_val = list_intensity_val / expected_rel_intensity
+    efficiency_err = list_intensity_err / expected_rel_intensity
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.errorbar(list_expected_energy, efficiency_val, efficiency_err, marker='+', linestyle='none')
+    fig.savefig('_build/ge_efficiency.pdf')
+
+    T['ge_efficiency_table'] = list(zip(
+        unitprint.siunitx(list_expected_energy),
+        unitprint.siunitx(expected_rel_intensity),
+        unitprint.siunitx(list_intensity_val, list_intensity_err),
+        unitprint.siunitx(efficiency_val, efficiency_err),
+    ))
 
 
 
@@ -135,7 +228,7 @@ def main():
 
     ###########################################
 
-    calibrate_ge()
+    calibrate_ge(T)
     plot_pair('Ge_CO', 'Ge_Untergrund')
 
     ###########################################

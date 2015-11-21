@@ -106,7 +106,7 @@ vor.
 Ein weiterer Effekt der bei Energien $E_\gamma \ge 2m_\text ec^2$ auftreten
 kann, ist die Elektron- Positron Paarbildung.
 Dieser Effekt ist allerdings erst ab einer Energie von
-\SI{}{\mega\electron\volt} relevant.
+\SI{}{\mega\electronvolt} relevant.
 % Für den Wirkungsquerschnitt gilt $\sigma_\text{Pc} \propto Z^2\ln(E_\gamma)$
 
 \subsection{Comptonstreuung}
@@ -137,6 +137,24 @@ verstärkt.
 \chapter{Auswertung}
 
 %TODO
+
+\begin{tabular}{SSSSSS}
+    {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
+    {Energie / \si{\kilo\electronvolt}} \\
+    \midrule
+    %< for row in ge_co_fits_table >%
+    << ' & '.join(row) >> \\
+    %< endfor >%
+\end{tabular}
+
+\begin{tabular}{SSSS}
+    {Energie / \si{\kilo\electronvolt}} & {rel.\ Intens. erw.} & {rel.\ Intens.
+mess.} & {Effizienz} \\
+    \midrule
+    %< for row in ge_efficiency_table >%
+    << ' & '.join(row) >> \\
+    %< endfor >%
+\end{tabular}
 
 \chapter{Ergebnis}
 
