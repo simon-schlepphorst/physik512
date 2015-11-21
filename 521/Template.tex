@@ -45,6 +45,8 @@
     pdftitle=
 }
 
+\newcommand{\plotwidth}{0.8\linewidth}
+
 \subject{Praktikumsprotokoll}
 \title{$\gamma$-Spektroskopie mit Szintillations- und Halbleiterdetektoren}
 \subtitle{Versuch P515 -- Universität Bonn}
@@ -106,7 +108,7 @@ vor.
 Ein weiterer Effekt der bei Energien $E_\gamma \ge 2m_\text ec^2$ auftreten
 kann, ist die Elektron- Positron Paarbildung.
 Dieser Effekt ist allerdings erst ab einer Energie von
-\SI{}{\mega\electron\volt} relevant.
+\SI{}{\mega\electronvolt} relevant.
 % Für den Wirkungsquerschnitt gilt $\sigma_\text{Pc} \propto Z^2\ln(E_\gamma)$
 
 \subsection{Comptonstreuung}
@@ -137,6 +139,129 @@ verstärkt.
 \chapter{Auswertung}
 
 %TODO
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{Ge_calib}
+    \caption{%
+        %
+    }
+    \label{fig:}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{Ge_calib-peaks}
+    \caption{%
+        %
+    }
+    \label{fig:}
+\end{figure}
+
+\begin{tabular}{SSSSSS}
+    {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
+    {$E_\gamma$ / \si{\kilo\electronvolt}} \\
+    \midrule
+    %< for row in ge_co_fits_table >%
+    << ' & '.join(row) >> \\
+    %< endfor >%
+\end{tabular}
+
+
+Germanium
+\[
+    \text{Energie} =
+    \text{Kanalnummer} \cdot \SI{<< ge_slope >>}{\kilo\electronvolt}
+    +
+    \SI{<< ge_offset >>}{\kilo\electronvolt} \,.
+\]
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{ge_channels}
+    \caption{%
+        %
+    }
+    \label{fig:}
+\end{figure}
+
+Szintillationszähler
+\[
+    \text{Energie} =
+    \text{Kanalnummer} \cdot \SI{<< sz_slope >>}{\kilo\electronvolt}
+    +
+    \SI{<< sz_offset >>}{\kilo\electronvolt} \,.
+\]
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{Sz-CO-peaks}
+    \caption{%
+        %
+    }
+    \label{fig:}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{Sz-CS-peaks}
+    \caption{%
+        %
+    }
+    \label{fig:}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{Sz-EU-peaks}
+    \caption{%
+        %
+    }
+    \label{fig:}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{sz_channels}
+    \caption{%
+        %
+    }
+    \label{fig:}
+\end{figure}
+
+\[
+    \text{Const} = \num{<< ge_const >>}\,\sqrt{\si{\kilo\electronvolt}}
+    ,\qquad
+    \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
+\]
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{halbwertsbreite_ge}
+    \caption{%
+        %
+    }
+    \label{fig:}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{ge_efficiency}
+    \caption{%
+        %
+    }
+    \label{fig:}
+\end{figure}
+
+\begin{tabular}{SSSS}
+    {Energie / \si{\kilo\electronvolt}} & {rel.\ Intens. erw.} & {rel.\ Intens.
+mess.} & {Effizienz} \\
+    \midrule
+    %< for row in ge_efficiency_table >%
+    << ' & '.join(row) >> \\
+    %< endfor >%
+\end{tabular}
 
 \chapter{Ergebnis}
 

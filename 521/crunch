@@ -4,10 +4,12 @@
 # Copyright © 2013-2015 Martin Ueding <dev@martin-ueding.de>
 # Licensed under The GNU Public License Version 2 (or later)
 
+import itertools
 import json
 import os.path
-import sys
 import pprint
+import re
+import sys
 
 import matplotlib.pyplot as pl
 import matplotlib.colors
@@ -20,7 +22,373 @@ import scipy.integrate
 import scipy.interpolate
 import unitprint
 
+_livetime_pattern = re.compile(r'LIVETIME: (\d+\.?\d*)')
 
+def lorentz_peak(x, mean, width, area, offset):
+    return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2) + offset
+
+def linear(x, slope, offset):
+    return x * slope + offset
+
+def extract_livetime(metafile):
+    with open(metafile) as f:
+        for line in f:
+            m = _livetime_pattern.search(line)
+            if m:
+                return float(m.group(1))
+
+def load_data_normalized(basename):
+    '''
+    Loads the data and normalizes it to give events per second.
+    '''
+    datafile = 'Daten/' + basename + '.txt'
+    metafile = 'Daten/' + basename + '.mcd'
+
+    livetime = extract_livetime(metafile)
+
+    data = np.loadtxt(datafile)
+
+    data[:, 1] /= livetime
+
+    return data
+
+def plot_pair(basename, underground_basename):
+    data = load_data_normalized(basename)
+    underground = load_data_normalized(underground_basename)
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(data[:, 0], data[:, 1], marker=None)
+    ax.plot(underground[:, 0], underground[:, 1], marker=None)
+    ax.margins(0.05)
+    ax.set_xlabel('')
+    ax.set_ylabel('')
+    fig.tight_layout()
+    fig.savefig('_build/' + basename + '.pdf')
+
+def calibrate_sz(T):
+    underground = load_data_normalized('Ge_Untergrund')
+    co = load_data_normalized('Sz_CO')
+    cs = load_data_normalized('Sz_CS')
+    eu = load_data_normalized('Sz_EU')
+
+    # Subtract underground from measurements.
+    co[:, 1] -= underground[:, 1]
+    cs[:, 1] -= underground[:, 1]
+    eu[:, 1] -= underground[:, 1]
+
+    fit_range_cs = [
+        (3031, 4007, 661.66),
+    ]
+
+    fit_range_eu = [
+        (641, 733, 121.7825),
+        (1577, 2176, 344.281),
+    ]
+
+    fit_range_co = [
+        (5800, 6360, 1173.237),
+        (6690, 7160, 1332.501),
+    ]
+
+    list_mean_val = np.array([])
+    list_mean_err = np.array([])
+    list_width_val = np.array([])
+    list_width_err = np.array([])
+    list_area_val = np.array([])
+    list_area_err = np.array([])
+    list_offset_val = np.array([])
+    list_offset_err = np.array([])
+    list_expected_energy = np.array([])
+
+    for name, data, fit_ranges in [('CO', co, fit_range_co), ('CS', cs, fit_range_cs), ('EU', eu, fit_range_eu)]:
+        fig = pl.figure()
+        for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
+            x, y = data[first:last, 0], data[first:last, 1]
+            popt, pconv = op.curve_fit(lorentz_peak, x, y, p0=[np.mean(x), 12, 500, 0])
+            fit_x = np.linspace(np.min(x), np.max(x), 1000)
+            fit_y = lorentz_peak(fit_x, *popt)
+
+            ax = fig.add_subplot(1, len(fit_ranges), i)
+            ax.plot(x, y, marker=None)
+            ax.plot(fit_x, fit_y, marker=None)
+            ax.margins(0.05)
+            for label in ax.get_xticklabels():
+                #label.set_fontsize(9)
+                label.set_rotation(45)
+
+            perr = np.sqrt(pconv.diagonal())
+
+            parameters = list(zip(popt, perr))
+
+            mean_val, mean_err = parameters[0]
+            width_val, width_err = parameters[1]
+            area_val, area_err = parameters[2]
+            offset_val, offset_err = parameters[3]
+
+            list_mean_val = np.append(list_mean_val, mean_val)
+            list_mean_err = np.append(list_mean_err, mean_err)
+            list_width_val = np.append(list_width_val, width_val)
+            list_width_err = np.append(list_width_err, width_err)
+            list_area_val = np.append(list_area_val, area_val)
+            list_area_err = np.append(list_area_err, area_err)
+            list_offset_val = np.append(list_offset_val, offset_val)
+            list_offset_err = np.append(list_offset_err, offset_err)
+            list_expected_energy = np.append(list_expected_energy, expected_energy)
+
+        fig.tight_layout()
+        fig.savefig('_build/Sz-'+name+'-peaks.pdf')
+        fig.clear()
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    x = list_mean_val
+    y = list_expected_energy
+    popt, pconv = op.curve_fit(linear, x, y)
+    fit_x = np.linspace(np.min(x), np.max(x), 10)
+    fit_y = linear(fit_x, *popt)
+    ax.plot(fit_x, fit_y)
+    ax.errorbar(list_mean_val, list_expected_energy, xerr=list_mean_err, marker='+', linestyle='none')
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Energie / keV')
+    ax.margins(0.05)
+    ax.grid(True)
+    perr = np.sqrt(pconv.diagonal())
+    parameters = list(zip(popt, perr))
+    slope_val, slope_err = parameters[0]
+    offset_val, offset_err = parameters[1]
+    fig.tight_layout()
+    fig.savefig('_build/sz_channels.pdf')
+    T['sz_slope'] = unitprint.siunitx(slope_val, slope_err)
+    T['sz_offset'] = unitprint.siunitx(offset_val, offset_err)
+
+    
+def calibrate_ge(T):
+    co = load_data_normalized('Ge_EU')
+    underground = load_data_normalized('Ge_Untergrund')
+
+    # Subtract underground from measurements.
+    co[:, 1] -= underground[:, 1]
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(co[:, 0], co[:, 1], marker=None)
+    ax.margins(0.05)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Ereignisse')
+    fig.tight_layout()
+    fig.savefig('_build/Ge_calib.pdf')
+    fig.clear()
+
+    fit_ranges = [
+        (625, 716, 121.7825),
+        (1318, 1407, 244.6989),
+        (1878, 1971, 344.281),
+        (4333, 4423, 778.903),
+        (5380, 5466, 964.131),
+        (6212, 6295, 1112.116),
+        (7883, 7970, 1408.011),
+    ]
+
+    fig = pl.figure()
+
+    list_mean_val = np.array([])
+    list_mean_err = np.array([])
+    list_width_val = np.array([])
+    list_width_err = np.array([])
+    list_area_val = np.array([])
+    list_area_err = np.array([])
+    list_offset_val = np.array([])
+    list_offset_err = np.array([])
+    list_expected_energy = np.array([])
+    
+    for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
+        x, y = co[first:last, 0], co[first:last, 1]
+        popt, pconv = op.curve_fit(lorentz_peak, x, y, p0=[np.mean(x), 12, 500, 0])
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = lorentz_peak(fit_x, *popt)
+
+        ax = fig.add_subplot(3, (len(fit_ranges) + 2)//3, i)
+        ax.plot(x, y, marker=None)
+        ax.plot(fit_x, fit_y, marker=None)
+        ax.margins(0.05)
+        for label in ax.get_xticklabels():
+            #label.set_fontsize(9)
+            label.set_rotation(45)
+
+        perr = np.sqrt(pconv.diagonal())
+
+        parameters = list(zip(popt, perr))
+
+        mean_val, mean_err = parameters[0]
+        width_val, width_err = parameters[1]
+        area_val, area_err = parameters[2]
+        offset_val, offset_err = parameters[3]
+
+        list_mean_val = np.append(list_mean_val, mean_val)
+        list_mean_err = np.append(list_mean_err, mean_err)
+        list_width_val = np.append(list_width_val, width_val)
+        list_width_err = np.append(list_width_err, width_err)
+        list_area_val = np.append(list_area_val, area_val)
+        list_area_err = np.append(list_area_err, area_err)
+        list_offset_val = np.append(list_offset_val, offset_val)
+        list_offset_err = np.append(list_offset_err, offset_err)
+        list_expected_energy = np.append(list_expected_energy, expected_energy)
+
+    print(len(list_area_val))
+
+    list_intensity_val = list_area_val * list_mean_val
+    list_intensity_err = np.sqrt(
+        (list_area_err * list_mean_val)**2
+        + (list_area_val * list_mean_err)**2
+    )
+
+    rescale = list_intensity_val[-1] / 1000
+
+    list_intensity_val /= rescale
+    list_intensity_err /= rescale
+
+    fit_data = list(zip(
+        [str(i) for i in range(1, len(list_mean_val) +1)],
+        unitprint.siunitx(list_mean_val, list_mean_err),
+        unitprint.siunitx(list_width_val, list_width_err),
+        unitprint.siunitx(list_area_val, list_area_err),
+        unitprint.siunitx(list_intensity_val, list_intensity_err),
+        unitprint.siunitx(list_expected_energy),
+    ))
+
+    T['ge_co_fits_table'] = fit_data
+
+    fig.tight_layout()
+    fig.savefig('_build/Ge_calib-peaks.pdf')
+    fig.clear()
+
+    expected_rel_intensity = np.array([
+        1362.0,
+        359.0,
+        1275.0,
+        621.6,
+        693.4,
+        689.0,
+        1000.0,
+    ])
+
+    efficiency_val = list_intensity_val / expected_rel_intensity
+    efficiency_err = list_intensity_err / expected_rel_intensity
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.errorbar(list_expected_energy, efficiency_val, efficiency_err, marker='+', linestyle='none')
+    ax.set_xlabel('Energie / keV')
+    ax.set_ylabel('Effizienz')
+    ax.margins(0.05)
+    ax.grid(True)
+    fig.tight_layout()
+    fig.savefig('_build/ge_efficiency.pdf')
+
+    T['ge_efficiency_table'] = list(zip(
+        unitprint.siunitx(list_expected_energy),
+        unitprint.siunitx(expected_rel_intensity),
+        unitprint.siunitx(list_intensity_val, list_intensity_err),
+        unitprint.siunitx(efficiency_val, efficiency_err),
+    ))
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    x = list_mean_val
+    y = list_expected_energy
+    popt, pconv = op.curve_fit(linear, x, y)
+    fit_x = np.linspace(np.min(x), np.max(x), 10)
+    fit_y = linear(fit_x, *popt)
+    ax.plot(fit_x, fit_y)
+    ax.errorbar(list_mean_val, list_expected_energy, xerr=list_mean_err, marker='+', linestyle='none')
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Energie / keV')
+    ax.margins(0.05)
+    ax.grid(True)
+    perr = np.sqrt(pconv.diagonal())
+    parameters = list(zip(popt, perr))
+    slope_val, slope_err = parameters[0]
+    offset_val, offset_err = parameters[1]
+    fig.tight_layout()
+    fig.savefig('_build/ge_channels.pdf')
+    T['ge_slope'] = unitprint.siunitx(slope_val, slope_err)
+    T['ge_offset'] = unitprint.siunitx(offset_val, offset_err)
+
+    # Breiten gegen Energie.
+
+    x = linear(list_mean_val, slope_val, offset_val)
+    y = (list_width_val * slope_val)**2
+    # TODO Fehlerfortpflanzung für `x` und `y` wenn noch Zeit ist.
+    popt, pconv = op.curve_fit(linear, x, y)
+    fit_x = np.linspace(np.min(x), np.max(x), 10)
+    fit_y = linear(fit_x, *popt)
+    perr = np.sqrt(pconv.diagonal())
+    parameters = list(zip(popt, perr))
+    const_sq_val, const_sq_err = parameters[0]
+    electronic_width_sq_val, electronic_width_sq_err = parameters[1]
+
+    const_val = np.sqrt(const_sq_val)
+    const_err = const_sq_err / (2 * const_val)
+
+    electronic_width_val = np.sqrt(electronic_width_sq_val)
+    electronic_width_err = electronic_width_sq_err / (2 * electronic_width_val)
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(x, y, marker='+', linestyle='none')
+    ax.set_ylabel('$\Gamma^2 / \mathrm{keV}^2$')
+    ax.set_xlabel('$E_\gamma$ / keV')
+    ax.plot(fit_x, fit_y)
+    fig.tight_layout()
+    fig.savefig('_build/halbwertsbreite_ge.pdf')
+
+    T['ge_const'] = unitprint.siunitx(const_val, const_err)
+    T['ge_electronic_width'] = unitprint.siunitx(electronic_width_val, electronic_width_err)
+
+    # Langzeitmessung
+
+    langzeit_daten = load_data_normalized('Langzeit_Probe')
+    langzeit_untergrund = load_data_normalized('Langzeit_Untergrund')
+
+    events = langzeit_daten[:, 1] - langzeit_untergrund[:, 1]
+    channel = langzeit_daten[:, 0]
+    energy = linear(channel, slope_val, offset_val)
+
+    print(np.max(langzeit_daten[:, 1]))
+    print(np.max(langzeit_untergrund[:, 1]))
+
+    print(np.max(events))
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(energy, langzeit_daten[:, 1])
+    ax.plot(energy, langzeit_untergrund[:, 1])
+    ax.set_yscale('log')
+    fig.savefig('_build/langzeit.pdf')
+
+    events_smooth = scipy.ndimage.filters.gaussian_filter(langzeit_daten[:, 1], 200)
+    events = langzeit_daten[:, 1] - events_smooth
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(energy, langzeit_daten[:, 1])
+    ax.plot(energy, events_smooth)
+    #ax.plot(energy, events)
+    ax.set_yscale('log')
+    fig.savefig('_build/langzeit2.pdf')
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(energy[energy > 50], events[energy > 50])
+    ax.set_xlabel('Energie / keV')
+    ax.set_ylabel('Ereignisse')
+    ax.margins(0.05)
+    ax.grid(True)
+    fig.tight_layout()
+    fig.savefig('_build/langzeit3.pdf')
+
+    np.savetxt('_build/langzeit.tsv', np.column_stack([energy, events]))
 
 def test_keys(T):
     '''
@@ -43,20 +411,20 @@ def test_keys(T):
         print()
         sys.exit(100)
 
-
 def main():
     T = {}
 
     ###########################################
 
-
+    calibrate_sz(T)
+    calibrate_ge(T)
+    plot_pair('Ge_CO', 'Ge_Untergrund')
 
     ###########################################
 
     test_keys(T)
     with open('_build/template.js', 'w') as f:
         json.dump(dict(T), f, indent=4, sort_keys=True)
-
 
 if __name__ == "__main__":
     main()
