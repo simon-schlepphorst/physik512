@@ -490,15 +490,24 @@ def winkelverteilung(events, outfile):
     draht_abstand = rel_draht * 8.5
     winkel = np.degrees(np.arctan2(draht_abstand, 123.5))
 
+    popt, pconv = op.curve_fit(fitfunktion, winkel, hits, sigma=np.sqrt(hits), p0=[10000, 0.018, 0, 0])
+    fit_x = np.linspace(np.min(winkel), np.max(winkel), 1000)
+    fit_y = fitfunktion(fit_x, *popt)
+
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(winkel, hits)
+    ax.errorbar(winkel, hits, yerr=np.sqrt(hits), linestyle='none', marker='+', label='Daten')
+    ax.plot(fit_x, fit_y, label="Modell")
     ax.set_xlabel("Winkel [Grad]")
     ax.set_ylabel("Anzahl Ereignisse")
     ax.margins(0.05)
     ax.grid(True)
+    ax.legend(loc="best")
     fig.tight_layout()
     fig.savefig(outfile)
+
+def fitfunktion(x, a, b ,c ,d):
+    return a * np.cos(b*x + c)**2 + d
 
 
 def spannung_vs_strom(datei, outfile):
@@ -658,8 +667,11 @@ def main():
     driftzeit_nachbarn_2d(filtered,
                 '_build/m03_01_driftzeit_nachbarn_2d.pdf')
 
-    winkelverteilung(filtered,
+    winkelverteilung(tot_daten,
                 '_build/m03_01_hits-winkel.pdf')
+
+    winkelverteilung(filtered,
+                '_build/m03_01_hits-winkel_filtered.pdf')
 
     wire_le_hist(tot_daten,
                 '_build/m03_01_wire_le_hist.pdf')
