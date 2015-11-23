@@ -420,8 +420,11 @@ korrelieren.
 Das ist durch den großen Winkel der $\gamma$ Quanten bedingt, die durch den
 Szintialatinszähler und die äußeren Bereiche der Driftkammer gehen.
 
-
-Anschließend wurde aus dem Driftzeitspektrum der verbliebenden Daten die ODB bestimmt
+Um aus den gemessenen Driftzeiten auf die Distanz der Durchgänge vom
+Anodendraht schließen zu können integriert man über das Driftzeitspektrum und
+setzt das Maximum auf den Driftzellenradius, in diesem Fall
+\SI{8.5}{\milli\metre}. Diese Orts-Driftzeit-Beziehung (ODB) ist in Abbildung
+\ref{fig:m03_odb_filtered} zu sehen.
 
 
 \begin{figure}
@@ -505,11 +508,24 @@ Anschließend wurde aus dem Driftzeitspektrum der verbliebenden Daten die ODB be
 \end{figure}
 
 
-Mit der Abstandsbeziehung aus der ODB wurden nun die Abstandssummen und
-Abstandsdifferenzen benachbarter Drahtpaare in einem 2D Histogramm
-aufgetragen.
-Hier zeigt sich sehr neben einem starken Hintergrund auch ein
-ausgewachsenens Binningproblem im Graphen selbst.
+Mit der Abstandsbeziehung aus der ODB wurden nun die Summen und Differenzen der
+Abstände an benachbarten Drahtpaaren in einem 2D Histogramm aufgetragen (vlg.
+Abb. \ref{fig:m03_ort_driftzeit}).
+Um den Draht 30 sieht man eine geringere Abweichung von der Horizontalen um
+\SI{8.5}{\milli\metre}. Daran lässt sich ein etwa senkrecht zur Driftkammer
+verlaufender Strahlengang erkennen. Um den Draht 34 ist die Aufspaltung schon
+deutlich zu erkennen. Auch sind die Verteilungen im Vergleich zu Draht 30 um
+die Horizontale von \SI{8.5}{\milli\metre} vertauscht. Das zeigt, wie zu
+erwarten, einen in die andere Richtung verkippten Winkel an.
+
+Um die Winkelverteilung zu bestimmen, wurde der Draht $N_0$ mit den meisten Treffern
+als \SI{0}{\degree} definiert und den anderen Drähten $N$ über
+\begin{equation}
+	\theta = \arctan{\del{\frac{\beta}{\alpha}}} = \arctan{\del{\frac{\del{N - N_0}
+	\SI{8.5}{\milli\metre}}{\SI{123.5}{\milli\metre}}}}
+\end{equation}
+ein Winkel zugeordnet. Dabei sind $\beta$ der Abstand zum Draht $N_0$ und
+$\alpha$ der Abstand des Szintilationszählers zur Drahtebene.
 
 
 %TODO mehr Inhalte
