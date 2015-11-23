@@ -222,8 +222,8 @@ def wire_correlation(events, outfile):
 
 
     pl.colorbar()
-    pl.xlabel('Wire ID')
-    pl.ylabel('Wire ID')
+    pl.xlabel('Kabelnummer')
+    pl.ylabel('Kabelnummer')
     pl.grid(True)
     pl.margins(0.05)
     pl.title('{} Hits'.format(num_hits(events)))
