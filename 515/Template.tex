@@ -312,17 +312,27 @@ $0x0028$, also das Rote, entschieden.
 %TODO verschieben der Probe > kaputter Szintilationszähler
 
 \clearpage
+
+
 \chapter{Auswertung der Langzeitmessung}
 
 Mit den im letzten Kapitel ermittelten Parametern wurde eine Langzeitmessung
 der Höhenstrahlung durchgeführt.
 
 Der Szintilationszähler wurde dazu parallel zu den Drähten oberhalb der
-Driftkammer positioniert.
+Driftkammer positioniert. Aufgrund der folgenden Auswertung wird davon
+ausgegangen, dass diese Position über Draht 29 bis 31 ist.
 
 Um das immer noch vorhandene Hintergrundrauschen von den deutlichen
 Ereignissen zu trennen wurden alle Ereignisse mit einer \emph{Time over
-Treshold}$ < 60 \cdot \SI{2.5}{\nano\second}$ verworfen. 
+Threshold} $ < 60 \cdot \SI{2.5}{\nano\second}$ verworfen, wie in Abbildung
+\ref{fig:m03_tot_vs_time} zu sehen.
+Dabei fiel auf, dass sich das Maximum der Treffer von Draht 29
+(vgl. Abb. \ref{fig:m03_verteilung_in_der_kammer}) auf Draht 34 (vgl. Abb.
+\ref{fig:m03_verteilung_in_der_kammer_mit_ToT}) verschiebt. Das lässt darauf
+schließen, dass die Drähte 16 bis 30 deutliche schlechter ansprechen, als die
+anderen. Aus dem Grund werden unsere Ergebnisse immer mal wieder mit denen der
+ungefilterten Daten verglichen.
 Die Ansprecher auf den einzelnen Drähten sind um die Position des
 Szintilationszählers auf der Driftkammer verteilt.
 
@@ -344,9 +354,31 @@ Szintilationszählers auf der Driftkammer verteilt.
 		\label{fig:m03_tot_vs_time_filtered}
 	\end{subfigure}
 	\caption{%
-		Time over Treshold Histogramme
+		Time over Threshold Histogramme
 	}
 	\label{fig:m03_tot_vs_time}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_wire_le_hist.pdf}
+		\caption{%
+			Verteilung der Ansprecher auf die Drähte
+		}
+		\label{fig:m03_wire_le_hist_filtered}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_time_vs_wire.pdf}
+		\caption{%
+			Verteilung der Driftzeiten auf die Drähte
+		}
+		\label{fig:m03_time_vs_wire_filtered}
+	\end{subfigure}
+	\caption{%
+		Verteilung der ungefilterten Treffer in der Kammer
+	}
+	\label{fig:m03_verteilung_in_der_kammer}
 \end{figure}
 
 \begin{figure}
@@ -366,35 +398,11 @@ Szintilationszählers auf der Driftkammer verteilt.
 		\label{fig:m03_time_vs_wire_filtered}
 	\end{subfigure}
 	\caption{%
-		Verteilung der Hits in der Kammer nach ToT-Filterung
+		Verteilung der Treffer in der Kammer nach \emph{Time over
+		Threshold}-Filterung
 	}
-	\label{fig:m03_verteilung_in_der_kammer}
+	\label{fig:m03_verteilung_in_der_kammer_mit_ToT}
 \end{figure}
-
-
-\begin{figure}
-	\centering
-	\begin{subfigure}{0.49 \linewidth}
-		\includegraphics[width=\linewidth]{m03_01_wire_le_hist.pdf}
-		\caption{%
-			Verteilung der Ansprecher auf die Drähte
-		}
-		\label{fig:m03_wire_le_hist_filtered}
-	\end{subfigure}
-	\begin{subfigure}{0.49 \linewidth}
-		\includegraphics[width=\linewidth]{m03_01_time_vs_wire.pdf}
-		\caption{%
-			Verteilung der Driftzeiten auf die Drähte
-		}
-		\label{fig:m03_time_vs_wire_filtered}
-	\end{subfigure}
-	\caption{%
-		Verteilung der ungefilterten Hits in der Kammer
-	}
-	\label{fig:m03_verteilung_in_der_kammer}
-\end{figure}
-
-
 
 \begin{figure}
 	\centering
@@ -405,11 +413,12 @@ Szintilationszählers auf der Driftkammer verteilt.
 	\label{fig:m03_wire_correlation}
 \end{figure}
 
-An der Korrelation der benachbarten Drähte ist zu sehen, dass mit zunehmendem
-Abstand zu Draht 34, nicht mehr die unmittelbaren Nachbarn korrelieren. Das
-lässt auf einen zunehmenden Winkel schließen, unter dem die ionisierenden
-Teilchen die Driftkammer durchquerten, nachdem sie den Szintilationszähler
-ausgelößt haben.
+An der Korrelation der benachbarten Drähte (vlg. Abb.
+\ref{fig:m03_wire_correlation}) ist zu sehen, dass mit zunehmendem Abstand zur
+Position des Szintilationszählers, nicht mehr die unmittelbaren Nachbarn
+korrelieren.
+Das ist durch den großen Winkel der $\gamma$ Quanten bedingt, die durch den
+Szintialatinszähler und die äußeren Bereiche der Driftkammer gehen.
 
 
 Anschließend wurde aus dem Driftzeitspektrum der verbliebenden Daten die ODB bestimmt
@@ -436,8 +445,6 @@ Anschließend wurde aus dem Driftzeitspektrum der verbliebenden Daten die ODB be
 	}
 	\label{fig:m03_odb_bestimmung}
 \end{figure}
-
-
 
 \begin{figure}
 	\centering
@@ -474,6 +481,29 @@ Anschließend wurde aus dem Driftzeitspektrum der verbliebenden Daten die ODB be
 	}
 	\label{fig:m03_ort_driftzeit}
 \end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_hits-winkel.pdf}
+		\caption{%
+			ungefilterte Daten
+		}
+		\label{fig:m03_hits-winkel}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \linewidth}
+		\includegraphics[width=\linewidth]{m03_01_hits-winkel_filtered.pdf}
+		\caption{%
+			gefilterte Daten
+		}
+		\label{fig:m03_hits-winkel_filtered}
+	\end{subfigure}
+	\caption{%
+		Winkelverteilung
+	}
+	\label{fig:m03_winkelverteilung}
+\end{figure}
+
 
 Mit der Abstandsbeziehung aus der ODB wurden nun die Abstandssummen und
 Abstandsdifferenzen benachbarter Drahtpaare in einem 2D Histogramm
