@@ -117,40 +117,55 @@ Die Spannung der Potentialdrähte kann von \SIrange{0}{3000}{\volt} variiert wer
 
 Ordnet man die einzelnen Driftzellen wie in
 Abbildung~\ref{fig:aufbau_driftkammer} an, so erhält man eine Driftkammer.
-%TODO Mittlere Freie Weglänge, Gasentladung, Dämpfung
-Da das Verhältnis der Gaszusammensetzung, dessen Druck und Temperatur
-entscheidend für die Driftgeschwindigkeit der Elektronen ist, wird das Gasgemisch kontinuierlich getauscht. 
-Die longitudinale Diffusion soll dabei möglichst klein gehalten werden,
-anderenfalls wird die Ortsrekonstruktion ungenauer.
-Das hat den Grund, dass die Longitudinale Diffusion die Zeitmessung beeinträchtigt.
-Um durch die Driftgeschwindigkeit nicht durch die Bewegung des Gases stark zu verfälschen läuft dieser Vorgang sehr langsam ab.
-% \fehlt bluber
+Um das Verhältnis der Gaszusammensetzung, dessen Druck und Temperatur möglichst
+konstant zu halten, wird das Gasgemisch kontinuierlich getauscht.
+Denn diese Rahmenbedingungen entscheiden mit über die Driftgeschwindigkeit der
+Elektronen.
+Um durch die Driftgeschwindigkeit nicht durch die Bewegung des Gases zu
+verfälschen, läuft der Gasaustausch sehr langsam ab.
 
 \subsection{Ionisation der Gasatome}
-Die Driftkammer ist der Prototyp zu einer Driftkammer die benutzt wird, um
-die Bewegung schwerer geladener Teilchen zu detektieren.
-Um den Energieverlust dieser sehr schnellen, geladenen Teilchen zu bestimmen kann man die Bethe-Bloch-Formel nutzen.
+Für schwere geladene Teilchen lässt sich der Energieverlust durch
+Primärionisationen in der Driftkammer durch die Bethe-Bloch-Formel beschreiben.
 \[
     -\dod Ex = \frac{4 \pi r^2_e m_e c^2 N_\text{A} Z z^2}{A \beta^2}\sbr{\ln\sbr{\frac{2m_e c^2 \beta^2}{(1-\beta^2)I}}-\beta^2}
 \]
-Wobei $N_\text A$ die Avogadro-Zahl, $\beta c$ die Geschwindigkeit und $z$ die Ladung des Teilchens. $A$ und $Z$ sind die Massen- beziehungsweise Ordnungszahl, welche näherungsweise proportional ist zu dem Ionisationspotential $I$.
+Dabei sind $N_\text A$ die Avogadro-Zahl, $\beta c$ die Geschwindigkeit und $z$
+die Ladung des Teilchens. $A$ und $Z$ sind die Massen- beziehungsweise
+Ordnungszahl, welche näherungsweise proportional ist zu dem
+Ionisationspotential $I$.
 
-Die Abgabe der Energie findet hauptsächlich durch Ionisation statt.
-Dies nennt man Primärionisation.
 Die Anzahl der Primärionisationen hängt hierbei von dem Gas ab.
-Bei diesen Vorgang frei werdene Energie ist größer als die Energie die für weitere Ionisationen gebraucht wird, wodurch es zu Sekundärionisationen kommt.
+Ist die bei diesem Vorgang frei werdene Energie größer als die Energie, die für
+weitere Ionisationen gebraucht wird, kommt es zu Sekundärionisationen.
 
 \subsection{Gasverstärkung, Signalentstehung und Ortsmessung}
-Die freien Elektronen werden, wie oben beschrieben, aufgrund der Driftzellenengeomertie Richtung Anodendraht beschleunigt. 
-Nahe des Anodendrahtes ist das elektische Feld so stark, dass die beschleunigten Elektronen weitere Gasatome ionisieren können.
+Die durch Ionisation frei werdenden Elektronen werden, wie oben beschrieben,
+aufgrund der Driftzellenengeomertie Richtung Anodendraht beschleunigt.
+Ist die mittlere freie Weglänge in dem Gasgemisch groß genug, werden die
+Elektronen in der Nahe des Anodendrahtes so stark beschleunigt, dass sie
+weitere Gasatome ionisieren können.
 So kommt es zu einen Lawineneffekt.
 Das Signal wird so um einen Faktor von \numrange{e5}{e6} verstärkt.
+Allerdings ist der Lawineneffekt nur in der Nähe des Anodendrahtes erwünscht.
+Damit es in der Driftkammer nicht zu einer Gasentladung kommt, wird diese mit
+einem Gemisch aus Argon und $\text{CO}_2$ gefüllt, wobei das $\text{CO}_2$ als
+Dämpfer fungiert.
 
-Die Driftzeit ermittelt man, indem man die Zeitdifferenz zwischen den Durchgang durch den sehr schnell reagierenden Szintilators und dem in der Driftkammer entstandenen Signal misst.
-Mit Hilfe der Orts-Driftzeitbeziehung, auch ODB genannt, lässt sich aus der Driftzeit der Ort des Teilchendurchgangs ermitteln.
+Um von einem Signal an einem Anodendraht auf den Abstand der Primärionisation
+zu diesem schließen zu können, erfolgt mit einem zweiten Detektor, in diesem
+Fall einem Szintilators, eine Messung des Durchflugszeitpunktes der
+$\gamma$-Quanten durch die Driftkammer.
 
-\fehlt %TODO mittlere freie Weglänge
-%TODO Ortsbestimmung
+Die Zeitdifferenz zwischen dem Signal des Szintilators und dem in der
+Driftkammer nennt man Driftzeit. Ist die Geschwindigkeit der Elektronen in dem
+Gasgemisch der Driftkammer bekannt, so kann man aus der Driftzeit den Ort
+des Treffers ermitteln.
+
+In diesem Experiment wird diese Orts-Driftzeitbeziehung, auch ODB genannt,
+durch ein Integral über das Driftzeitspektrum aproximiert.
+
+
 
 \chapter{Bestimmung der Betriebsparameter}
 
