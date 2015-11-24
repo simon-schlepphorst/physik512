@@ -196,14 +196,7 @@
 %                            Bibliography (BibTeX)                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\IfFileExists{../../central-bibtex/Central}
-{\newcommand{\bibliographyfile}{../../central-bibtex/Central}}
-{
-    \IfFileExists{central-bibtex/Central}
-    {\newcommand{\bibliographyfile}{central-bibtex/Central}}
-    {\newcommand{\bibliographyfile}{../../zentrale_BibTeX/Central}}
-}
-
+\newcommand{\bibliographyfile}{../../central-bibtex/Central}
 
 \usepackage[
     backend=bibtex,
@@ -226,7 +219,9 @@
 \IfFileExists{\bibliographyfile}{
     \bibliography{\bibliographyfile}
     \AtEndDocument{\printbibliography}
-}{}
+}{
+    \PackageError{header}{Bibliography file not found!}{Try to fix the path of the bibliographyfile that is currently set to \bibliographyfile.}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                Abbreviations                                %
