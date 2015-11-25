@@ -53,8 +53,8 @@ def wire_le_hist(events, outfile):
     wire_le_hist_into_axes(events, ax)
 
     ax.set_xlabel('Drahtnummer')
-    ax.set_ylabel('Anzahl Hits')
-    ax.set_title('{} Hits'.format(num_hits(events)))
+    ax.set_ylabel('Anzahl Treffer')
+    ax.set_title('{} Treffer'.format(num_hits(events)))
 
     fig.savefig(outfile)
 
@@ -130,13 +130,13 @@ def time_le_histograms(events_lists, labels, outfile):
         time_le_hist_into_axes(events, ax, **kwargs)
 
     ax.set_xlabel('Driftzeit / ns')
-    ax.set_ylabel('Anzahl Events')
+    ax.set_ylabel('Anzahl Treffer')
     ax.grid(True)
     ax.margins(0.05)
     if any([label is not None for label in labels]):
         ax.legend(loc='best')
     else:
-        ax.set_title('{} Hits'.format(num_hits(events)))
+        ax.set_title('{} Treffer'.format(num_hits(events)))
 
 
     fig.tight_layout()
@@ -163,7 +163,7 @@ def time_le_vs_wire_le(events, outfile):
     pl.ylabel('Driftzeit / ns')
     pl.grid(True)
     pl.margins(0.05)
-    pl.title('{} Hits'.format(num_hits(events)))
+    pl.title('{} Treffer'.format(num_hits(events)))
 
     pl.tight_layout()
     pl.savefig(outfile)
@@ -190,7 +190,7 @@ def tot_vs_time_le(events, outfile):
     pl.ylabel('Time over Threshold / 2.5 ns')
     pl.grid(True)
     pl.margins(0.05)
-    pl.title('{} Hits'.format(num_hits(events)))
+    pl.title('{} Treffer'.format(num_hits(events)))
 
     pl.tight_layout()
     pl.savefig(outfile)
@@ -226,7 +226,7 @@ def wire_correlation(events, outfile):
     pl.ylabel('Kabelnummer')
     pl.grid(True)
     pl.margins(0.05)
-    pl.title('{} Hits'.format(num_hits(events)))
+    pl.title('{} Treffer'.format(num_hits(events)))
 
     pl.tight_layout()
     pl.savefig(outfile)
@@ -300,10 +300,10 @@ def distanz_histogram(events, odb, outfile, lineare_bins=True):
     ax.hist(distances, bins=benutze_bins)
 
     ax.set_xlabel('Distanz / mm')
-    ax.set_ylabel('Anzahl Hits')
+    ax.set_ylabel('Anzahl Treffer')
     ax.grid(True)
     ax.margins(0.05)
-    ax.set_title('{} Hits'.format(num_hits(events)))
+    ax.set_title('{} Treffer'.format(num_hits(events)))
 
     fig.tight_layout()
     fig.savefig(outfile)
@@ -468,7 +468,7 @@ def summe_differenz(events, odb, wire_1, wire_2, outfile):
     pl.ylabel('Summe / mm')
     pl.grid(True)
     pl.margins(0.05)
-    pl.title('{} Hits'.format(hits))
+    pl.title('{} Treffer'.format(hits))
 
     pl.tight_layout()
     pl.savefig(outfile)
