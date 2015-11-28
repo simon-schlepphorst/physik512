@@ -8,6 +8,7 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as pl
 import pandas as pd
+import scipy.integrate
 
 def lorentz_peak(x, mean, width, area, offset):
     return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2) + offset
@@ -24,6 +25,12 @@ def get_peaks():
 def main():
     options = _parse_args()
 
+    messwerte = np.loadtxt('_build/langzeit.tsv')
+
+    messwerte = messwerte[messwerte[:, 0] > 200]
+
+    print(messwerte.shape)
+
     peaks = get_peaks()
 
     lines = load_lines()
@@ -36,22 +43,58 @@ def main():
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
 
+    results = {}
+
+    m = 0
+
     for element in elements:
         selection = lines['Iso'] == element
         selected = lines[selection]
 
-        x = np.linspace(0, 1500, 10000)
+        x = messwerte[:, 0]
         y = np.zeros(x.shape)
 
         for id, iso, z, energy, delta_energy, sigma_val, sigma_err in selected.itertuples():
-            y += lorentz_peak(x, energy, 7, sigma_val, 0)
+            y += lorentz_peak(x, energy, 2, sigma_val, 0)
 
-        ax.plot(x, y, label=iso)
+
+        self_integral = scipy.integrate.simps(y, x)
+        overlap = y * messwerte[:, 1]
+        overlap_integral = scipy.integrate.simps(overlap, x)
+
+        matchness = overlap_integral / self_integral
+
+        if matchness >= +0.00005:
+            ax.plot(x, y / self_integral, label=iso)
+
+        results[element] = matchness
+
+        m = max(m, np.max(y))
 
 
 
     ax.legend(loc='best')
+
+    m2 = np.max(messwerte[:, 1])
+
+    print('m', m)
+    print('m2', m2)
+    scale = ax.get_ylim()[1] / m2
+    print('Scale', scale)
+
+    ax.plot(x, messwerte[:, 1] * scale, alpha=0.3, color='black')
+
+    ax.grid(True)
+    ax.margins(.05)
+    fig.tight_layout()
+    fig.show()
+    input()
     fig.savefig('test.pdf')
+
+    results_sorted = sorted([(matchness, element) for element, matchness in results.items()])
+
+    for matchness, element in results_sorted:
+        print('{:5s} {:+.10f}'.format(element, matchness))
 
 
 

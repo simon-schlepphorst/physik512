@@ -389,6 +389,7 @@ def calibrate_ge(T):
     fig.savefig('_build/langzeit3.pdf')
 
     np.savetxt('_build/langzeit.tsv', np.column_stack([energy, events]))
+    np.savetxt('_build/langzeit-orig.tsv', np.column_stack([energy, langzeit_daten[:, 1]]))
 
 def test_keys(T):
     '''
