@@ -14,7 +14,7 @@ def lorentz_peak(x, mean, width, area, offset):
     return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2) + offset
 
 def load_lines():
-    filename = 'Daten/nglist_a.dat'
+    filename = 'Daten/generiesb.dat'
     data = pd.read_csv(filename, header=0, delim_whitespace=True)
 
     return data
@@ -37,7 +37,7 @@ def main():
 
     pad = 2
 
-    elements = list(set(lines['Iso']))
+    elements = list(set(lines['Nuclide']))
     print(elements)
 
     fig = pl.figure()
@@ -48,14 +48,14 @@ def main():
     m = 0
 
     for element in elements:
-        selection = lines['Iso'] == element
+        selection = lines['Nuclide'] == element
         selected = lines[selection]
 
         x = messwerte[:, 0]
         y = np.zeros(x.shape)
 
-        for id, iso, z, energy, delta_energy, sigma_val, sigma_err in selected.itertuples():
-            y += lorentz_peak(x, energy, 2, sigma_val, 0)
+        for id, energy, delta_energy, sigma_val, sigma_err, nuclide in selected.itertuples():
+            y += lorentz_peak(x, energy, 1.5, sigma_val, 0)
 
 
         self_integral = scipy.integrate.simps(y, x)
@@ -64,8 +64,8 @@ def main():
 
         matchness = overlap_integral / self_integral
 
-        if matchness >= +0.00005:
-            ax.plot(x, y / self_integral, label=iso)
+        if matchness >= +0.0005:
+            ax.plot(x, y / self_integral, label=nuclide)
 
         results[element] = matchness
 
@@ -104,7 +104,7 @@ def main():
         selection = (lines['E(gamma)'] < (peak + pad)) & (lines['E(gamma)'] > (peak - pad))
         selected = lines[selection]
 
-        sorted_ = selected.sort_values(by='Sigma', ascending=False)
+        sorted_ = selected.sort_values(by='P', ascending=False)
 
         print(sorted_)
 
@@ -113,7 +113,7 @@ def main():
         for id, iso, z, energy, i1, i2, i3 in selected.itertuples():
             print(iso, energy)
 
-            selection2 = lines['Iso'] == iso
+            selection2 = lines['Nuclide'] == iso
             selected2 = lines[selection2]
 
             print(selected2)
