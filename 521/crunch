@@ -58,8 +58,8 @@ def plot_pair(basename, underground_basename):
 
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(data[:, 0], data[:, 1], marker=None)
-    ax.plot(underground[:, 0], underground[:, 1], marker=None)
+    ax.plot(data[:, 0], data[:, 1], marker=None, label='Probe')
+    ax.plot(underground[:, 0], underground[:, 1], marker=None, label='Untergrund')
     ax.margins(0.05)
     ax.set_xlabel('')
     ax.set_ylabel('')
@@ -67,7 +67,7 @@ def plot_pair(basename, underground_basename):
     fig.savefig('_build/' + basename + '.pdf')
 
 def calibrate_sz(T):
-    underground = load_data_normalized('Ge_Untergrund')
+    underground = load_data_normalized('Sz_Untergrund')
     co = load_data_normalized('Sz_CO')
     cs = load_data_normalized('Sz_CS')
     eu = load_data_normalized('Sz_EU')
@@ -235,7 +235,7 @@ def calibrate_ge(T):
         list_offset_err = np.append(list_offset_err, offset_err)
         list_expected_energy = np.append(list_expected_energy, expected_energy)
 
-    print(len(list_area_val))
+    #print(len(list_area_val))
 
     list_intensity_val = list_area_val * list_mean_val
     list_intensity_err = np.sqrt(
@@ -355,10 +355,10 @@ def calibrate_ge(T):
     channel = langzeit_daten[:, 0]
     energy = linear(channel, slope_val, offset_val)
 
-    print(np.max(langzeit_daten[:, 1]))
-    print(np.max(langzeit_untergrund[:, 1]))
+    #print(np.max(langzeit_daten[:, 1]))
+    #print(np.max(langzeit_untergrund[:, 1]))
 
-    print(np.max(events))
+    #print(np.max(events))
 
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
@@ -420,6 +420,12 @@ def main():
     calibrate_sz(T)
     calibrate_ge(T)
     plot_pair('Ge_CO', 'Ge_Untergrund')
+    plot_pair('Ge_CS', 'Ge_Untergrund')
+    plot_pair('Ge_EU', 'Ge_Untergrund')
+
+    plot_pair('Sz_CO', 'Sz_Untergrund')
+    plot_pair('Sz_CS', 'Sz_Untergrund')
+    plot_pair('Sz_EU', 'Sz_Untergrund')
 
     ###########################################
 
