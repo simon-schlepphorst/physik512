@@ -79,7 +79,30 @@ def main():
 
     attr_iter = itertools.product(linestyles, colors)
 
+    exclude = [
+            '11-Na-22',
+            '21-Sc-46',
+            '25-Mn-54',
+            '25-Mn-56',
+            '27-Co-56',
+            '27-Co-58',
+            '27-Co-60',
+            '30-Zn-65',
+            '31-Ga-66',
+            '36-Kr-85',
+            '38-Sr-85',
+            '41-Nb-95',
+            '44-Ru-106',
+            '45-Rh-106',
+            '55-Cs-134',
+            '67-Ho-166',
+            '88-Ra-224',
+    ]
+
     for element in elements:
+        if element in exclude:
+            continue
+
         selection = lines['Nuclide'] == element
         selected = lines[selection]
 
@@ -96,7 +119,7 @@ def main():
 
         matchness = overlap_integral / self_integral
 
-        if matchness >= +0.0005:
+        if matchness >= +0:
             linestyle, color = next(attr_iter)
             ax.plot(x, y / self_integral, label=nuclide, color=color, linestyle=linestyle, linewidth=4)
 
