@@ -4,11 +4,41 @@
 # Copyright © 2015 Martin Ueding <dev@martin-ueding.de>
 
 import argparse
+import itertools
 
 import numpy as np
 import matplotlib.pyplot as pl
 import pandas as pd
 import scipy.integrate
+
+colors = [
+    '#e41a1c',
+    '#377eb8',
+    '#4daf4a',
+    '#984ea3',
+    '#ff7f00',
+    '#ffff33',
+    '#a65628',
+]
+
+colors = [
+'#a6cee3',
+'#1f78b4',
+'#b2df8a',
+'#33a02c',
+'#fb9a99',
+'#e31a1c',
+'#fdbf6f',
+'#ff7f00',
+'#cab2d6',
+'#6a3d9a',
+'#b15928',
+]
+
+linestyles = [
+    'solid',
+    'dashed',
+]
 
 def lorentz_peak(x, mean, width, area, offset):
     return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2) + offset
@@ -47,6 +77,8 @@ def main():
 
     m = 0
 
+    attr_iter = itertools.product(linestyles, colors)
+
     for element in elements:
         selection = lines['Nuclide'] == element
         selected = lines[selection]
@@ -65,7 +97,8 @@ def main():
         matchness = overlap_integral / self_integral
 
         if matchness >= +0.0005:
-            ax.plot(x, y / self_integral, label=nuclide)
+            linestyle, color = next(attr_iter)
+            ax.plot(x, y / self_integral, label=nuclide, color=color, linestyle=linestyle, linewidth=4)
 
         results[element] = matchness
 
