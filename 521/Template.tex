@@ -81,8 +81,10 @@ zu untersuchenden Eigenschaften.
 \chapter{Theorie}
 
 \section{Wechselwirkung von $\gamma$-Strahlung mit Materie}
-In der Materie kann die $gamma$-Strahlung auf verschiedene Weise mit der
-Materie wechselwirken.
+In der Materie kann die $\gamma$-Strahlung auf verschiedene Weise mit der
+Materie wechselwirken. 
+Diese Wechselwirkung hängt von der Ordnungszahl und der Energie der
+$\gamma$-Strahlung ab.
 
 \subsection{Photoeffekt}
 Der Photoeffekt beschreibt den Vorgang, wie ein Photon ein Elektron aus dem
@@ -107,9 +109,9 @@ vor.
 \subsection{Paarerzeugung}
 Ein weiterer Effekt der bei Energien $E_\gamma \ge 2m_\text ec^2$ auftreten
 kann, ist die Elektron- Positron Paarbildung.
-Dieser Effekt ist allerdings erst ab einer Energie von
-\SI{}{\mega\electronvolt} relevant.
-% Für den Wirkungsquerschnitt gilt $\sigma_\text{Pc} \propto Z^2\ln(E_\gamma)$
+Dieser Effekt ist allerdings erst ab einer Energie von $E_\gamma >> 2m_\text
+ec^2$ relevant.
+Für den Wirkungsquerschnitt gilt $\sigma \propto Z^2$
 
 \subsection{Comptonstreuung}
 Wenn Photonen an einem Elektron streuen, dann spricht man von dem
@@ -123,14 +125,55 @@ Für die geänderte Energie gilt:
 \]
 Die größte Energieänderung erhält man also bei einem Winkel von
 $\phi=\SI{180}{\degree}$.
+Diese Energieänderung berechnet sich durch:
+\[
+    \delta\lambda = \frac{h}{m_\text ec}(1-\cos(\phi))
+\]
 Der Wirkungsquerschnitt entspricht $\sigma_\text C \propto \frac{Z}{E_\gamma}$.
 
 \section{Szintillationdetektor}
 Mit einem Szintillationsdetektor lassen sich die Intensität und Energie von
 ionisierender Strahlung messen.
-Er besteht aus einem Szintilator und einem Photomultiplier, der das Signal
+Er besteht aus einem Szintillator und einem Photomultiplier, der das Signal
 verstärkt.
 
+Innerhalb das von Lichteinfall geschützten Szintillators entstehen durch
+ionisierende Strahlung Lichtblitze. 
+Wie viele dieser Blitze auftreten ist von der Energie der Strahlung abhängig.
+Aufgrund des Photoeffektes, werden an der Photokathode Elektronen ausgelöst und
+das so entstandene Signal im Photomultiplier verstärkt.
+Durch den Aufbau des Photomultiplieres kommt es zu einem Lawineneffekt, welcher
+die Elektronen verstärkt und somit eine Detektion ermöglicht.
+Die Amplitude des so entstanden Strompulses ist somit auch proportional zu der
+Energie der Eingangsstrahlung.
+
+Wenn man eine gute Energieauflösung möchte, sollte man allerdings eher einem
+Halbleiterdetektor nutzen.
+
+\section{Halbleiterdetektor}
+Die Basis des Halbleiterdetektors bildet die verarmungs Zone die zwischen einem
+$p$ und einem $n$ dotieren Halbleiter entsteht.
+
+Betrachtet man das Bändermodel vom Halbleitern, so kann man sich die Dotierung
+des Halbleiters als weiteres dünnes Band knapp unter dem Leitungsband
+($n$-dotiert) oder knapp über dem Valenzband ($p$-dotiert) vorstellen.
+Dabei erhält man die Dotierung eines Kristalls, indem man fremde Atome in dem
+Kristall einbindet.
+Wenn man eine positive Dotierung möchte, so fügt man in den Kristall Atome mit einer
+niedrigeren Ordnungszahl ein, für die negative Dotierung nutzt man  Atome mit
+höherer Ordnungszahl.
+
+Fügt man diese beiden Bereiche aneinander, so entsteht dazwischen eine Bereich,
+indem die überschüssigen Elektronen aus dem $p$-dotierten Teil in den
+$n$-dotierten Bereich abgesaugt werden. 
+Dadurch das die Elektronen und Löcher \fehlt
+Hierdurch bildet sich durch die Ionenrümpfe ein elektrisches Feld aus, welches
+der weitern Verbreiterung der Verarmungszone entgegen wirkt.
+Es entspricht somit einer Diode.
+Wenn man diese nun in Sperrichtung betreibt, kann man die Verarmungszone weiter
+verbreiter.
+Das ist erwünscht, da nur in diesen Bereich des Detektors Ereignisse auch
+gemessen werden können.
 
 \chapter{Durchführung}
 
