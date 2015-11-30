@@ -77,6 +77,7 @@ def calibrate_sz(T):
     cs[:, 1] -= underground[:, 1]
     eu[:, 1] -= underground[:, 1]
 
+    # Kanalbereich und bekannte Energie
     fit_range_cs = [
         (3031, 4007, 661.66),
     ]
@@ -91,6 +92,7 @@ def calibrate_sz(T):
         (6690, 7160, 1332.501),
     ]
 
+    # Listen über alle Elemente
     list_mean_val = np.array([])
     list_mean_err = np.array([])
     list_width_val = np.array([])
@@ -101,6 +103,8 @@ def calibrate_sz(T):
     list_offset_err = np.array([])
     list_expected_energy = np.array([])
 
+
+    # Fitte Lorentzkurve an Hauptpeaks an
     for name, data, fit_ranges in [('CO', co, fit_range_co), ('CS', cs, fit_range_cs), ('EU', eu, fit_range_eu)]:
         fig = pl.figure()
         for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
@@ -140,6 +144,7 @@ def calibrate_sz(T):
         fig.savefig('_build/Sz-'+name+'-peaks.pdf')
         fig.clear()
 
+    # Erstellen der Energieeichung
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
     x = list_mean_val
@@ -180,6 +185,8 @@ def calibrate_ge(T):
     fig.savefig('_build/Ge_calib.pdf')
     fig.clear()
 
+    # Kanalbereich und bekannte Energien
+    # Eu
     fit_ranges = [
         (625, 716, 121.7825),
         (1318, 1407, 244.6989),
@@ -237,6 +244,7 @@ def calibrate_ge(T):
 
     #print(len(list_area_val))
 
+    # Ermitteln der relativen Effizienz
     list_intensity_val = list_area_val * list_mean_val
     list_intensity_err = np.sqrt(
         (list_area_err * list_mean_val)**2
@@ -263,6 +271,7 @@ def calibrate_ge(T):
     fig.savefig('_build/Ge_calib-peaks.pdf')
     fig.clear()
 
+    # Eu Intensitäten
     expected_rel_intensity = np.array([
         1362.0,
         359.0,
