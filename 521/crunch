@@ -167,6 +167,39 @@ def calibrate_sz(T):
     T['sz_slope'] = unitprint.siunitx(slope_val, slope_err)
     T['sz_offset'] = unitprint.siunitx(offset_val, offset_err)
 
+
+    # Breiten gegen Energie.
+
+    x = linear(list_mean_val, slope_val, offset_val)
+    y = (list_width_val * slope_val)**2
+    # TODO Fehlerfortpflanzung für `x` und `y` wenn noch Zeit ist.
+    popt, pconv = op.curve_fit(linear, x, y)
+    fit_x = np.linspace(np.min(x), np.max(x), 10)
+    fit_y = linear(fit_x, *popt)
+    perr = np.sqrt(pconv.diagonal())
+    parameters = list(zip(popt, perr))
+    const_sq_val, const_sq_err = parameters[0]
+    electronic_width_sq_val, electronic_width_sq_err = parameters[1]
+
+    const_val = np.sqrt(const_sq_val)
+    const_err = const_sq_err / (2 * const_val)
+
+    electronic_width_val = np.sqrt(np.absolute(electronic_width_sq_val))
+    electronic_width_err = electronic_width_sq_err / (2 * electronic_width_val)
+
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(x, y, marker='+', linestyle='none')
+    ax.set_ylabel('$\Gamma^2 / \mathrm{keV}^2$')
+    ax.set_xlabel('$E_\gamma$ / keV')
+    ax.plot(fit_x, fit_y)
+    fig.tight_layout()
+    fig.savefig('_build/halbwertsbreite_sz.pdf')
+
+    T['sz_const'] = unitprint.siunitx(const_val, const_err)
+    T['sz_electronic_width'] = unitprint.siunitx(electronic_width_val, electronic_width_err)
+
     
 def calibrate_ge(T):
     co = load_data_normalized('Ge_EU')
