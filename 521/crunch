@@ -144,6 +144,38 @@ def calibrate_sz(T):
         fig.savefig('_build/Sz-'+name+'-peaks.pdf')
         fig.clear()
 
+        #Peak to Total für CS und CO
+        if name == 'CS':
+            total_area = scipy.integrate.simps(data[:, 1], data[:, 0])
+            peak_area = scipy.integrate.simps(data[3200:3850, 1], data[3200:3850, 0])
+            return_area = scipy.integrate.simps(data[900:1200, 1], data[900:1200, 0])
+
+            # TODO Fehlerrechnung
+            total_area_err = 0
+            peak_area_err = 0
+            return_area_err = 0
+
+            peak_to_total = peak_area / (total_area - return_area)
+            peak_to_total_err = 0
+            print('peak-to-total')
+            print('CS: ', peak_to_total, ' +- ', peak_to_total_err)
+
+        if name == 'CO':
+            total_area = scipy.integrate.simps(data[:, 1], data[:, 0])
+            peak_area = scipy.integrate.simps(data[5900:6400, 1], data[5900:6400, 0]) + scipy.integrate.simps(data[6700:7200, 1], data[6700:7200, 0])
+            return_area = scipy.integrate.simps(data[1200:1600, 1], data[1200:1600, 0])
+
+            # TODO Fehlerrechnung
+            total_area_err = 0
+            peak_area_err = 0
+            return_area_err = 0
+
+            peak_to_total = peak_area / (total_area - return_area)
+            peak_to_total_err = 0
+            print('peak-to-total')
+            print('CO: ', peak_to_total, ' +- ', peak_to_total_err)
+
+
     # Erstellen der Energieeichung
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
@@ -196,11 +228,12 @@ def calibrate_sz(T):
     ax.plot(fit_x, fit_y)
     fig.tight_layout()
     fig.savefig('_build/halbwertsbreite_sz.pdf')
+    fig.clear()
 
     T['sz_const'] = unitprint.siunitx(const_val, const_err)
     T['sz_electronic_width'] = unitprint.siunitx(electronic_width_val, electronic_width_err)
 
-    
+
 def calibrate_ge(T):
     co = load_data_normalized('Ge_EU')
     underground = load_data_normalized('Ge_Untergrund')
