@@ -11,15 +11,6 @@ import matplotlib.pyplot as pl
 import pandas as pd
 import scipy.integrate
 
-colors = [
-    '#e41a1c',
-    '#377eb8',
-    '#4daf4a',
-    '#984ea3',
-    '#ff7f00',
-    '#ffff33',
-    '#a65628',
-]
 
 colors = [
 '#a6cee3',
@@ -59,7 +50,7 @@ def main():
 
     messwerte = messwerte[messwerte[:, 0] > 200]
 
-    print(messwerte.shape)
+    #print(messwerte.shape)
 
     peaks = get_peaks()
 
@@ -68,7 +59,7 @@ def main():
     pad = 2
 
     elements = list(set(lines['Nuclide']))
-    print(elements)
+    #print(elements)
 
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
@@ -133,48 +124,56 @@ def main():
 
     m2 = np.max(messwerte[:, 1])
 
-    print('m', m)
-    print('m2', m2)
+    #print('m', m)
+    #print('m2', m2)
     scale = ax.get_ylim()[1] / m2
-    print('Scale', scale)
+    #print('Scale', scale)
 
     ax.plot(x, messwerte[:, 1] * scale, alpha=0.3, color='black')
 
     ax.grid(True)
     ax.margins(.05)
     fig.tight_layout()
+
+    # Interaktiver Plot --->
+
     fig.show()
     input()
-    fig.savefig('test.pdf')
+
+    # <---
+
+    fig.savefig('_build/element_match.pdf')
 
     results_sorted = sorted([(matchness, element) for element, matchness in results.items()])
 
-    for matchness, element in results_sorted:
-        print('{:5s} {:+.10f}'.format(element, matchness))
+    # Zeige Matchness an
+
+    #for matchness, element in results_sorted:
+    #   print('{:5s} {:+.10f}'.format(element, matchness))
 
 
 
-    for peak in peaks[:2]:
-        print(peak)
+    #for peak in peaks[:2]:
+    #    print(peak)
 
-        selection = (lines['E(gamma)'] < (peak + pad)) & (lines['E(gamma)'] > (peak - pad))
-        selected = lines[selection]
+    #    selection = (lines['E(gamma)'] < (peak + pad)) & (lines['E(gamma)'] > (peak - pad))
+    #    selected = lines[selection]
 
-        sorted_ = selected.sort_values(by='P', ascending=False)
+    #    sorted_ = selected.sort_values(by='P', ascending=False)
 
-        print(sorted_)
+    #    print(sorted_)
 
-        break
+    #    break
 
-        for id, iso, z, energy, i1, i2, i3 in selected.itertuples():
-            print(iso, energy)
+    #    for id, iso, z, energy, i1, i2, i3 in selected.itertuples():
+    #        print(iso, energy)
 
-            selection2 = lines['Nuclide'] == iso
-            selected2 = lines[selection2]
+    #        selection2 = lines['Nuclide'] == iso
+    #        selected2 = lines[selection2]
 
-            print(selected2)
+    #        print(selected2)
 
-        print()
+    #    print()
 
 
 def _parse_args():
