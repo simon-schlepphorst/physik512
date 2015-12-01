@@ -382,11 +382,6 @@ def calibrate_ge(T):
     ])
 
 
-    print('fit_range_eu ',len(fit_range_eu))
-    print('expected_rel_intensity ', len(expected_rel_intensity))
-    print(expected_rel_intensity[:last_eu])
-    print(expected_rel_intensity[last_eu - 1])
-
     efficiency_val = list_intensity_val[first_eu:last_eu] / expected_rel_intensity
     efficiency_err = list_intensity_err[first_eu:last_eu] / expected_rel_intensity
 
