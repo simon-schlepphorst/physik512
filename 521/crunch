@@ -105,7 +105,7 @@ def calibrate_sz(T):
 
 
     # Fitte Lorentzkurve an Hauptpeaks an
-    for name, data, fit_ranges in [('CO', co, fit_range_co), ('CS', cs, fit_range_cs), ('EU', eu, fit_range_eu)]:
+    for name, data, fit_ranges in [('EU', eu, fit_range_eu), ('CS', cs, fit_range_cs), ('CO', co, fit_range_co)]:
         fig = pl.figure()
         for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
             x, y = data[first:last, 0], data[first:last, 1]
@@ -200,7 +200,28 @@ def calibrate_sz(T):
     T['sz_offset'] = unitprint.siunitx(offset_val, offset_err)
 
 
-    # Breiten gegen Energie.
+    # Breiten der Peaks
+    list_intensity_val = list_area_val * list_mean_val
+    list_intensity_err = np.sqrt(
+        (list_area_err * list_mean_val)**2
+        + (list_area_val * list_mean_err)**2
+    )
+
+    rescale = list_intensity_val[-1] / 1000
+
+    list_intensity_val /= rescale
+    list_intensity_err /= rescale
+
+    fit_data = list(zip(
+        [str(i) for i in range(1, len(list_mean_val) +1)],
+        unitprint.siunitx(list_mean_val, list_mean_err),
+        unitprint.siunitx(list_width_val, list_width_err),
+        unitprint.siunitx(list_area_val, list_area_err),
+        unitprint.siunitx(list_intensity_val, list_intensity_err),
+        unitprint.siunitx(list_expected_energy),
+    ))
+
+    T['sz_fits_table'] = fit_data
 
     x = linear(list_mean_val, slope_val, offset_val)
     y = (list_width_val * slope_val)**2

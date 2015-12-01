@@ -237,6 +237,15 @@ Germanium
     \label{fig:}
 \end{figure}
 
+\begin{tabular}{SSSSSS}
+    {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
+    {$E_\gamma$ / \si{\kilo\electronvolt}} \\
+    \midrule
+    %< for row in sz_fits_table >%
+    << ' & '.join(row) >> \\
+    %< endfor >%
+\end{tabular}
+
 Szintillationszähler
 \[
     \text{Energie} =
