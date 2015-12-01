@@ -10,6 +10,7 @@ import os.path
 import pprint
 import re
 import sys
+import subprocess
 
 import matplotlib.pyplot as pl
 import matplotlib.colors
@@ -542,6 +543,11 @@ def main():
     plot_pair('Sz_EU', 'Sz_Untergrund')
 
     ###########################################
+
+    subprocess.run('./element_match.py')
+
+    ###########################################
+
 
     test_keys(T)
     with open('_build/template.js', 'w') as f:
