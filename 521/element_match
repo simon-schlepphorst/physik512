@@ -137,8 +137,8 @@ def main():
 
     # Interaktiver Plot --->
 
-    #fig.show()
-    #input()
+    fig.show()
+    input()
 
     # <---
 
