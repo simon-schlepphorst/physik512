@@ -247,6 +247,7 @@ def calibrate_ge(T):
     fig.clear()
 
     # Kanalbereich und bekannte Energien
+
     fit_range_co = [
             (6550, 6650, 1173.237),
             (7450, 7550, 1332.501),
@@ -337,9 +338,10 @@ def calibrate_ge(T):
             fig.clear()
 
     #print(len(list_area_val))
-    print(first_eu, last_eu, first_cs, last_cs, first_co, last_co)
+    #print(first_eu, last_eu, first_cs, last_cs, first_co, last_co)
 
     # Halbwertsbreiten der Peaks
+
     list_intensity_val = list_area_val * list_mean_val
     list_intensity_err = np.sqrt(
         (list_area_err * list_mean_val)**2
@@ -347,6 +349,7 @@ def calibrate_ge(T):
     )
 
     # Scaliere auf den letzten Eu Peak
+
     rescale = list_intensity_val[last_eu - 1] / 1000
 
     list_intensity_val /= rescale
@@ -367,6 +370,7 @@ def calibrate_ge(T):
 
 
     # Eu Intensitäten
+
     expected_rel_intensity = np.array([
         1362.0,
         359.0,
@@ -387,6 +391,7 @@ def calibrate_ge(T):
     efficiency_err = list_intensity_err[first_eu:last_eu] / expected_rel_intensity
 
     # Detektoreffizienz mit Eu Spektrum
+
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
     ax.errorbar(list_expected_energy[first_eu:last_eu], efficiency_val, efficiency_err, marker='+', linestyle='none')
@@ -403,6 +408,8 @@ def calibrate_ge(T):
         unitprint.siunitx(list_intensity_val, list_intensity_err),
         unitprint.siunitx(efficiency_val, efficiency_err),
     ))
+
+    # Plot zur Energiekalibrierung
 
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
@@ -426,10 +433,11 @@ def calibrate_ge(T):
     T['ge_slope'] = unitprint.siunitx(slope_val, slope_err)
     T['ge_offset'] = unitprint.siunitx(offset_val, offset_err)
 
-    # Breiten gegen Energie.
 
-    x = linear(list_mean_val, slope_val, offset_val)
-    y = (list_width_val * slope_val)**2
+    # Breiten gegen Energie mit Eu Spektrum
+
+    x = linear(list_mean_val[first_eu:last_eu], slope_val, offset_val)
+    y = (list_width_val[first_eu:last_eu] * slope_val)**2
     # TODO Fehlerfortpflanzung für `x` und `y` wenn noch Zeit ist.
     popt, pconv = op.curve_fit(linear, x, y)
     fit_x = np.linspace(np.min(x), np.max(x), 10)
