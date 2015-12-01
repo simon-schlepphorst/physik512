@@ -225,11 +225,16 @@ def calibrate_sz(T):
 
 
 def calibrate_ge(T):
-    co = load_data_normalized('Ge_EU')
     underground = load_data_normalized('Ge_Untergrund')
+    co = load_data_normalized('Ge_CO')
+    cs = load_data_normalized('Ge_CS')
+    eu = load_data_normalized('Ge_EU')
 
     # Subtract underground from measurements.
     co[:, 1] -= underground[:, 1]
+    cs[:, 1] -= underground[:, 1]
+    eu[:, 1] -= underground[:, 1]
+
 
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
@@ -242,8 +247,13 @@ def calibrate_ge(T):
     fig.clear()
 
     # Kanalbereich und bekannte Energien
-    # Eu
-    fit_ranges = [
+    fit_range_co = [
+    ]
+
+    fit_range_cs = [
+    ]
+
+    fit_range_eu = [
         (625, 716, 121.7825),
         (1318, 1407, 244.6989),
         (1878, 1971, 344.281),
@@ -264,41 +274,50 @@ def calibrate_ge(T):
     list_offset_val = np.array([])
     list_offset_err = np.array([])
     list_expected_energy = np.array([])
-    
-    for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
-        x, y = co[first:last, 0], co[first:last, 1]
-        popt, pconv = op.curve_fit(lorentz_peak, x, y, p0=[np.mean(x), 12, 500, 0])
-        fit_x = np.linspace(np.min(x), np.max(x), 1000)
-        fit_y = lorentz_peak(fit_x, *popt)
 
-        ax = fig.add_subplot(3, (len(fit_ranges) + 2)//3, i)
-        ax.plot(x, y, marker=None)
-        ax.plot(fit_x, fit_y, marker=None)
-        ax.margins(0.05)
-        for label in ax.get_xticklabels():
-            #label.set_fontsize(9)
-            label.set_rotation(45)
+    for name, data, fit_ranges in [('EU', eu, fit_range_eu)]:
+        for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
+            x, y = data[first:last, 0], data[first:last, 1]
+            popt, pconv = op.curve_fit(lorentz_peak, x, y, p0=[np.mean(x), 12, 500, 0])
+            fit_x = np.linspace(np.min(x), np.max(x), 1000)
+            fit_y = lorentz_peak(fit_x, *popt)
 
-        perr = np.sqrt(pconv.diagonal())
+            ax = fig.add_subplot(3, (len(fit_ranges) + 2)//3, i)
+            ax.plot(x, y, marker=None)
+            ax.plot(fit_x, fit_y, marker=None)
+            ax.margins(0.05)
+            for label in ax.get_xticklabels():
+                #label.set_fontsize(9)
+                label.set_rotation(45)
 
-        parameters = list(zip(popt, perr))
+            perr = np.sqrt(pconv.diagonal())
 
-        mean_val, mean_err = parameters[0]
-        width_val, width_err = parameters[1]
-        area_val, area_err = parameters[2]
-        offset_val, offset_err = parameters[3]
+            parameters = list(zip(popt, perr))
 
-        list_mean_val = np.append(list_mean_val, mean_val)
-        list_mean_err = np.append(list_mean_err, mean_err)
-        list_width_val = np.append(list_width_val, width_val)
-        list_width_err = np.append(list_width_err, width_err)
-        list_area_val = np.append(list_area_val, area_val)
-        list_area_err = np.append(list_area_err, area_err)
-        list_offset_val = np.append(list_offset_val, offset_val)
-        list_offset_err = np.append(list_offset_err, offset_err)
-        list_expected_energy = np.append(list_expected_energy, expected_energy)
+            mean_val, mean_err = parameters[0]
+            width_val, width_err = parameters[1]
+            area_val, area_err = parameters[2]
+            offset_val, offset_err = parameters[3]
 
-    #print(len(list_area_val))
+            list_mean_val = np.append(list_mean_val, mean_val)
+            list_mean_err = np.append(list_mean_err, mean_err)
+            list_width_val = np.append(list_width_val, width_val)
+            list_width_err = np.append(list_width_err, width_err)
+            list_area_val = np.append(list_area_val, area_val)
+            list_area_err = np.append(list_area_err, area_err)
+            list_offset_val = np.append(list_offset_val, offset_val)
+            list_offset_err = np.append(list_offset_err, offset_err)
+            list_expected_energy = np.append(list_expected_energy, expected_energy)
+
+        if name == 'EU':
+            fig.tight_layout()
+            fig.savefig('_build/Ge_calib-peaks.pdf')
+            fig.clear()
+
+        else:
+            fig.clear()
+
+    print(len(list_area_val))
 
     # Halbwertsbreiten der Peaks
     list_intensity_val = list_area_val * list_mean_val
@@ -321,11 +340,8 @@ def calibrate_ge(T):
         unitprint.siunitx(list_expected_energy),
     ))
 
-    T['ge_co_fits_table'] = fit_data
+    T['ge_eu_fits_table'] = fit_data
 
-    fig.tight_layout()
-    fig.savefig('_build/Ge_calib-peaks.pdf')
-    fig.clear()
 
     # Eu Intensitäten
     expected_rel_intensity = np.array([
@@ -341,6 +357,7 @@ def calibrate_ge(T):
     efficiency_val = list_intensity_val / expected_rel_intensity
     efficiency_err = list_intensity_err / expected_rel_intensity
 
+    # Detektoreffizienz mit Eu Spektrum
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
     ax.errorbar(list_expected_energy, efficiency_val, efficiency_err, marker='+', linestyle='none')
