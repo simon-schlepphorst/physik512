@@ -300,7 +300,7 @@ def calibrate_ge(T):
 
     #print(len(list_area_val))
 
-    # Ermitteln der relativen Effizienz
+    # Halbwertsbreiten der Peaks
     list_intensity_val = list_area_val * list_mean_val
     list_intensity_err = np.sqrt(
         (list_area_err * list_mean_val)**2
