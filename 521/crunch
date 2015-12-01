@@ -544,7 +544,7 @@ def main():
 
     ###########################################
 
-    subprocess.run('./element_match.py')
+    subprocess.run('./element_match')
 
     ###########################################
 
