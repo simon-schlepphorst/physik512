@@ -184,13 +184,18 @@ verbreiter.
 Das ist erwünscht, da nur in diesen Bereich des Detektors Ereignisse auch
 gemessen werden können.
 
-\chapter{Durchführung}
+%\chapter{Durchführung}
 
 %TODO
 
 \chapter{Auswertung}
 
 %TODO
+Bevor wir anfangen können die Spektren zu untersuchen, müssen wir die
+Untergrundmessung von der Messung der Spektren abziehen.
+Von den gefilterten Spektren untersuchen wir im folgenden die, durch
+Gammazerfall entstandenen, Ausschläge. Abbildung~\ref{fig:energiekalibrierung}
+
 
 \begin{figure}
     \centering
@@ -198,8 +203,22 @@ gemessen werden können.
     \caption{%
         %
     }
-    \label{fig:}
+    \label{fig:energiekalibrierung}
 \end{figure}
+
+Da die Spektren mit einem Vielkanalanalysator aufgenommen werden, muss eine
+Energiekalibrierung vorgenommen werden. Hierbei wird den Nummern der 8192
+Kanäle die Energie zugeordnet der sie entsprechen.
+Das lässt sich erreichen, indem wir durch anpassen von Lorentzkurven an die
+Ausschläge bekannter $\gamma$-Übergänge deren Schwerpunkt in den Kananlnummer
+erhalten. Da wir die Energien dieser Übergänge kennen lässt sich so den
+Kanalenummern eine Energie zuordnen. Abbildung ~\ref{fig:Ge-peaks}
+
+Für den NaJ(Ti)-Detektor nutzen wir die Linien des $^{60}\text{Co}$, des
+$^{137}\text{Cs}$ und der best getrennten Linien des $^{152}\text{Eu}$.
+Da die Energieauflösung des Ge-Detektors deutlich besser ist lassen sich
+deutlich mehr Linien des $^{152}\text{Eu}$ erkennen und trennen, sodass es sich
+anbietet hiermit die Energiekalibrierung vor zu nehmen.
 
 \begin{figure}
     \centering
@@ -207,8 +226,64 @@ gemessen werden können.
     \caption{%
         %
     }
-    \label{fig:}
+    \label{fig:Ge-peaks}
+
 \end{figure}
+Das Energie zu Kanal Verhältnis haben wir grafisch in
+Abbildung~\ref{fig:ge_kanal} für den
+Ge-Detektor und in Abbildung~\ref{fig:sz_kanal} für den NaJ(Ti)-Detektor aufgetragen.
+
+Als nächstes soll die Halbwertsbreite der Linien bestimmt werden. Da wir
+bereits Lorentzkurven angepasst haben um den Schwerpunkt zu bestimmen, können
+wir hiermit auch  die Halbwertsbreiten bestimmen.
+%TODO kommentar zur detektor abhängigkeit.
+
+Aus der Halbwertsbreiten der Linien die mit dem Ge-Detektor aufgenommen wurden
+lässt sich die intrinsische Halbwertsbreite $\Delta E_d$ bestimmen.
+Hierfür sollen wir den theoretischen Zusammenhang 
+\[
+	\Delta E_d(E_\gamma)=\text{Const.}\sqrt{E_\gamma}
+\]
+Dieser Zusammenhang wurde in Abbildung~\ref{fig:halbwertsbreite} untersucht und die Konstante
+ermittelt.
+Mit dem Wert, den wir für die intrinsische Halbwertsbreite gefunden haben lässt
+sich wie folgt der elektronische Anteil der Halbwertsbreite bestimmen.
+\[
+	\Delta E(E_\gamma)=\sqrt{\Delta E_d(E_\gamma))^2+(\Delta E_e)^2}
+\]
+Wir erhalten:
+\[
+    \text{Const} = \num{<< ge_const >>}\,\sqrt{\si{\kilo\electronvolt}}
+    ,\qquad
+    \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
+\]
+
+Um die Relative Effizienz des Ge-Detektors zu bestimmen ermitteln wir die
+relative intensität aus der Fläche und der Energie der verschiedenen
+$^{152}\text{Eu}$ Linien und normieren diese auf eine relative Intesität der
+\SI{1408}{\kilo\volt} Linie von 1000.
+In Abbildung ~\ref{fig:effizienz} ist die relative Effizienz aufgetragen, indem
+wir die ermittelten relativen Intensitäten durch die erwarteten relativen
+Intensitäten der $\gamma$-Linien geteilt haben.
+
+
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=\plotwidth]{Ge_calib}
+%    \caption{%
+%        %
+%    }
+%    \label{fig:energiekalibrierung}
+%\end{figure}
+
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=\plotwidth]{Ge_calib-peaks}
+%    \caption{%
+%        %
+%    }
+%    \label{fig:Ge-peaks}
+%\end{figure}
 
 \begin{tabular}{SSSSSS}
     {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
@@ -242,7 +317,7 @@ Germanium
     \caption{%
         %
     }
-    \label{fig:}
+    \label{fig:ge_kanal}
 \end{figure}
 
 \begin{tabular}{SSSSSS}
@@ -295,14 +370,14 @@ Szintillationszähler
     \caption{%
         %
     }
-    \label{fig:}
+    \label{fig:sz_kanal}
 \end{figure}
 
-\[
-    \text{Const} = \num{<< ge_const >>}\,\sqrt{\si{\kilo\electronvolt}}
-    ,\qquad
-    \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
-\]
+%\[
+%    \text{Const} = \num{<< ge_const >>}\,\sqrt{\si{\kilo\electronvolt}}
+%    ,\qquad
+%    \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
+%\]
 
 \begin{figure}
     \centering
@@ -310,7 +385,7 @@ Szintillationszähler
     \caption{%
         %
     }
-    \label{fig:}
+    \label{fig:halbwertsbreite}
 \end{figure}
 
 
@@ -320,7 +395,7 @@ Szintillationszähler
     \caption{%
         %
     }
-    \label{fig:}
+    \label{fig:effizienz}
 \end{figure}
 
 \begin{tabular}{SSSS}
