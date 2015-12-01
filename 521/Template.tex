@@ -185,7 +185,8 @@ gemessen werden können.
 Bevor wir anfangen können die Spektren zu untersuchen, müssen wir die
 Untergrundmessung von der Messung der Spektren abziehen.
 Von den gefilterten Spektren untersuchen wir im folgenden die, durch
-Gammazerfall entstandenen, Ausschläge.
+Gammazerfall entstandenen, Ausschläge. Abbildung~\ref{fig:energiekalibrierung}
+
 
 \begin{figure}
     \centering
@@ -210,6 +211,15 @@ Da die Energieauflösung des Ge-Detektors deutlich besser ist lassen sich
 deutlich mehr Linien des $^{152}\text{Eu}$ erkennen und trennen, sodass es sich
 anbietet hiermit die Energiekalibrierung vor zu nehmen.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{Ge_calib-peaks}
+    \caption{%
+        %
+    }
+    \label{fig:Ge-peaks}
+
+\end{figure}
 Das Energie zu Kanal Verhältnis haben wir grafisch in
 Abbildung~\ref{fig:ge_kanal} für den
 Ge-Detektor und in Abbildung~\ref{fig:sz_kanal} für den NaJ(Ti)-Detektor aufgetragen.
@@ -239,23 +249,32 @@ Wir erhalten:
     \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
 \]
 
-\begin{figure}
-    \centering
-    \includegraphics[width=\plotwidth]{Ge_calib}
-    \caption{%
-        %
-    }
-    \label{fig:energiekalibrierung}
-\end{figure}
+Um die Relative Effizienz des Ge-Detektors zu bestimmen ermitteln wir die
+relative intensität aus der Fläche und der Energie der verschiedenen
+$^{152}\text{Eu}$ Linien und normieren diese auf eine relative Intesität der
+\SI{1408}{\kilo\volt} Linie von 1000.
+In Abbildung ~\ref{fig:effizienz} ist die relative Effizienz aufgetragen, indem
+wir die ermittelten relativen Intensitäten durch die erwarteten relativen
+Intensitäten der $\gamma$-Linien geteilt haben.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=\plotwidth]{Ge_calib-peaks}
-    \caption{%
-        %
-    }
-    \label{fig:Ge-peaks}
-\end{figure}
+
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=\plotwidth]{Ge_calib}
+%    \caption{%
+%        %
+%    }
+%    \label{fig:energiekalibrierung}
+%\end{figure}
+
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=\plotwidth]{Ge_calib-peaks}
+%    \caption{%
+%        %
+%    }
+%    \label{fig:Ge-peaks}
+%\end{figure}
 
 \begin{tabular}{SSSSSS}
     {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
@@ -350,7 +369,7 @@ Szintillationszähler
     \caption{%
         %
     }
-    \label{fig:}
+    \label{fig:effizienz}
 \end{figure}
 
 \begin{tabular}{SSSS}
