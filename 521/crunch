@@ -28,6 +28,9 @@ _livetime_pattern = re.compile(r'LIVETIME: (\d+\.?\d*)')
 def lorentz_peak(x, mean, width, area, offset):
     return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2) + offset
 
+def gauss_peak(x, mean, width, area):
+    return area / (width * np.sqrt(2 * np.pi)) * np.exp( - ((x - mean) / width)**2 / 2)
+
 def linear(x, slope, offset):
     return x * slope + offset
 
@@ -107,12 +110,37 @@ def calibrate_sz(T):
 
     # Fitte Lorentzkurve an Hauptpeaks an
     for name, data, fit_ranges in [('EU', eu, fit_range_eu), ('CS', cs, fit_range_cs), ('CO', co, fit_range_co)]:
-        fig = pl.figure()
+
+        data_cutted = np.copy(data)
         for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
-            x, y = data[first:last, 0], data[first:last, 1]
-            popt, pconv = op.curve_fit(lorentz_peak, x, y, p0=[np.mean(x), 12, 500, 0])
+            data_cutted[first:last, 1] = 0
+
+        events_smooth = scipy.ndimage.filters.gaussian_filter(data_cutted[:, 1], 200)
+        events = data[:, 1] - events_smooth
+
+        fig = pl.figure()
+
+        ax = fig.add_subplot(1, 1, 1)
+        ax.plot(data[:, 0], data[:, 1])
+        ax.plot(data[:, 0], events_smooth)
+        #ax.plot(energy, events)
+        #ax.set_yscale('log')
+        fig.savefig('_build/Sz_smooth_' + name + '.pdf')
+        fig.clear()
+
+        ax = fig.add_subplot(1, 1, 1)
+        ax.plot(data[:, 0], events)
+        #ax.plot(energy, events)
+        #ax.set_yscale('log')
+        fig.savefig('_build/Sz_smoothed_' + name + '.pdf')
+        fig.clear()
+
+
+        for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
+            x, y = data[first:last, 0], events[first:last] #data[first:last, 1]
+            popt, pconv = op.curve_fit(gauss_peak, x, y, p0=[np.mean(x), 100, 3000])
             fit_x = np.linspace(np.min(x), np.max(x), 1000)
-            fit_y = lorentz_peak(fit_x, *popt)
+            fit_y = gauss_peak(fit_x, *popt)
 
             ax = fig.add_subplot(1, len(fit_ranges), i)
             ax.plot(x, y, marker=None)
@@ -125,11 +153,16 @@ def calibrate_sz(T):
             perr = np.sqrt(pconv.diagonal())
 
             parameters = list(zip(popt, perr))
+            print(parameters)
 
             mean_val, mean_err = parameters[0]
             width_val, width_err = parameters[1]
             area_val, area_err = parameters[2]
-            offset_val, offset_err = parameters[3]
+            #offset_val, offset_err = parameters[3]
+
+            print(name, i, 'Integral\t', scipy.integrate.simps(gauss_peak(x, *popt), x))
+            print(name, i, 'area\t', area_val, '+-', area_err)
+            print()
 
             list_mean_val = np.append(list_mean_val, mean_val)
             list_mean_err = np.append(list_mean_err, mean_err)
@@ -137,8 +170,8 @@ def calibrate_sz(T):
             list_width_err = np.append(list_width_err, width_err)
             list_area_val = np.append(list_area_val, area_val)
             list_area_err = np.append(list_area_err, area_err)
-            list_offset_val = np.append(list_offset_val, offset_val)
-            list_offset_err = np.append(list_offset_err, offset_err)
+            #list_offset_val = np.append(list_offset_val, offset_val)
+            #list_offset_err = np.append(list_offset_err, offset_err)
             list_expected_energy = np.append(list_expected_energy, expected_energy)
 
         fig.tight_layout()
@@ -148,7 +181,7 @@ def calibrate_sz(T):
         #Peak to Total für CS und CO
         if name == 'CS':
             total_area = scipy.integrate.simps(data[:, 1], data[:, 0])
-            peak_area = scipy.integrate.simps(data[3200:3850, 1], data[3200:3850, 0])
+            peak_area = scipy.integrate.simps(data[3031:4007, 1], data[3031:4007, 0])
             return_area = scipy.integrate.simps(data[900:1200, 1], data[900:1200, 0])
 
             # TODO Fehlerrechnung
@@ -158,8 +191,8 @@ def calibrate_sz(T):
 
             peak_to_total = peak_area / (total_area - return_area)
             peak_to_total_err = 0
-            print('peak-to-total')
-            print('CS: ', peak_to_total, ' +- ', peak_to_total_err)
+            #print('peak-to-total')
+            #print('CS: ', peak_to_total, ' +- ', peak_to_total_err)
 
         if name == 'CO':
             total_area = scipy.integrate.simps(data[:, 1], data[:, 0])
@@ -173,8 +206,8 @@ def calibrate_sz(T):
 
             peak_to_total = peak_area / (total_area - return_area)
             peak_to_total_err = 0
-            print('peak-to-total')
-            print('CO: ', peak_to_total, ' +- ', peak_to_total_err)
+            #print('peak-to-total')
+            #print('CO: ', peak_to_total, ' +- ', peak_to_total_err)
 
 
     # Erstellen der Energieeichung
