@@ -192,15 +192,16 @@ Der jeweilige Detektor in an einen Signalverstärker angeschlossen, welcher
 wiederum an einen Vielkanalanalysator angeschlossen ist.
 
 Für die Durchführung müssen zunächst die Betriebsparameter, wie die
-Verstärkung eingestellt werden. Dazu werden die Proben vor die Detektoren
-gestellt und das Ausgangssignal am Oszilloskop betrachtet.
+Verstärkung des Signalverstärkers eingestellt werden.
+Dazu werden die Proben jeweils einzeln vor die Detektoren gestellt und das
+Ausgangssignal des Signalverstärkers am Oszilloskop betrachtet.
 Die Verstärkung ist so eingestellt, dass die für die Energiekalibrierung
 wichtige \SI{1408}{\kilo\electronvolt} Linie des $^{152}\text{Eu}$
 innerhalb des Messbereichts liegt.
 %TODO Foto vom Aufbau
 
 Nun messen wir mit beiden Detektoren sowohl die drei Proben, $^{60}\text{Co}$,
-$^{137}\text{Cs}$ und $^{152}\text{Eu}$ als auch den Untergrund. Jede dieser
+$^{137}\text{Cs}$ und $^{152}\text{Eu}$, als auch den Untergrund. Jede dieser
 Messungen wird über einen Zeitraum von fünf Minuten aufgenommen.
 
 Für die Langzeitmessung mit dem Ge-Detektor wird eine Bleiabschirmung
@@ -209,15 +210,13 @@ innerhalb der Abschirmung positioniert wird und erneut über Nacht gemessen wird
 
 \chapter{Auswertung}
 
-%TODO
 Bevor wir anfangen können die Spektren zu untersuchen, müssen zunächst die
 Aufnahmezeiten angepasst werden, da wir die Realzeit auf \SI{600}{\second} gesetzt
 haben und diese durch Totzeiten des Detektors von der Aufnahmezeit abweicht.
 Nach Anpassung der Zeit müssen wir die
 Untergrundmessung von der Messung der Spektren abziehen.
-Von den gefilterten Spektren untersuchen wir im folgenden die, durch
-Gammazerfall entstandenen, Ausschläge. Abbildung~\ref{fig:energiekalibrierung}
-
+Von den gefilterten Spektren untersuchen wir im folgenden die durch
+$\gamma$-Zerfall entstandenen Ausschläge. Abbildung~\ref{fig:energiekalibrierung}
 
 \begin{figure}
     \centering
@@ -232,11 +231,10 @@ Da die Spektren mit einem Vielkanalanalysator aufgenommen werden, muss eine
 Energiekalibrierung vorgenommen werden. Hierbei wird den Nummern der 8192
 Kanäle die Energie zugeordnet der sie entsprechen.
 Das lässt sich erreichen, indem wir durch anpassen von Verteilungsfunktionen an die
-Ausschläge bekannter $\gamma$-Übergänge deren Schwerpunkt in den Kananlnummer
+Ausschläge bekannter $\gamma$-Übergänge deren Schwerpunkt in Kananlnummer
 erhalten. An die Daten aus dem NaJ(Ti)-Detektor haben wir Gaußkurven und an die
 aus dem Ge-Detektor Lorentzkurven angepasst, da diese näher an den Daten liegen.
-Da wir die Energien dieser Übergänge kennen lässt sich so den
-Kanalenummern eine Energie zuordnen. Abbildung ~\ref{fig:Ge-peaks}
+Somit wurde den Kanalenummern eine Energie zugeordnet. Abbildung~\ref{fig:Ge-peaks}
 
 \begin{tabular}{SSSSSS}
     {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
@@ -268,9 +266,9 @@ $^{60}\text{Co}$.
     %< endfor >%
 \end{tabular}
 
-Da die Energieauflösung des Ge-Detektors deutlich besser ist lassen sich
-deutlich mehr Linien des $^{152}\text{Eu}$ erkennen und trennen, sodass wir
-davon sieben genommen haben.
+Da die Energieauflösung des Ge-Detektors deutlich besser ist als die des 
+NaJ(Ti)-Detektors lassen sich deutlich mehr Linien des $^{152}\text{Eu}$
+erkennen und trennen, sodass wir davon sieben verwerten konnten.
 
 \begin{figure}
     \centering
@@ -281,6 +279,7 @@ davon sieben genommen haben.
     \label{fig:Ge-peaks}
 
 \end{figure}
+
 Das Energie zu Kanal Verhältnis haben wir grafisch in
 Abbildung~\ref{fig:ge_kanal} für den
 Ge-Detektor und in Abbildung~\ref{fig:sz_kanal} für den NaJ(Ti)-Detektor aufgetragen.
@@ -319,15 +318,15 @@ bestimmen, kennen wir auch die Halbwertsbreiten $\Gamma$.
 Diese zeigen auch wieder, um wie viel besser die Energieauflösung des
 Ge-Detektors ist.
 
-Aus der Halbwertsbreiten der Linien die mit dem Ge-Detektor aufgenommen wurden
+Aus den Halbwertsbreiten der Linien, die mit dem Ge-Detektor aufgenommen
+wurden,
 lässt sich die intrinsische Halbwertsbreite $\Delta E_d$ bestimmen.
-Hierfür sollen wir den theoretischen Zusammenhang 
 \[
 	\Delta E_d(E_\gamma)=\text{Const.}\sqrt{E_\gamma}
 \]
 Dieser Zusammenhang wurde in Abbildung~\ref{fig:halbwertsbreite} untersucht und die Konstante
 ermittelt.
-Mit dem Wert, den wir für die intrinsische Halbwertsbreite gefunden haben lässt
+Mit dem Wert, den wir für die intrinsische Halbwertsbreite gefunden, haben lässt
 sich wie folgt der elektronische Anteil der Halbwertsbreite bestimmen.
 \[
 	\Delta E(E_\gamma)=\sqrt{\Delta E_d(E_\gamma))^2+(\Delta E_e)^2}
@@ -339,28 +338,28 @@ Wir erhalten:
     \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
 \]
 
-Nun soll das Verhältnis der Ereignisse im Photopeak gegenüber aller Ereignisse
+Nun soll das Verhältnis der Ereignisse im Photopeak gegenüber allen Ereignissen
 im Detektor gebildet werden (Peak-to-Total-Verhältnis). Dies wird mit dem
-Einzelpeak von $^{137}\text{Cs}$ und dem Mittelwert aus dem Doppelpeak von
+Einzelpeak von $^{137}\text{Cs}$ und dem Summe aus dem Doppelpeak von
 $^{60}\text{Co}$ durchgeführt:
 
 NaJ(Ti)-Detektor
 \[
-    \text{Peak-to-Total (Cs, \SI{661}{\kilo\electronvolt})} = \num{<< sz_cs_ptt >>}
+    \text{Peak-to-Total (Cs, \SI{662}{\kilo\electronvolt})} = \num{<< sz_cs_ptt >>}
 \]
 \[
     \text{Peak-to-Total (Co, \SI{1250}{\kilo\electronvolt})} = \num{<< sz_co_ptt >>}
 \]
 Ge-Detektor
 \[
-    \text{Peak-to-Total (Cs, \SI{661}{\kilo\electronvolt})} = \num{<< ge_cs_ptt >>}
+    \text{Peak-to-Total (Cs, \SI{662}{\kilo\electronvolt})} = \num{<< ge_cs_ptt >>}
 \]
 \[
     \text{Peak-to-Total (Co, \SI{1250}{\kilo\electronvolt})} = \num{<< ge_co_ptt >>}
 \]
 
 
-Die Absolute Peakeffizienz wird aus dem Verhältnis des Ereignisse im Photopeak
+Die Absolute Peakeffizienz wird aus dem Verhältnis der Ereignisse im Photopeak
 und aller ausgestrahlten $\gamma$-Quanten der Probe gebildet. Dazu benutzen wir
 die bekannten Werte der $^{137}\text{Cs}$ Probe (\SI{0.925}{\mega\becquerel},
 April 1985). Daraus erhalten wir eine aktuelle Aktivität von:
@@ -380,11 +379,11 @@ Ge-Detektor
 \]
 
 
-Um die Relative Effizienz des Ge-Detektors zu bestimmen ermitteln wir die
-relative intensität aus der Fläche und der Energie der verschiedenen
-$^{152}\text{Eu}$ Linien und normieren diese auf eine relative Intesität der
+Um die relative Effizienz des Ge-Detektors zu bestimmen ermitteln wir die
+relative Intensität aus der Fläche und der Energie der verschiedenen
+$^{152}\text{Eu}$ Linien und normieren diese auf eine relative Intensität der
 \SI{1408}{\kilo\electronvolt} Linie von 1000.
-In Abbildung ~\ref{fig:effizienz} ist die relative Effizienz aufgetragen, indem
+In Abbildung~\ref{fig:effizienz} ist die relative Effizienz aufgetragen, indem
 wir die ermittelten relativen Intensitäten durch die erwarteten relativen
 Intensitäten der $\gamma$-Linien geteilt haben.
 
@@ -396,27 +395,6 @@ mess.} & {Effizienz} \\
     << ' & '.join(row) >> \\
     %< endfor >%
 \end{tabular}
-
-
-Nachdem all die nun die Energiekalibrierung vorgenommen und die relative
-Effizienz bestimmt wurde können wir die daraus gewonnenen Informationen nutzen
-um den Linien aus der Langzeitmessung der Bodenprobe die Zerfallsisotope
-zuzuordnen.
-Hierfür haben wir die Informationen über die Energie, sowie die relativen
-Intensitäten der $\gamma$-Zerfälle aus einer Datenbank
-\parencite{IAEA-gamma-ray-database} entnommen.
-Aus den Daten haben wir Spektren generiert und diese mit unserem Spektrum
-verglichen.
-Hierzu haben wir verglichen, wie sehr unsere Daten die generierten Spektren
-ausfüllen. Wenn alle Linien eines Isotops sowohl in der Lage als auch den
-Höhenverhältnissen
-mit den entsprechenden Linie des gemessenen Spektrums überein stimmen, so haben
-wir dieses Isotop in die engere Auswahl genommen. Wenn nur ein Teil der Linien
-übereinstimmt, aber andere Linie nicht in unser Spektrum passen, so haben wir
-dieses Isotop verworfen. 
-Als nächstes haben wir aus allen möglichen Isotopen ein Spektrum erstellt, um
-festzustellen, ob das resultierende Spektrum sich so erklären lässt.
- Das Resultat ist in Abbildung ~\ref{fig:element_match} zu sehen.
 
 %\begin{figure}
 %    \centering
@@ -542,7 +520,7 @@ festzustellen, ob das resultierende Spektrum sich so erklären lässt.
     \label{fig:effizienz}
 \end{figure}
 
-
+\clearpage
 
 \begin{figure}
     \centering
@@ -553,6 +531,26 @@ festzustellen, ob das resultierende Spektrum sich so erklären lässt.
     \label{fig:element_match}
 \end{figure}
 
+Nachdem nun die Energiekalibrierung vorgenommen und die relative
+Effizienz bestimmt wurde, können wir die daraus gewonnenen Informationen nutzen
+um den Linien aus der Langzeitmessung der Bodenprobe die Zerfallsisotope
+zuzuordnen.
+Hierfür haben wir die Informationen über die Energie, sowie die relativen
+Intensitäten der $\gamma$-Zerfälle aus einer Datenbank
+\parencite{IAEA-gamma-ray-database} entnommen.
+Aus dieser Datenbank haben wir Spektren generiert und diese mit unserem gemessen
+Spektrum verglichen.
+Ein Kriterium war, wie sehr unsere Daten die generierten Spektren
+ausfüllen. Wenn alle Linien eines Isotops sowohl in der Lage als auch den
+Höhenverhältnissen
+mit den entsprechenden Linien des gemessenen Spektrums überein stimmen, so haben
+wir dieses Isotop in die engere Auswahl genommen. Wenn nur ein Teil der Linien
+übereinstimmt, aber andere Linie nicht in dem gemessen Spektrum vorkommen, so
+haben wir dieses Isotop verworfen.
+Als nächstes haben wir aus allen möglichen Isotopen ein Spektrum erstellt, um
+festzustellen, ob das resultierende Spektrum sich so erklären lässt.
+Das Resultat ist in Abbildung~\ref{fig:element_match} zu sehen.
+
 
 \chapter{Ergebnis}
 
@@ -562,10 +560,10 @@ die Energiekalbrierung gut funktioniert.
 Dadurch lassen sich gut die die Isotope der Bodenprobe bestimmen. Das nicht
 alle Linie zugeordnet werden konnten liegt vermutlich daran, dass die
 verwendete Datenbank nicht vollständig ist. Die identifizierten Isotope passen
-sehr gut zu dem was man erwarten würde. Besonders die deutliche
-$^{137}\text{Cs}$ Linie, die sich auf das Unglück in Tschernobyl zurückführen
-lässt ist immer noch deutlich erkennbar, was bei einer Halbwertszeit von
-ungefähr 30 Jahren auch gut möglich ist.
+sehr gut zu dem was man erwarten würde. Besonders die deutliche Linie, des
+nicht natürlich vorkommenden $^{137}\text{Cs}$-Isotops, die sich auf das Unglück
+in Tschernobyl zurückführen lässt ist immer noch deutlich erkennbar, was bei
+einer Halbwertszeit von 30 Jahren auch gut möglich ist.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                   Anhang                                    %
