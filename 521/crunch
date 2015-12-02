@@ -199,6 +199,8 @@ def calibrate_sz(T):
             peak_to_total = peak_val / total_val
             peak_to_total_err = peak_err / total_val
 
+            T['sz_cs_ptt'] = unitprint.siunitx(peak_to_total, peak_to_total_err)
+
         elif name == 'CO':
             total_val = scipy.integrate.simps(data[:, 1], data[:, 0])
             peak_val = list_area_val[-1] + list_area_val[-2]
@@ -209,6 +211,7 @@ def calibrate_sz(T):
             peak_to_total = peak_val / total_val
             peak_to_total_err = peak_err / total_val
 
+            T['sz_co_ptt'] = unitprint.siunitx(peak_to_total, peak_to_total_err)
 
         print('Peak-to-Total', name, ':', peak_to_total, ' +- ', peak_to_total_err)
 
@@ -370,11 +373,33 @@ def calibrate_ge(T):
             first_cs = last_eu + 1
             last_cs = count
 
+            total_val = scipy.integrate.simps(data[:, 1], data[:, 0])
+            peak_val = list_area_val[-1]
+            peak_err = list_area_err[-1]
+
+            #return_area = scipy.integrate.simps(data[900:1200, 1], data[900:1200, 0])
+
+            peak_to_total = peak_val / total_val
+            peak_to_total_err = peak_err / total_val
+
+            T['ge_cs_ptt'] = unitprint.siunitx(peak_to_total, peak_to_total_err)
+
             fig.clear()
 
         elif name == 'CO':
             first_co = last_cs + 1
             last_co = count
+
+            total_val = scipy.integrate.simps(data[:, 1], data[:, 0])
+            peak_val = list_area_val[-1] + list_area_val[-2]
+            peak_err = np.sqrt((list_area_err[-1] * list_area_val[-2])**2 + (list_area_val[-1] + list_area_err[-2])**2)
+
+            #return_area = scipy.integrate.simps(data[900:1200, 1], data[900:1200, 0])
+
+            peak_to_total = peak_val / total_val
+            peak_to_total_err = peak_err / total_val
+
+            T['ge_co_ptt'] = unitprint.siunitx(peak_to_total, peak_to_total_err)
 
             fig.clear()
 
