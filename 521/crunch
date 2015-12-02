@@ -169,8 +169,8 @@ def calibrate_sz(T):
 
             list_mean_val = np.append(list_mean_val, mean_val)
             list_mean_err = np.append(list_mean_err, mean_err)
-            list_width_val = np.append(list_width_val, width_val)
-            list_width_err = np.append(list_width_err, width_err)
+            list_width_val = np.append(list_width_val, width_val * 2)
+            list_width_err = np.append(list_width_err, width_err * 2)
             list_area_val = np.append(list_area_val, area_val)
             list_area_err = np.append(list_area_err, area_err)
             #list_offset_val = np.append(list_offset_val, offset_val)
