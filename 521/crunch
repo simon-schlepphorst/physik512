@@ -221,7 +221,7 @@ def calibrate_sz(T):
 
             T['sz_co_ptt'] = unitprint.siunitx(peak_to_total, peak_to_total_err)
 
-        print('Peak-to-Total', name, ':', peak_to_total, ' +- ', peak_to_total_err)
+        #print('Peak-to-Total', name, ':', peak_to_total, ' +- ', peak_to_total_err)
 
     # Erstellen der Energieeichung
     fig = pl.figure()
