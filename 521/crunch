@@ -544,7 +544,7 @@ def main():
 
     ###########################################
 
-    subprocess.run('./element_match')
+    subprocess.check_call(['./element_match'])
 
     ###########################################
 
