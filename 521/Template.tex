@@ -58,7 +58,7 @@
 	\small{\href{mailto:s2@uni-bonn.de}{s2@uni-bonn.de}}
 }
 
-\date{2015-11-10}
+\date{2015-11-09 bis 11-12}
 
 \publishers{Tutor: Philipp Hoffmeister
 }
@@ -241,11 +241,39 @@ aus dem Ge-Detektor Lorentzkurven angepasst, da diese näher an den Daten liegen
 Da wir die Energien dieser Übergänge kennen lässt sich so den
 Kanalenummern eine Energie zuordnen. Abbildung ~\ref{fig:Ge-peaks}
 
-Für den NaJ(Ti)-Detektor nutzen wir die Linien des $^{60}\text{Co}$, des
-$^{137}\text{Cs}$ und der best getrennten Linien des $^{152}\text{Eu}$.
+\begin{tabular}{SSSSSS}
+    {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
+    {$E_\gamma$ / \si{\kilo\electronvolt}} \\
+    \midrule
+    %< for row in sz_fits_table >%
+    << ' & '.join(row) >> \\
+    %< endfor >%
+\end{tabular}
+
+Für den NaJ(Ti)-Detektor nutzen wir die beiden best getrennten Linien des
+$^{152}\text{Eu}$, die Linie des $^{137}\text{Cs}$ und die Linien des
+$^{60}\text{Co}$.
+
+\begin{tabular}{SSSSSS}
+    {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
+    {$E_\gamma$ / \si{\kilo\electronvolt}} \\
+    \midrule
+    %< for row in ge_eu_fits_table >%
+    << ' & '.join(row) >> \\
+    %< endfor >%
+    \midrule
+    %< for row in ge_cs_fits_table >%
+    << ' & '.join(row) >> \\
+    %< endfor >%
+    \midrule
+    %< for row in ge_co_fits_table >%
+    << ' & '.join(row) >> \\
+    %< endfor >%
+\end{tabular}
+
 Da die Energieauflösung des Ge-Detektors deutlich besser ist lassen sich
-deutlich mehr Linien des $^{152}\text{Eu}$ erkennen und trennen, sodass es sich
-anbietet hiermit die Energiekalibrierung vor zu nehmen.
+deutlich mehr Linien des $^{152}\text{Eu}$ erkennen und trennen, sodass wir
+davon sieben genommen haben.
 
 \begin{figure}
     \centering
@@ -259,11 +287,40 @@ anbietet hiermit die Energiekalibrierung vor zu nehmen.
 Das Energie zu Kanal Verhältnis haben wir grafisch in
 Abbildung~\ref{fig:ge_kanal} für den
 Ge-Detektor und in Abbildung~\ref{fig:sz_kanal} für den NaJ(Ti)-Detektor aufgetragen.
+Die angepassten Geraden haben folgende Werte:
 
-Als nächstes soll die Halbwertsbreite der Linien bestimmt werden. Da wir
-bereits Lorentzkurven angepasst haben um den Schwerpunkt zu bestimmen, können
-wir hiermit auch  die Halbwertsbreiten bestimmen.
+Ge-Detektor
+\[
+    \text{Energie} =
+    \text{Kanalnummer} \cdot \SI{<< ge_slope >>}{\kilo\electronvolt}
+    +
+    \SI{<< ge_offset >>}{\kilo\electronvolt} \,.
+\]
+NaJ(Ti)-Detektor
+\[
+    \text{Energie} =
+    \text{Kanalnummer} \cdot \SI{<< sz_slope >>}{\kilo\electronvolt}
+    +
+    \SI{<< sz_offset >>}{\kilo\electronvolt} \,.
+\]
+
+Da wir bereits Lorentz- und Gaußkurven angepasst haben um den Schwerpunkt zu
+bestimmen, kennen wir auch die Halbwertsbreiten $\Gamma$.
+
+\begin{align*}
+	f_\text{Gauß}\del x &= \frac1{\sigma \sqrt{2\pi}}
+	\eup^{-\frac12\del{\frac{x
+	- \langle x\rangle}{\sigma}}^2}\\
+	\\
+	f_\text{Lorentz}\del x &= \frac1\pi \frac\sigma{\del{x - \langle x
+	\rangle}^2 + \sigma^2}\\
+	\\
+	\text{mit } \Gamma &= 2 \sigma
+\end{align*}
+
 %TODO kommentar zur detektor abhängigkeit.
+Diese zeigen auch wieder, um wie viel besser die Energieauflösung des
+Ge-Detektors ist.
 
 Aus der Halbwertsbreiten der Linien die mit dem Ge-Detektor aufgenommen wurden
 lässt sich die intrinsische Halbwertsbreite $\Delta E_d$ bestimmen.
@@ -284,6 +341,11 @@ Wir erhalten:
     ,\qquad
     \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
 \]
+
+
+
+
+
 
 Um die Relative Effizienz des Ge-Detektors zu bestimmen ermitteln wir die
 relative intensität aus der Fläche und der Energie der verschiedenen
@@ -331,23 +393,6 @@ festzustellen, ob das resultierende Spektrum sich so erklären lässt.
 %    \label{fig:Ge-peaks}
 %\end{figure}
 
-\begin{tabular}{SSSSSS}
-    {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
-    {$E_\gamma$ / \si{\kilo\electronvolt}} \\
-    \midrule
-    %< for row in ge_eu_fits_table >%
-    << ' & '.join(row) >> \\
-    %< endfor >%
-    \midrule
-    %< for row in ge_cs_fits_table >%
-    << ' & '.join(row) >> \\
-    %< endfor >%
-    \midrule
-    %< for row in ge_co_fits_table >%
-    << ' & '.join(row) >> \\
-    %< endfor >%
-\end{tabular}
-
 
 Germanium
 \[
@@ -375,14 +420,6 @@ Germanium
     \label{fig:ge_kanal}
 \end{figure}
 
-\begin{tabular}{SSSSSS}
-    {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
-    {$E_\gamma$ / \si{\kilo\electronvolt}} \\
-    \midrule
-    %< for row in sz_fits_table >%
-    << ' & '.join(row) >> \\
-    %< endfor >%
-\end{tabular}
 
 Szintillationszähler
 \[
