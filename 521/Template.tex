@@ -81,6 +81,14 @@ zu untersuchenden Eigenschaften.
 \chapter{Theorie}
 
 \section{Wechselwirkung von $\gamma$-Strahlung mit Materie}
+Die $\gamma$-Strahlung entsteht, wenn nach einem vorhergegangen Zerfall der
+Tochterkern nicht in seinen Grundzustand sondern in einen angeregten Zustand
+zerfällt.
+Dieser angeregte Zustand zerfällt nach einiger Zeit durch Abstrahlung des
+$\gamma$-Quants in den Grundzustand. Diese Photonen sind sehr Energiereich,
+weshalb sie genug Energie haben um auf verschiedene Weisen mit der Materie zu
+Wechselwirken.
+
 In der Materie kann die $\gamma$-Strahlung auf verschiedene Weise mit der
 Materie wechselwirken. 
 Diese Wechselwirkung hängt von der Ordnungszahl und der Energie der
@@ -165,9 +173,8 @@ höherer Ordnungszahl.
 
 Fügt man diese beiden Bereiche aneinander, so entsteht dazwischen eine Bereich,
 indem die überschüssigen Elektronen aus dem $p$-dotierten Teil in den
-$n$-dotierten Bereich abgesaugt werden. 
-Dadurch das die Elektronen und Löcher \fehlt
-Hierdurch bildet sich durch die Ionenrümpfe ein elektrisches Feld aus, welches
+$n$-dotierten Bereich übergehen. 
+Hierdurch bildet sich durch die zurückbleibenden Ionenrümpfe ein elektrisches Feld aus, welches
 der weitern Verbreiterung der Verarmungszone entgegen wirkt.
 Es entspricht somit einer Diode.
 Wenn man diese nun in Sperrichtung betreibt, kann man die Verarmungszone weiter
@@ -175,14 +182,32 @@ verbreiter.
 Das ist erwünscht, da nur in diesen Bereich des Detektors Ereignisse auch
 gemessen werden können.
 
-%\chapter{Durchführung}
+\chapter{Durchführung}
 
-%TODO
+Für die Durchführung müssen zunächst die Betriebsparameter, wie die
+Verstärkung eingestellt werden. Wir stellen die zu betrachtenden Proben vor die
+Detektoren und betrachten das Ausgangssignal am Oszilloskop. Wir wählen die
+Verstärkung so, dass der Energiebereich, den der Vielkanalanlysator abdeckt bis
+\SI{1550}{\kilo\electronvolt} geht. Dadurch erreichen wir, dass die für die
+Energiekalibrierung wichtige \SI{1408}{\kilo\electronvolt} des $^{152}Eu$
+innerhalb dieses Bereichs liegt.
+%TODO Foto vom Aufbau
+
+Nun messen wir mit beiden Detektoren sowohl die drei Proben, $^{60}\text{Co}$,
+$^{137}\text{Cs}$ und $^{152}\text{Eu}$ als auch den Untergrund. Jede dieser
+Messungen wird über einen Zeitraum von fünf Minuten aufgenommen.
+
+Für die Langzeitmessung mit dem Ge-Detektor wird eine Bleiabschirmung
+aufgebaut, mit der über Nacht der Untergrund gemessen wir, bevor die Bodenprobe
+innerhalb der Abschirmung positioniert wird und erneut über Nacht gemessen wird.
 
 \chapter{Auswertung}
 
 %TODO
-Bevor wir anfangen können die Spektren zu untersuchen, müssen wir die
+Bevor wir anfangen können die Spektren zu untersuchen, müssen zunächst die
+Aufnahmezeiten angepasst werden, da wir die Realzeit auf \SI{600}{\sec} gesetzt
+haben und diese durch Totzeiten des Detektors von der Aufnahmezeit abweicht.
+Nach anpassung der Zeit müssen wir die
 Untergrundmessung von der Messung der Spektren abziehen.
 Von den gefilterten Spektren untersuchen wir im folgenden die, durch
 Gammazerfall entstandenen, Ausschläge. Abbildung~\ref{fig:energiekalibrierung}
@@ -252,7 +277,7 @@ Wir erhalten:
 Um die Relative Effizienz des Ge-Detektors zu bestimmen ermitteln wir die
 relative intensität aus der Fläche und der Energie der verschiedenen
 $^{152}\text{Eu}$ Linien und normieren diese auf eine relative Intesität der
-\SI{1408}{\kilo\volt} Linie von 1000.
+\SI{1408}{\kilo\electronNvolt} Linie von 1000.
 In Abbildung ~\ref{fig:effizienz} ist die relative Effizienz aufgetragen, indem
 wir die ermittelten relativen Intensitäten durch die erwarteten relativen
 Intensitäten der $\gamma$-Linien geteilt haben.
