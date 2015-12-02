@@ -34,6 +34,9 @@ def gauss_peak(x, mean, width, area):
 def linear(x, slope, offset):
     return x * slope + offset
 
+def linear_err(x, x_err, slope_val, slope_err, offset_val, offset_err):
+    return np.sqrt((x_err * slope_val)**2 + (x * slope_err)**2 + offset_err**2)
+
 def extract_livetime(metafile):
     with open(metafile) as f:
         for line in f:
@@ -476,6 +479,8 @@ def calibrate_ge(T):
     x = linear(list_mean_val[first_eu:last_eu], slope_val, offset_val)
     y = (list_width_val[first_eu:last_eu] * slope_val)**2
     # TODO Fehlerfortpflanzung für `x` und `y` wenn noch Zeit ist.
+    x_err = linear_err(list_mean_val[first_eu:last_eu], list_mean_err[first_eu:last_eu], slope_val, slope_err, offset_val, offset_err)
+    y_err = 2 * (list_width_val[first_eu:last_eu] * slope_val) * np.sqrt((list_width_val[first_eu:last_eu] * slope_err)**2 + (list_width_err[first_eu:last_eu] * slope_val)**2)
     popt, pconv = op.curve_fit(linear, x, y)
     fit_x = np.linspace(np.min(x), np.max(x), 10)
     fit_y = linear(fit_x, *popt)
@@ -492,7 +497,7 @@ def calibrate_ge(T):
 
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(x, y, marker='+', linestyle='none')
+    ax.errorbar(x, y, xerr=x_err, yerr=y_err, marker='+', linestyle='none')
     ax.set_ylabel('$\Gamma^2 / \mathrm{keV}^2$')
     ax.set_xlabel('$E_\gamma$ / keV')
     ax.plot(fit_x, fit_y)
