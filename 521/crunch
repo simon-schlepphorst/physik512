@@ -321,9 +321,9 @@ def calibrate_ge(T):
     for name, data, fit_ranges in [('EU', eu, fit_range_eu), ('CS', cs, fit_range_cs), ('CO', co, fit_range_co)]:
         for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
             x, y = data[first:last, 0], data[first:last, 1]
-            popt, pconv = op.curve_fit(gauss_peak, x, y, p0=[np.mean(x), 12, 500])
+            popt, pconv = op.curve_fit(lorentz_peak, x, y, p0=[np.mean(x), 6, 100])
             fit_x = np.linspace(np.min(x), np.max(x), 1000)
-            fit_y = gauss_peak(fit_x, *popt)
+            fit_y = lorentz_peak(fit_x, *popt)
 
             ax = fig.add_subplot(3, (len(fit_ranges) + 2)//3, i)
             ax.plot(x, y, marker=None)
