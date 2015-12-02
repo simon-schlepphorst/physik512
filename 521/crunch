@@ -201,8 +201,8 @@ def calibrate_sz(T):
 
             T['sz_cs_ptt'] = unitprint.siunitx(peak_to_total, peak_to_total_err)
 
-            abs_val = 0.944 * 25e-6 * 3.7e10 * np.exp(-(np.log(2)/30.17) * (2015 + 11/12 - 1985 - 4/12)) * 24**2 /(4 *25**2) # * 600
-            abs_err = 0.944 * 25e-6 * 3.7e10 * np.exp(-(np.log(2)/30.17) * (2015 + 11/12 - 1985 - 4/12)) * 24**2 /(4 *25**3) * 5 # *600
+            abs_val = 0.944 * 25e-6 * 3.7e10 * np.exp(-(np.log(2)/30.17) * (2015 + 11/12 - 1985 - 4/12)) * 24**2 /(4 *250**2) # * 600
+            abs_err = 0.944 * 25e-6 * 3.7e10 * np.exp(-(np.log(2)/30.17) * (2015 + 11/12 - 1985 - 4/12)) * 24**2 /(4 *250**3) * 50 # *600
 
             peak_to_abs = peak_val / abs_val
             peak_to_abs_err = np.sqrt((peak_err / abs_val)**2 + (peak_val * abs_err /(abs_val**2))**2)
@@ -393,8 +393,8 @@ def calibrate_ge(T):
 
             T['ge_cs_ptt'] = unitprint.siunitx(peak_to_total, peak_to_total_err)
 
-            abs_val = 0.944 * 25e-6 * 3.7e10 * np.exp(-(np.log(2)/30.17) * (2015 + 11/12 - 1985 - 4/12)) * 27.85**2 /(4 *25**2) # * 600
-            abs_err = 0.944 * 25e-6 * 3.7e10 * np.exp(-(np.log(2)/30.17) * (2015 + 11/12 - 1985 - 4/12)) * 27.85**2 /(4 *25**3) * 5 # *600
+            abs_val = 0.944 * 25e-6 * 3.7e10 * np.exp(-(np.log(2)/30.17) * (2015 + 11/12 - 1985 - 4/12)) * 27.85**2 /(4 *250**2) # * 600
+            abs_err = 0.944 * 25e-6 * 3.7e10 * np.exp(-(np.log(2)/30.17) * (2015 + 11/12 - 1985 - 4/12)) * 27.85**2 /(4 *250**3) * 50 # *600
 
             peak_to_abs = peak_val / abs_val
             peak_to_abs_err = np.sqrt((peak_err / abs_val)**2 + (peak_val * abs_err /(abs_val**2))**2)
