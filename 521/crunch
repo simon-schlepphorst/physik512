@@ -25,8 +25,8 @@ import unitprint
 
 _livetime_pattern = re.compile(r'LIVETIME: (\d+\.?\d*)')
 
-def lorentz_peak(x, mean, width, area):
-    return area / np.pi * width / ((x - mean)**2 + (width)**2)
+def lorentz_peak(x, mean, width, area, offset):
+    return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2) + offset
 
 def gauss_peak(x, mean, width, area):
     return area / (width * np.sqrt(2 * np.pi)) * np.exp( - ((x - mean) / width)**2 / 2)
@@ -155,17 +155,17 @@ def calibrate_sz(T):
             perr = np.sqrt(pconv.diagonal())
 
             parameters = list(zip(popt, perr))
-            print(parameters)
+            #print(parameters)
 
             mean_val, mean_err = parameters[0]
             width_val, width_err = parameters[1]
             area_val, area_err = parameters[2]
             #offset_val, offset_err = parameters[3]
 
-            print(name, i, 'Integral\t', scipy.integrate.simps(gauss_peak(x, *popt), x))
-            print(name, i, 'area\t', area_val, '+-', area_err)
-            print(name, i, 'Daten\t', scipy.integrate.simps(y, x))
-            print()
+            #print(name, i, 'Integral\t', scipy.integrate.simps(gauss_peak(data[:, 0], *popt), data[:, 0]))
+            #print(name, i, 'area\t', area_val, '+-', area_err)
+            #print(name, i, 'Daten\t', scipy.integrate.simps(y, x))
+            #print()
 
             list_mean_val = np.append(list_mean_val, mean_val)
             list_mean_err = np.append(list_mean_err, mean_err)
@@ -321,7 +321,7 @@ def calibrate_ge(T):
     for name, data, fit_ranges in [('EU', eu, fit_range_eu), ('CS', cs, fit_range_cs), ('CO', co, fit_range_co)]:
         for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
             x, y = data[first:last, 0], data[first:last, 1]
-            popt, pconv = op.curve_fit(lorentz_peak, x, y, p0=[np.mean(x), 6, 100])
+            popt, pconv = op.curve_fit(lorentz_peak, x, y, p0=[np.mean(x), 10, 100, 0])
             fit_x = np.linspace(np.min(x), np.max(x), 1000)
             fit_y = lorentz_peak(fit_x, *popt)
 
@@ -340,16 +340,21 @@ def calibrate_ge(T):
             mean_val, mean_err = parameters[0]
             width_val, width_err = parameters[1]
             area_val, area_err = parameters[2]
-            #offset_val, offset_err = parameters[3]
+            offset_val, offset_err = parameters[3]
+
+            #print(name, i, 'Integral\t', scipy.integrate.simps(lorentz_peak(data[:, 0], *popt), data[:, 0]))
+            #print(name, i, 'area\t', area_val, '+-', area_err)
+            #print(name, i, 'Daten\t', scipy.integrate.simps(y, x))
+            #print()
 
             list_mean_val = np.append(list_mean_val, mean_val)
             list_mean_err = np.append(list_mean_err, mean_err)
-            list_width_val = np.append(list_width_val, width_val * 2)
-            list_width_err = np.append(list_width_err, width_err * 2)
+            list_width_val = np.append(list_width_val, width_val)
+            list_width_err = np.append(list_width_err, width_err)
             list_area_val = np.append(list_area_val, area_val)
             list_area_err = np.append(list_area_err, area_err)
-            #list_offset_val = np.append(list_offset_val, offset_val)
-            #list_offset_err = np.append(list_offset_err, offset_err)
+            list_offset_val = np.append(list_offset_val, offset_val)
+            list_offset_err = np.append(list_offset_err, offset_err)
             list_expected_energy = np.append(list_expected_energy, expected_energy)
 
             count += 1
