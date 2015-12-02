@@ -184,37 +184,33 @@ def calibrate_sz(T):
         fig.savefig('_build/Sz-'+name+'-peaks.pdf')
         fig.clear()
 
+
         #Peak to Total für CS und CO
+        peak_to_total = 0
+        peak_to_total_err = 0
+        #TODO Rückstreupeak beachten
         if name == 'CS':
-            total_area = scipy.integrate.simps(data[:, 1], data[:, 0])
-            peak_area = scipy.integrate.simps(data[3031:4007, 1], data[3031:4007, 0])
-            return_area = scipy.integrate.simps(data[900:1200, 1], data[900:1200, 0])
+            total_val = scipy.integrate.simps(data[:, 1], data[:, 0])
+            peak_val = list_area_val[-1]
+            peak_err = list_area_err[-1]
 
-            # TODO Fehlerrechnung
-            total_area_err = 0
-            peak_area_err = 0
-            return_area_err = 0
+            #return_area = scipy.integrate.simps(data[900:1200, 1], data[900:1200, 0])
 
-            peak_to_total = peak_area / (total_area - return_area)
-            peak_to_total_err = 0
-            #print('peak-to-total')
-            #print('CS: ', peak_to_total, ' +- ', peak_to_total_err)
+            peak_to_total = peak_val / total_val
+            peak_to_total_err = peak_err / total_val
 
-        if name == 'CO':
-            total_area = scipy.integrate.simps(data[:, 1], data[:, 0])
-            peak_area = scipy.integrate.simps(data[5900:6400, 1], data[5900:6400, 0]) + scipy.integrate.simps(data[6700:7200, 1], data[6700:7200, 0])
-            return_area = scipy.integrate.simps(data[1200:1600, 1], data[1200:1600, 0])
+        elif name == 'CO':
+            total_val = scipy.integrate.simps(data[:, 1], data[:, 0])
+            peak_val = list_area_val[-1] + list_area_val[-2]
+            peak_err = np.sqrt((list_area_err[-1] * list_area_val[-2])**2 + (list_area_val[-1] + list_area_err[-2])**2)
 
-            # TODO Fehlerrechnung
-            total_area_err = 0
-            peak_area_err = 0
-            return_area_err = 0
+            #return_area = scipy.integrate.simps(data[900:1200, 1], data[900:1200, 0])
 
-            peak_to_total = peak_area / (total_area - return_area)
-            peak_to_total_err = 0
-            #print('peak-to-total')
-            #print('CO: ', peak_to_total, ' +- ', peak_to_total_err)
+            peak_to_total = peak_val / total_val
+            peak_to_total_err = peak_err / total_val
 
+
+        print('Peak-to-Total', name, ':', peak_to_total, ' +- ', peak_to_total_err)
 
     # Erstellen der Energieeichung
     fig = pl.figure()
