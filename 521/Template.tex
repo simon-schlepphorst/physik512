@@ -377,7 +377,6 @@ NaJ(Ti)-Detektor
 \[
     \text{Absolute Peakeffizienz (Cs)} = \num{<< ge_cs_abs >>}
 \]
-
 Ge-Detektor
 \[
     \text{Absolute Peakeffizienz (Cs)} = \num{<< sz_cs_abs >>}
@@ -391,6 +390,16 @@ $^{152}\text{Eu}$ Linien und normieren diese auf eine relative Intesität der
 In Abbildung ~\ref{fig:effizienz} ist die relative Effizienz aufgetragen, indem
 wir die ermittelten relativen Intensitäten durch die erwarteten relativen
 Intensitäten der $\gamma$-Linien geteilt haben.
+
+\begin{tabular}{SSSS}
+    {Energie / \si{\kilo\electronvolt}} & {rel.\ Intens. erw.} & {rel.\ Intens.
+mess.} & {Effizienz} \\
+    \midrule
+    %< for row in ge_efficiency_table >%
+    << ' & '.join(row) >> \\
+    %< endfor >%
+\end{tabular}
+
 
 Nachdem all die nun die Energiekalibrierung vorgenommen und die relative
 Effizienz bestimmt wurde können wir die daraus gewonnenen Informationen nutzen
@@ -535,15 +544,6 @@ festzustellen, ob das resultierende Spektrum sich so erklären lässt.
     }
     \label{fig:effizienz}
 \end{figure}
-
-\begin{tabular}{SSSS}
-    {Energie / \si{\kilo\electronvolt}} & {rel.\ Intens. erw.} & {rel.\ Intens.
-mess.} & {Effizienz} \\
-    \midrule
-    %< for row in ge_efficiency_table >%
-    << ' & '.join(row) >> \\
-    %< endfor >%
-\end{tabular}
 
 
 
