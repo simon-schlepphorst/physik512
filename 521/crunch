@@ -87,8 +87,8 @@ def calibrate_sz(T):
     ]
 
     fit_range_eu = [
-        (570, 810, 121.7825),
-        (1577, 2176, 344.281),
+        (625, 775, 121.7825),
+        (1700, 2075, 344.281),
     ]
 
     fit_range_co = [
@@ -111,34 +111,36 @@ def calibrate_sz(T):
     # Fitte Lorentzkurve an Hauptpeaks an
     for name, data, fit_ranges in [('EU', eu, fit_range_eu), ('CS', cs, fit_range_cs), ('CO', co, fit_range_co)]:
 
-        data_cutted = np.copy(data)
-        for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
-            data_cutted[first:last, 1] = 0
+        #data_cutted = np.copy(data)
+        #for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
+        #    data_cutted[first:last, 1] = 0
 
-        events_smooth = scipy.ndimage.filters.gaussian_filter(data_cutted[:, 1], 200)
-        events = data[:, 1] - events_smooth
+        #events_smooth = scipy.ndimage.filters.gaussian_filter(data_cutted[:, 1], 200)
+        #events = data[:, 1] - events_smooth
 
         fig = pl.figure()
 
-        ax = fig.add_subplot(1, 1, 1)
-        ax.plot(data[:, 0], data[:, 1])
-        ax.plot(data[:, 0], events_smooth)
-        #ax.plot(energy, events)
-        #ax.set_yscale('log')
-        fig.savefig('_build/Sz_smooth_' + name + '.pdf')
-        fig.clear()
+        #ax = fig.add_subplot(1, 1, 1)
+        #ax.plot(data[:, 0], data[:, 1])
+        #ax.plot(data[:, 0], events_smooth)
+        ##ax.plot(energy, events)
+        ##ax.set_yscale('log')
+        #fig.savefig('_build/Sz_smooth_' + name + '.pdf')
+        #fig.clear()
 
-        ax = fig.add_subplot(1, 1, 1)
-        ax.plot(data[:, 0], events)
-        #ax.plot(energy, events)
-        #ax.set_yscale('log')
-        fig.savefig('_build/Sz_smoothed_' + name + '.pdf')
-        fig.clear()
+        #ax = fig.add_subplot(1, 1, 1)
+        #ax.plot(data[:, 0], events)
+        ##ax.plot(energy, events)
+        ##ax.set_yscale('log')
+        #fig.savefig('_build/Sz_smoothed_' + name + '.pdf')
+        #fig.clear()
+
+        #data[:, 1] = events
 
 
         for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
-            x, y = data[first:last, 0], events[first:last] #data[first:last, 1]
-            popt, pconv = op.curve_fit(gauss_peak, x, y, p0=[np.mean(x), 100, 3000])
+            x, y = data[first:last, 0], data[first:last, 1]
+            popt, pconv = op.curve_fit(gauss_peak, x, y, p0=[np.mean(x), 100, 300])
             fit_x = np.linspace(np.min(x), np.max(x), 1000)
             fit_y = gauss_peak(fit_x, *popt)
 
@@ -162,6 +164,7 @@ def calibrate_sz(T):
 
             print(name, i, 'Integral\t', scipy.integrate.simps(gauss_peak(x, *popt), x))
             print(name, i, 'area\t', area_val, '+-', area_err)
+            print(name, i, 'Daten\t', scipy.integrate.simps(y, x))
             print()
 
             list_mean_val = np.append(list_mean_val, mean_val)
