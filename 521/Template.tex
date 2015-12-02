@@ -289,19 +289,19 @@ Abbildung~\ref{fig:ge_kanal} für den
 Ge-Detektor und in Abbildung~\ref{fig:sz_kanal} für den NaJ(Ti)-Detektor aufgetragen.
 Die angepassten Geraden haben folgende Werte:
 
-Ge-Detektor
-\[
-    \text{Energie} =
-    \text{Kanalnummer} \cdot \SI{<< ge_slope >>}{\kilo\electronvolt}
-    +
-    \SI{<< ge_offset >>}{\kilo\electronvolt} \,.
-\]
 NaJ(Ti)-Detektor
 \[
     \text{Energie} =
     \text{Kanalnummer} \cdot \SI{<< sz_slope >>}{\kilo\electronvolt}
     +
     \SI{<< sz_offset >>}{\kilo\electronvolt} \,.
+\]
+Ge-Detektor
+\[
+    \text{Energie} =
+    \text{Kanalnummer} \cdot \SI{<< ge_slope >>}{\kilo\electronvolt}
+    +
+    \SI{<< ge_offset >>}{\kilo\electronvolt} \,.
 \]
 
 Da wir bereits Lorentz- und Gaußkurven angepasst haben um den Schwerpunkt zu
@@ -342,7 +342,25 @@ Wir erhalten:
     \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
 \]
 
+Nun soll das Verhältnis der Ereignisse im Photopeak gegenüber aller Ereignisse
+im Detektor gebildet werden (Peak-to-Total-Verhältnis). Dies wird mit dem
+Einzelpeak von $^{137}\text{Cs}$ und dem Mittelwert aus dem Doppelpeak von
+$^{60}\text{Co}$ durchgeführt:
 
+NaJ(Ti)-Detektor
+\[
+    \text{Peak-to-Total (Cs, \SI{661}{\kilo\electronvolt})} = \num{<< sz_cs_ptt >>}
+\]
+\[
+    \text{Peak-to-Total (Co, \SI{1250}{\kilo\electronvolt})} = \num{<< sz_co_ptt >>}
+\]
+Ge-Detektor
+\[
+    \text{Peak-to-Total (Cs, \SI{661}{\kilo\electronvolt})} = \num{<< ge_cs_ptt >>}
+\]
+\[
+    \text{Peak-to-Total (Co, \SI{1250}{\kilo\electronvolt})} = \num{<< ge_co_ptt >>}
+\]
 
 
 
