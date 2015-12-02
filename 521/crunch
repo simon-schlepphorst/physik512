@@ -208,6 +208,7 @@ def calibrate_sz(T):
             peak_to_abs_err = np.sqrt((peak_err / abs_val)**2 + (peak_val * abs_err /(abs_val**2))**2)
 
             T['sz_cs_abs'] = unitprint.siunitx(peak_to_abs, peak_to_abs_err)
+            T['cs_activity'] = unitprint.siunitx(25e-6 * 3.7e10 * np.exp(-(np.log(2)/30.17) * (2015 + 11/12 - 1985 - 4/12)))
 
         elif name == 'CO':
             total_val = scipy.integrate.simps(data[:, 1], data[:, 0])
