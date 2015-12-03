@@ -286,7 +286,7 @@ def calibrate_ge(T):
 
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(co[:, 0], co[:, 1], marker=None)
+    ax.plot(eu[:, 0], eu[:, 1], marker=None)
     ax.margins(0.05)
     ax.set_xlabel('Kanal')
     ax.set_ylabel('Ereignisse')
