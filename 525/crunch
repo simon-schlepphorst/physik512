@@ -10,6 +10,7 @@ import os.path
 import pprint
 import re
 import sys
+import subprocess
 
 import matplotlib.pyplot as pl
 import matplotlib.colors
@@ -29,9 +30,6 @@ def gauss_peak(x, mean, width, area):
 
 def linear(x, slope, offset):
     return x * slope + offset
-
-def linear_err(x, x_err, slope_val, slope_err, offset_val, offset_err):
-    return np.sqrt((x_err * slope_val)**2 + (x * slope_err)**2 + offset_err**2)
 
 def extract_livetime(metafile):
     with open(metafile) as f:
@@ -81,6 +79,8 @@ def main():
     T = {}
 
     ###########################################
+
+
 
     ###########################################
 
