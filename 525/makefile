@@ -3,4 +3,10 @@
 
 number = 525
 
+%.eps : %.GZ
+	gzip -d -c $< > $@.eps
+
+%.pdf : %.eps
+	ps2pdf $< $@
+
 include ../makefile.in
