@@ -79,18 +79,23 @@ def fit_peak(name, data, first, last, energy, save=False):
     perr = np.sqrt(pconv.diagonal())
 
     if save:
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
         x, y = data[:, 0], data[:, 1]
 
         fit_x = np.linspace(np.min(x), np.max(x), 1000)
         fit_y = gauss_peak(fit_x, *popt)
 
-        pl.plot(x, y, marker=None)
-        pl.plot(fit_x, fit_y, marker=None)
-        pl.grid(True)
-        pl.xlabel('Kanal')
-        pl.ylabel('Ereignisse / s')
-        pl.tight_layout()
-        pl.savefig('_build/plot_fit_peak_'+ name +'.pdf')
+        ax.plot(x, y, marker=None)
+        ax.plot(fit_x, fit_y, marker=None)
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        fig.tight_layout()
+        fig.savefig('_build/plot_fit_peak_'+ name +'.pdf')
+        fig.clear
 
     return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy
 
