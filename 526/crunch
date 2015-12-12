@@ -74,7 +74,7 @@ def fit_peak(name, data, first, last, energy, show=False):
     '''
 
     x, y = data[first:last, 0], data[first:last, 1]
-    popt, pconv = op.curve_fit(gauss_peak, x, y, p0=[np.mean(x), 100, 300])
+    popt, pconv = op.curve_fit(gauss_peak, x, y, p0=[np.mean(x), 200, 100])
     perr = np.sqrt(pconv.diagonal())
 
     fit_x = np.linspace(np.min(x), np.max(x), 1000)
@@ -100,42 +100,105 @@ def job_total_cross_section(T):
     data_10mm = load_data_normalized('m01_10mm', lower_cut, upper_cut)
     data_20mm = load_data_normalized('m01_20mm', lower_cut, upper_cut)
 
-    np.savetxt('_build/plot_data_00mm.txt', data_untergrund)
-    np.savetxt('_build/plot_data_01mm.txt', data_01mm)
-    np.savetxt('_build/plot_data_05mm.txt', data_05mm)
-    np.savetxt('_build/plot_data_10mm.txt', data_10mm)
-    np.savetxt('_build/plot_data_20mm.txt', data_20mm)
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
 
     points = []
-    first = 6000
-    last = 8000
-    points.append(fit_peak('00mm', data_untergrund, first, last, 662))
-    points.append(fit_peak('01mm', data_01mm, first, last, 662))
-    points.append(fit_peak('05mm', data_05mm, first, last, 662))
-    points.append(fit_peak('10mm', data_10mm, first, last, 662))
-    points.append(fit_peak('20mm', data_20mm, first, last, 662))
+
+    first = 6200 - lower_cut
+    last = 7600 - lower_cut
+
+    for name, data, color in [('ohne', data_untergrund,'#e41a1c'),
+                              ('01mm', data_01mm, '#377eb9'),
+                              ('05mm', data_05mm, '#4daf4a'),
+                              ('10mm', data_10mm, '#984ea4'),
+                              ('20mm', data_20mm, '#ff7f01')]:
+        points.append(fit_peak(name, data, first, last, 662))
+        tmp_point = np.array(points[-1])
+        x, y = data[first:last, 0], data[first:last, 1]
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = gauss_peak(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
+
+        ax.plot(x, y, marker=None, alpha=0.4, color=color)
+        ax.plot(fit_x, fit_y, marker = None, color=color, label=name, linewidth=2)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Ereignisse / s')
+    ax.legend(loc='best')
+    fig.tight_layout()
+    fig.savefig('_build/total-cross-section-data.pdf')
+    fig.clear
 
     points = np.array(points)
 
-    dicke = np.array([0, 1, 5, 10, 20])
-    mean_val = points[:, 0]
-    mean_err = points[:, 1]
-    width_val = points[:, 2]
-    width_err = points[:, 3]
-    area_val = points[:, 4]
-    area_err = points[:, 5]
+    list_dicke = np.array([0, 1, 5, 10, 20])
+    list_mean_val = points[:, 0]
+    list_mean_err = points[:, 1]
+    list_width_val = points[:, 2]
+    list_width_err = points[:, 3]
+    list_area_val = points[:, 4]
+    list_area_err = points[:, 5]
 
-    T['total_cross_section_table'] = list(zip(
-        unitprint.siunitx(dicke),
-        unitprint.siunitx(area_val, area_err),
-        ))
 
-    popt, pconv = op.curve_fit(decay, dicke[:-1], area_val[:-1], p0=[20, 420000])
-    x = np.linspace(np.min(dicke), np.max(dicke), 100)
+    # Relative Intensität bestimmen:
+
+    list_intensity_val = list_area_val * list_mean_val
+    list_intensity_err = np.sqrt(
+        (list_area_err * list_mean_val)**2
+        + (list_area_val * list_mean_err)**2
+    )
+
+    rescale = list_intensity_val[0]
+
+    list_intensity_val /= rescale
+    list_intensity_err /= rescale
+
+    popt, pconv = op.curve_fit(decay, list_dicke[:-1], list_intensity_val[:-1], p0=[20, 420000])
+    perr = np.sqrt(pconv.diagonal())
+    x = np.linspace(np.min(list_dicke), np.max(list_dicke), 100)
     y = decay(x, *popt)
 
-    np.savetxt('_build/plot-decay-data.txt', np.column_stack([dicke, area_val, area_err]))
-    np.savetxt('_build/plot-decay-fit.txt', np.column_stack([x, y]))
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    ax.errorbar(list_dicke, list_intensity_val, list_intensity_err, marker='+', linestyle='none')
+    ax.plot(x, y)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Dicke')
+    ax.set_ylabel('relative Intensität')
+    fig.tight_layout()
+    fig.savefig('_build/total-cross-section-fit.pdf')
+    fig.clear
+
+
+    T['total_cross_section_table'] = list(zip(
+        unitprint.siunitx(list_dicke),
+        unitprint.siunitx(list_mean_val, list_mean_err),
+        unitprint.siunitx(list_width_val, list_width_err),
+        unitprint.siunitx(list_area_val, list_area_err),
+        unitprint.siunitx(list_intensity_val, list_intensity_err),
+        ))
+
+    # Absorbtionseigenschaften von Aluminium
+
+    dichte = 2.7
+    amu = 26.98
+    na = 6.022e23
+
+    n = dichte * na / amu
+
+    sigma_val = np.log(popt[0]) / n
+    sigma_err = np.log(perr[0]) / n
+
+    T['alu_dichte'] = unitprint.siunitx(dichte)
+    T['alu_amu'] = unitprint.siunitx(amu)
+    T['alu_n'] = unitprint.siunitx(n)
+    T['alu_a'] = unitprint.siunitx(popt[0], perr[0])
+    T['alu_sigma'] = unitprint.siunitx(sigma_val / 1e-22, sigma_err / 1e-22)
 
 
 
