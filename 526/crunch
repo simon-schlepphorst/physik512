@@ -118,7 +118,7 @@ def job_total_cross_section(T):
                               ('05mm', data_05mm, '#4daf4a'),
                               ('10mm', data_10mm, '#984ea4'),
                               ('20mm', data_20mm, '#ff7f01')]:
-        points.append(fit_peak(name, data, first, last, 662))
+        points.append(fit_peak(name, data, first, last, 662, save=True))
         tmp_point = np.array(points[-1])
         x, y = data[first:last, 0], data[first:last, 1]
         fit_x = np.linspace(np.min(x), np.max(x), 1000)
