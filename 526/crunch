@@ -25,7 +25,16 @@ import unitprint
 _livetime_pattern = re.compile(r'LIVETIME: (\d+\.?\d*)')
 
 def gauss_peak(x, mean, width, area):
+    '''
+    Gausskurve
+    '''
     return area / (width * np.sqrt(2 * np.pi)) * np.exp( - ((x - mean) / width)**2 / 2)
+
+def decay(x, tau, a):
+    '''
+    Exponentieller Abfall
+    '''
+    return a * np.exp(- x / tau)
 
 def linear(x, slope, offset):
     return x * slope + offset
@@ -40,7 +49,7 @@ def extract_livetime(metafile):
             if m:
                 return float(m.group(1))
 
-def load_data_normalized(basename):
+def load_data_normalized(basename, lower_cut=0, upper_cut=-1):
     '''
     Loads the data and normalizes it to give events per second.
     '''
@@ -53,7 +62,81 @@ def load_data_normalized(basename):
 
     data[:, 1] /= livetime
 
+    data = data[lower_cut:upper_cut]
+
     return data
+
+def fit_peak(name, data, first, last, energy, show=False):
+    '''
+    Passt einen Peak an und erstellt die Plotdateien
+
+    :return Mittelpunkt, Fehler Mittelpunkt, Breite, Fehler Breite, Fläche, Fehler Fläche, Energie
+    '''
+
+    x, y = data[first:last, 0], data[first:last, 1]
+    popt, pconv = op.curve_fit(gauss_peak, x, y, p0=[np.mean(x), 100, 300])
+    perr = np.sqrt(pconv.diagonal())
+
+    fit_x = np.linspace(np.min(x), np.max(x), 1000)
+    fit_y = gauss_peak(fit_x, *popt)
+
+    np.savetxt('_build/plot_fit_peak_'+ name +'.txt', np.column_stack([fit_x, fit_y]))
+
+    if show:
+        pl.plot(x, y, marker=None)
+        pl.plot(fit_x, fit_y, marker=None)
+        pl.show()
+
+    return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy
+
+
+def job_total_cross_section(T):
+    lower_cut = 200
+    upper_cut = 8000
+
+    data_untergrund = load_data_normalized('m01_untergrund', lower_cut, upper_cut)
+    data_01mm = load_data_normalized('m01_1mm', lower_cut, upper_cut)
+    data_05mm = load_data_normalized('m01_5mm', lower_cut, upper_cut)
+    data_10mm = load_data_normalized('m01_10mm', lower_cut, upper_cut)
+    data_20mm = load_data_normalized('m01_20mm', lower_cut, upper_cut)
+
+    np.savetxt('_build/plot_data_00mm.txt', data_untergrund)
+    np.savetxt('_build/plot_data_01mm.txt', data_01mm)
+    np.savetxt('_build/plot_data_05mm.txt', data_05mm)
+    np.savetxt('_build/plot_data_10mm.txt', data_10mm)
+    np.savetxt('_build/plot_data_20mm.txt', data_20mm)
+
+    points = []
+    first = 6000
+    last = 8000
+    points.append(fit_peak('00mm', data_untergrund, first, last, 662))
+    points.append(fit_peak('01mm', data_01mm, first, last, 662))
+    points.append(fit_peak('05mm', data_05mm, first, last, 662))
+    points.append(fit_peak('10mm', data_10mm, first, last, 662))
+    points.append(fit_peak('20mm', data_20mm, first, last, 662))
+
+    points = np.array(points)
+
+    dicke = np.array([0, 1, 5, 10, 20])
+    mean_val = points[:, 0]
+    mean_err = points[:, 1]
+    width_val = points[:, 2]
+    width_err = points[:, 3]
+    area_val = points[:, 4]
+    area_err = points[:, 5]
+
+    T['total_cross_section_table'] = list(zip(
+        unitprint.siunitx(dicke),
+        unitprint.siunitx(area_val, area_err),
+        ))
+
+    popt, pconv = op.curve_fit(decay, dicke[:-1], area_val[:-1], p0=[20, 420000])
+    x = np.linspace(np.min(dicke), np.max(dicke), 100)
+    y = decay(x, *popt)
+
+    np.savetxt('_build/plot-decay-data.txt', np.column_stack([dicke, area_val, area_err]))
+    np.savetxt('_build/plot-decay-fit.txt', np.column_stack([x, y]))
+
 
 
 def test_keys(T):
@@ -81,6 +164,8 @@ def main():
     T = {}
 
     ###########################################
+
+    job_total_cross_section(T)
 
     ###########################################
 
