@@ -181,7 +181,6 @@ def job_total_cross_section(T):
         unitprint.siunitx(list_dicke),
         unitprint.siunitx(list_mean_val, list_mean_err),
         unitprint.siunitx(list_width_val, list_width_err),
-        unitprint.siunitx(list_area_val, list_area_err),
         unitprint.siunitx(list_intensity_val, list_intensity_err),
         ))
 
