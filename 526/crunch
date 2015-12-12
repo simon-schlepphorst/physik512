@@ -144,11 +144,13 @@ def job_total_cross_section(T):
 
     # Relative Intensität bestimmen:
 
-    list_intensity_val = list_area_val * list_mean_val
-    list_intensity_err = np.sqrt(
-        (list_area_err * list_mean_val)**2
-        + (list_area_val * list_mean_err)**2
-    )
+    list_intensity_val = np.copy(list_area_val)
+    list_intensity_err = np.copy(list_area_err)
+    #list_intensity_val = list_area_val * list_mean_val
+    #list_intensity_err = np.sqrt(
+    #    (list_area_err * list_mean_val)**2
+    #    + (list_area_val * list_mean_err)**2
+    #)
 
     rescale = list_intensity_val[0]
 
