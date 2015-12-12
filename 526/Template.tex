@@ -86,71 +86,41 @@
 
 \begin{figure}
     \centering
-    \tikzsetnextfilename{amplituden}
-    \begin{tikzpicture}
-        \begin{axis}[
-                width=\linewidth,
-                height=0.6\linewidth,
-                xlabel=Kanal,
-                ylabel=Ereignisse,
-                grid=major,
-            ]
-            \addplot[gray] table {plot_data_00mm.txt};
-            %\addplot[black] table {plot-decay-used-00mm.txt};
-
-            \addplot[gray] table {plot_data_01mm.txt};
-            %\addplot[black] table {plot-decay-used-01mm.txt};
-
-            \addplot[gray] table {plot_data_05mm.txt};
-            %\addplot[black] table {plot-decay-used-05mm.txt};
-
-            \addplot[gray] table {plot_data_10mm.txt};
-            %\addplot[black] table {plot-decay-used-10mm.txt};
-
-            \addplot[gray] table {plot_data_20mm.txt};
-            %\addplot[black] table {plot-decay-used-20mm.txt};
-
-
-            \addplot[red, thick] table {plot_fit_00mm.txt};
-            \addplot[red, thick] table {plot_fit_01mm.txt};
-            \addplot[red, thick] table {plot_fit_05mm.txt};
-            \addplot[red, thick] table {plot_fit_10mm.txt};
-            \addplot[red, thick] table {plot_fit_20mm.txt};
-
-        \end{axis}
-    \end{tikzpicture}
+    \includegraphics[width=\plotwidth]{total-cross-section-data}
     \caption{%
-        Spektrum der eingebauten Quelle ohne und mit
-        \SIlist{1;5;10;20;50}{\milli\meter} Aluminium Absorber.
+	    Photopeak im Spektrum der eingebauten $^{137}\text{Cs}$-Quelle ohne
+	    und mit \SIlist{1;5;10;20}{\milli\meter} Aluminium Absorber
     }
     \label{fig:amplituden}
 \end{figure}
 
+\begin{table}
+    \centering
+    \begin{tabular}{SSSS}
+        {Dicke / \si{\milli\meter}} &
+        {Scheitelpunkt / Kanal} &
+        {HWHM / Kanal} &
+	{rel. Intensität} \\
+        \midrule
+        %< for row in total_cross_section_table: ->%
+        << ' & '.join(row) >> \\
+        %< endfor ->%
+    \end{tabular}
+    \caption{%
+        Anpassungsparameter für die verschiedenen Dicken der
+        Absorbermaterialien.
+    }
+    \label{tab:amplituden}
+\end{table}
+
+
+
 \begin{figure}
     \centering
-    \tikzsetnextfilename{decay}
-    \begin{tikzpicture}
-        \begin{axis}[
-                width=\linewidth,
-                height=0.6\linewidth,
-                xlabel=Kanal,
-                ylabel=Integral,
-                grid=major,
-            ]
-            \addplot[
-                black,
-                mark=|,
-                only marks,
-                error bars/.cd,
-                y dir=both, y explicit,
-            ]
-            table[y error index=2] {plot-decay-data.txt};
-            \addplot[red] table {plot-decay-fit.txt};
-        \end{axis}
-    \end{tikzpicture}
+    \includegraphics[width=\plotwidth]{total-cross-section-fit}
     \caption{%
     }
-    \label{fig:decay}
+    \label{fig:cross-section}
 \end{figure}
 
 %TODO
