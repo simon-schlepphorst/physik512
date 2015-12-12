@@ -66,9 +66,10 @@ def load_data_normalized(basename, lower_cut=0, upper_cut=-1):
 
     return data
 
-def fit_peak(name, data, first, last, energy, show=False):
+def fit_peak(name, data, first, last, energy, save=False):
     '''
-    Passt einen Peak an und erstellt die Plotdateien
+    Passt einen Peak an
+    :save speichert gesamtes Spektrum in Datei
 
     :return Mittelpunkt, Fehler Mittelpunkt, Breite, Fehler Breite, Fläche, Fehler Fläche, Energie
     '''
@@ -77,15 +78,19 @@ def fit_peak(name, data, first, last, energy, show=False):
     popt, pconv = op.curve_fit(gauss_peak, x, y, p0=[np.mean(x), 200, 100])
     perr = np.sqrt(pconv.diagonal())
 
-    fit_x = np.linspace(np.min(x), np.max(x), 1000)
-    fit_y = gauss_peak(fit_x, *popt)
+    if save:
+        x, y = data[:, 0], data[:, 1]
 
-    np.savetxt('_build/plot_fit_peak_'+ name +'.txt', np.column_stack([fit_x, fit_y]))
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = gauss_peak(fit_x, *popt)
 
-    if show:
         pl.plot(x, y, marker=None)
         pl.plot(fit_x, fit_y, marker=None)
-        pl.show()
+        pl.grid(True)
+        pl.xlabel('Kanal')
+        pl.ylabel('Ereignisse / s')
+        pl.tight_layout()
+        pl.savefig('_build/plot_fit_peak_'+ name +'.pdf')
 
     return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy
 
