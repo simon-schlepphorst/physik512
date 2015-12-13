@@ -109,8 +109,8 @@ def fit_peak(name, data, first, last, energy, show=False, save=False):
         fit_x = np.linspace(np.min(x), np.max(x), 1000)
         fit_y = gauss_peak(fit_x, *popt)
 
-        ax.plot(x, y, marker=None)
-        ax.plot(fit_x, fit_y, marker=None)
+        ax.plot(x, y, marker=None, alpha=0.6, color='#377eb8')
+        ax.plot(fit_x, fit_y, marker=None, alpha=0.6, color='#e41a1c', linewidth=2)
 
         ax.margins(0.05)
         ax.grid(True)
@@ -251,10 +251,10 @@ def job_energy_calibration(T):
         ax = fig.add_subplot(1, 1, 1)
 
         x, y = data[:, 0], data[:, 1]
-        ax.plot(x, y, marker=None, alpha=0.5, label='Spektrum', color='#377eb8')
+        ax.plot(x, y, marker=None, alpha=0.6, label='Spektrum', color='#377eb8')
 
         x_untergrund, y_untergrund = data_untergrund[:, 0], data_untergrund[:, 1]
-        ax.plot(x_untergrund, y_untergrund, marker=None, alpha=0.5, color='#e41a1c', label='Untergrund')
+        ax.plot(x_untergrund, y_untergrund, marker=None, alpha=0.6, color='#e41a1c', label='Untergrund')
 
         ax.margins(0.05)
         ax.grid(True)
@@ -297,7 +297,7 @@ def job_energy_calibration(T):
         ax = fig.add_subplot(1, 1, 1)
 
         x, y = data[:, 0], data[:, 1]
-        ax.plot(x, y, marker=None, color='#377eb9')
+        ax.plot(x, y, marker=None, alpha=0.6, color='#377eb9')
 
         for i, (first, last, expected_energy) in zip(itertools.count(1), fit_range):
             first -= lower_cut
@@ -308,7 +308,7 @@ def job_energy_calibration(T):
             fit_x = np.linspace(np.min(x), np.max(x), 1000)
             fit_y = gauss_peak(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
 
-            ax.plot(fit_x, fit_y, marker = None, alpha=0.7, color='#e41a1c', linewidth=1.5)
+            ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=2)
 
         ax.margins(0.05)
         ax.grid(True)
