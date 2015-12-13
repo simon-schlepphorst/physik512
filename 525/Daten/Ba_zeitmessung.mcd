@@ -1,10 +1,10 @@
-REPORT-FILE from 12/08/2015 17:31:03.953 - 17:33:14.171  written 12/08/2015 17:33:24
-REALTIME: 130.223     
-TOTALSUM: 2470158     
-ROISUM: 2470158     
-MAXVAL: 5480        
-LIVETIME: 126.298     
-cmline0=12/08/2015 17:31:03.953 - 17:33:14.171 
+REPORT-FILE from 12/08/2015 21:28:27.968 - 21:35:37.718  written 12/08/2015 21:35:55
+REALTIME: 429.753     
+TOTALSUM: 148512      
+ROISUM: 148512      
+MAXVAL: 123         
+LIVETIME: 429.348     
+cmline0=12/08/2015 21:28:27.968 - 21:35:37.718 
 range=8192
 prena=0
 mcsmode=4
@@ -38,7 +38,7 @@ dwellunit=0
 syncout=909
 histlen=0
 autoinc=0 
-;datname=C:\Dokumente und Einstellungen\k125\Eigene Dateien\P5_WS2015-16\Gruppe_a\re_Ba_spektrum-moved.mcd
+;datname=C:\Dokumente und Einstellungen\k125\Eigene Dateien\P5_WS2015-16\Gruppe_a\Ba_zeitmessung.mcd
 savedata=0
 fmt=3 
 smoothpts=5 
@@ -47,4 +47,4 @@ caloff=0.000000
 calfact=1.000000
 calfact2=0
 calfact3=0
-calunit=keV
+calunit=t

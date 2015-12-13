@@ -266,9 +266,126 @@ nennt ihn Photo-Peak.
 
 \chapter{Durchführung}
 
+\section{Einstellen des Verstärkers}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\plotwidth]{plot_fit_peak_ohne}
+    \caption{%
+	    $^{137}\text{Cs}$-Spektrum ohne Aluminium Absorber
+   }
+    \label{fig:plot_fit_peak_ohne}
+\end{figure}
+
 %TODO
 
 \chapter{Auswertung}
+
+\section{Totaler Wirkungsquerschnitt}
+
+Es werden die Messdaten aus \fehlt%TODO\ref{}
+benutzt.
+An die Photopeaks der Spektren passen wir eine Gaussfunktion an. Das Resultat
+ist vergrößert in Abbildung~\ref{fig:amplituden} zu sehen. Die gesamten
+Spektren kann man in Abbildung~\ref{fig:plot_fit_peak_ohne} und im
+Anhang~\ref{anhang-wirkungsquerschnitt} betrachten.
+
+\begin{equation}
+	g\del x = \frac{a}{\varsigma \sqrt{2 \pi}} \exp\del{\frac{\del
+		{x - x_0}^2}{2 \varsigma^2}}
+		\quad \quad \quad \text{mit FWHM} \approx 2.355 \varsigma
+\end{equation}
+
+Die Flächen unter den Gaußkurven sind auf die Kurve ohne Absorber normiert als
+Intensitäten in Tabelle~\ref{tab:amplituden} aufgeführt. An diese wurde in
+Abbildung~\ref{fig:cross-section} eine Exponentialfunktion der folgenden Form
+angepasst:
+
+\begin{equation}
+	N\del x = N_0 \exp\del{-\sigma \rho_T x} \quad \quad \quad \text{mit }
+	\rho_T = \frac{N_A \rho}{M}
+\end{equation}
+
+Mit dem Ergenis aus der Anpassung und den Literaturwerten für Aluminium ($\rho
+= \SI{<< alu_dichte >>}{\gram\per\cubic\centi\metre}$, $M = \SI{<< alu_amu >>}
+{\atomicmassunit}$) ergibt sich für den totalen Wirkungsquerschnitt $\sigma$:
+
+\begin{align*}
+	&\sigma \rho_T = \SI{<< alu_a >>}{\per\milli\metre}
+	&&\rho_T = \SI{<< alu_n >>}{\per\cubic\milli\metre}
+	&&\implies \sigma = \SI{<< alu_sigma >>}{\barn}
+\end{align*}
+
+\fehlt %TODO Diskussion, Detektoreffizienz nicht beachtet
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{total-cross-section-data}
+    \caption{%
+	    Photopeaks im Spektrum der eingebauten $^{137}\text{Cs}$-Quelle ohne
+	    und mit \SIlist{1;5;10;20}{\milli\meter} Aluminium Absorber
+    }
+    \label{fig:amplituden}
+\end{figure}
+
+\begin{table}
+    \centering
+    \begin{tabular}{SSSS}
+        {Dicke / \si{\milli\meter}} &
+        {Scheitelpunkt / Kanal} &
+        {FWHM / Kanal} &
+	{rel. Intensität} \\
+        \midrule
+        %< for row in total_cross_section_table: ->%
+        << ' & '.join(row) >> \\
+        %< endfor ->%
+    \end{tabular}
+    \caption{%
+        Anpassungsparameter für die verschiedenen Dicken der
+        Absorbermaterialien.
+    }
+    \label{tab:amplituden}
+\end{table}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{total-cross-section-fit}
+    \caption{%
+	    Transmittierte relative Intensität abhängig von der Absoberdicke
+	    mit angepasster Exponentialfunktion
+    }
+    \label{fig:cross-section}
+\end{figure}
+
+\clearpage
+
+\section{Energiekalibrierung}
+
+Mit den Messdaten aus \fehlt%TODO\ref{ }
+und der Messung ohne Absober aus \fehlt%TODO\ref{ }
+wird nun die Energiekalibrierung durchgeführt. Dazu werden an die Spitzen der
+Spektren Gaussfunktionen angepasst. Das Ergebnis ist in
+Abbildung~\ref{fig:plot_fit_peak_ohne} und Abbildungen~\fehlt%TODO\ref{ }
+zu sehen. Außerdem sind die Parameter der Gaußfunktionen nocheinmal in
+Tabelle~\ref{tab:energiekalibrierung}
+aufgeführt.
+
+\begin{figure}
+	\centering
+	\begin{tabular}{SSS}
+		{Scheitelpunkte / Kanal} &
+		{FWHM / Kanal} &
+		{Energie / \si{\kilo\electronvolt}}\\
+		\midrule
+		%< for row in energy_calibration_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+	\caption{%
+		Anpassungeparameter für die Energiekalibrierung
+	}
+	\label{tab:energiekalibrierung}
+\end{figure}
+
 
 %TODO
 
@@ -282,6 +399,96 @@ nennt ihn Photo-Peak.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{appendix}
+
+\chapter{Anhang}
+
+\section{Abbildungen von Spektren mit Untergrund}\label{anhang-rohspektren-energiekalibrierung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.65\textwidth]{plot_data_raw_Ba}
+    \caption{%
+	    $^{133}\text{Ba}$-Spektrum mit Untergrund
+    }
+    \label{fig:plot_data_raw_Ba}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.65\textwidth]{plot_data_raw_Eu}
+    \caption{%
+	    $^{152}\text{Eu}$-Spektrum mit Untergrund
+   }
+    \label{fig:plot_data_raw_Eu}
+\end{figure}
+
+\clearpage
+
+\section{Abbildungen zur Bestimmung des totalen Wirkungsquerschnitts} \label{anhang-wirkungsquerschnitt}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.65\textwidth]{plot_fit_peak_01mm}
+    \caption{%
+	    $^{137}\text{Cs}$-Spektrum mit \SI{1}{\milli\metre} Aluminium
+	    Absorber
+    }
+    \label{fig:plot_fit_peak_01mm}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.65\textwidth]{plot_fit_peak_05mm}
+    \caption{%
+	    $^{137}\text{Cs}$-Spektrum mit \SI{5}{\milli\metre} Aluminium
+	    Absorber
+   }
+    \label{fig:plot_fit_peak_05mm}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.65\textwidth]{plot_fit_peak_10mm}
+    \caption{%
+	    $^{137}\text{Cs}$-Spektrum mit \SI{10}{\milli\metre} Aluminium
+	    Absorber
+   }
+    \label{fig:plot_fit_peak_10mm}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.65\textwidth]{plot_fit_peak_20mm}
+    \caption{%
+	    $^{137}\text{Cs}$-Spektrum mit \SI{20}{\milli\metre} Aluminium
+	    Absorber
+   }
+    \label{fig:plot_fit_peak_20mm}
+\end{figure}
+
+\clearpage
+
+\section{Abbildungen zur Energiekalibrierung} \label{anhang-energiekalibrierung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.65\textwidth]{plot_peaks_Ba}
+    \caption{%
+	    Untergrundbereinigtes $^{133}\text{Ba}$-Spektrum mit
+	    Gaussanpassungen
+   }
+    \label{fig:plot_peaks_Ba}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.65\textwidth]{plot_peaks_Eu}
+    \caption{%
+	    Untergrundbereinigtes $^{152}\text{Eu}$-Spektrum mit
+	    Gaussanpassungen
+    }
+    \label{fig:plot_peaks_Eu}
+\end{figure}
+
+
+
 
 %TODO
 

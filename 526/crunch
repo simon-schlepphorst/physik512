@@ -25,7 +25,16 @@ import unitprint
 _livetime_pattern = re.compile(r'LIVETIME: (\d+\.?\d*)')
 
 def gauss_peak(x, mean, width, area):
+    '''
+    Gausskurve
+    '''
     return area / (width * np.sqrt(2 * np.pi)) * np.exp( - ((x - mean) / width)**2 / 2)
+
+def decay(x, a):
+    '''
+    Exponentieller Abfall
+    '''
+    return np.exp(- x * a)
 
 def linear(x, slope, offset):
     return x * slope + offset
@@ -40,7 +49,7 @@ def extract_livetime(metafile):
             if m:
                 return float(m.group(1))
 
-def load_data_normalized(basename):
+def load_data_normalized(basename, lower_cut=0, upper_cut=-1):
     '''
     Loads the data and normalizes it to give events per second.
     '''
@@ -53,7 +62,281 @@ def load_data_normalized(basename):
 
     data[:, 1] /= livetime
 
+    data = data[lower_cut:upper_cut]
+
     return data
+
+def fit_peak(name, data, first, last, energy, show=False, save=False):
+    '''
+    Passt einen Peak an
+    :show zeigt die einzelne Anpassung
+    :save speichert gesamtes Spektrum in Datei
+
+    :return Mittelpunkt, Fehler Mittelpunkt, Breite, Fehler Breite, Fläche, Fehler Fläche, Energie
+    '''
+
+    x, y = data[first:last, 0], data[first:last, 1]
+    popt, pconv = op.curve_fit(gauss_peak, x, y, p0=[np.mean(x), 200, 100])
+    perr = np.sqrt(pconv.diagonal())
+
+    if show:
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = gauss_peak(fit_x, *popt)
+
+        ax.plot(x, y, marker=None, label=name)
+        ax.plot(fit_x, fit_y, marker=None)
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        ax.legend(loc='best')
+        fig.tight_layout()
+        fig.show()
+        print('Waiting for input ...')
+        input()
+        fig.clear()
+
+    if save:
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[:, 0], data[:, 1]
+
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = gauss_peak(fit_x, *popt)
+
+        ax.plot(x, y, marker=None, alpha=0.6, color='#377eb8')
+        ax.plot(fit_x, fit_y, marker=None, alpha=0.6, color='#e41a1c', linewidth=2)
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        fig.tight_layout()
+        fig.savefig('_build/plot_fit_peak_'+ name +'.pdf')
+        fig.clear
+
+    return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy
+
+
+def job_total_cross_section(T):
+    lower_cut = 200
+    upper_cut = 8000
+
+    data_untergrund = load_data_normalized('m01_untergrund', lower_cut, upper_cut)
+    data_01mm = load_data_normalized('m01_1mm', lower_cut, upper_cut)
+    data_05mm = load_data_normalized('m01_5mm', lower_cut, upper_cut)
+    data_10mm = load_data_normalized('m01_10mm', lower_cut, upper_cut)
+    data_20mm = load_data_normalized('m01_20mm', lower_cut, upper_cut)
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    points = []
+
+    first = 6200 - lower_cut
+    last = 7600 - lower_cut
+
+    for name, data, color in [('ohne', data_untergrund,'#e41a1c'),
+                              ('01mm', data_01mm, '#377eb9'),
+                              ('05mm', data_05mm, '#4daf4a'),
+                              ('10mm', data_10mm, '#984ea4'),
+                              ('20mm', data_20mm, '#ff7f01')]:
+        points.append(fit_peak(name, data, first, last, 662, save=True))
+        tmp_point = np.array(points[-1])
+        x, y = data[first:last, 0], data[first:last, 1]
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = gauss_peak(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
+
+        ax.plot(x, y, marker=None, alpha=0.4, color=color)
+        ax.plot(fit_x, fit_y, marker = None, color=color, label=name, linewidth=2)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Ereignisse / s')
+    ax.legend(loc='best')
+    fig.tight_layout()
+    fig.savefig('_build/total-cross-section-data.pdf')
+    fig.clear
+
+    points = np.array(points)
+
+    list_dicke = np.array([0, 1, 5, 10, 20])
+    list_mean_val = points[:, 0]
+    list_mean_err = points[:, 1]
+    list_full_width_val = points[:, 2] * 2 * np.sqrt(2 * np.log(2))
+    list_full_width_err = points[:, 3] * 2 * np.sqrt(2 * np.log(2))
+    list_area_val = points[:, 4]
+    list_area_err = points[:, 5]
+
+
+    # Relative Intensität bestimmen:
+
+    list_intensity_val = np.copy(list_area_val)
+    list_intensity_err = np.copy(list_area_err)
+    #list_intensity_val = list_area_val * list_mean_val
+    #list_intensity_err = np.sqrt(
+    #    (list_area_err * list_mean_val)**2
+    #    + (list_area_val * list_mean_err)**2
+    #)
+
+    rescale = list_intensity_val[0]
+
+    list_intensity_val /= rescale
+    list_intensity_err /= rescale
+
+    popt, pconv = op.curve_fit(decay, list_dicke[:-1], list_intensity_val[:-1], p0=[1])
+    perr = np.sqrt(pconv.diagonal())
+    x = np.linspace(np.min(list_dicke), np.max(list_dicke), 100)
+    y = decay(x, *popt)
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    ax.errorbar(list_dicke, list_intensity_val, list_intensity_err, marker='+', linestyle='none')
+    ax.plot(x, y)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Dicke / mm')
+    ax.set_ylabel('relative Intensität')
+    fig.tight_layout()
+    fig.savefig('_build/total-cross-section-fit.pdf')
+    fig.clear
+
+
+    T['total_cross_section_table'] = list(zip(
+        unitprint.siunitx(list_dicke),
+        unitprint.siunitx(list_mean_val, list_mean_err),
+        unitprint.siunitx(list_full_width_val, list_full_width_err),
+        unitprint.siunitx(list_intensity_val, list_intensity_err),
+        ))
+
+    # Absorbtionseigenschaften von Aluminium
+
+    dichte = 2.7
+    dichte_si = dichte * 1e-3
+    amu = 26.981528
+    na = 6.022e23
+
+    n = dichte_si * na / amu
+
+    sigma_val = popt[0] / n
+    sigma_err = perr[0] / n
+
+    T['alu_dichte'] = unitprint.siunitx(dichte)
+    T['alu_amu'] = unitprint.siunitx(amu)
+    T['alu_n'] = unitprint.siunitx(n)
+    T['alu_a'] = unitprint.siunitx(popt[0], perr[0])
+    T['alu_sigma'] = unitprint.siunitx(sigma_val / 1e-22, sigma_err / 1e-22)
+
+
+def job_energy_calibration(T):
+
+    lower_cut = 200
+    upper_cut = 8000
+
+    data_untergrund = load_data_normalized('m02_untergrund', lower_cut, upper_cut)
+    data_cs = load_data_normalized('m01_untergrund', lower_cut, upper_cut)
+    data_ba = load_data_normalized('m02_Ba', lower_cut, upper_cut)
+    data_eu = load_data_normalized('m02_Eu', lower_cut, upper_cut)
+
+    for name, data in [('Ba', data_ba), ('Eu', data_eu)]:
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[:, 0], data[:, 1]
+        ax.plot(x, y, marker=None, alpha=0.6, label='Spektrum', color='#377eb8')
+
+        x_untergrund, y_untergrund = data_untergrund[:, 0], data_untergrund[:, 1]
+        ax.plot(x_untergrund, y_untergrund, marker=None, alpha=0.6, color='#e41a1c', label='Untergrund')
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        ax.legend(loc='best')
+        fig.tight_layout()
+        fig.savefig('_build/plot_data_raw_' + name + '.pdf')
+        fig.clear
+
+
+    data_ba[:, 1] -= data_untergrund[:, 1]
+    data_eu[:, 1] -= data_untergrund[:, 1]
+
+    points = []
+
+    fit_range_cs = [
+            (6200, 7600, 661.66),
+            ]
+
+    fit_range_ba = [
+            (275, 475, 30.8502),
+            (800, 1100, 80.9979),
+            (2700, 3500, 302.8508),
+            (3600, 4000, 356.0129),
+            ]
+
+    fit_range_eu = [
+            (400, 550, 39.9049),
+            (1250, 1500, 121.7817),
+            (2400, 3000, 244.6974),
+            (3200, 4200, 344.2785),
+            ]
+
+    for name, data, fit_range in [('Cs', data_cs, fit_range_cs),
+                              ('Ba', data_ba, fit_range_ba),
+                              ('Eu', data_eu, fit_range_eu)]:
+
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[:, 0], data[:, 1]
+        ax.plot(x, y, marker=None, alpha=0.6, color='#377eb9')
+
+        for i, (first, last, expected_energy) in zip(itertools.count(1), fit_range):
+            first -= lower_cut
+            last -= lower_cut
+            points.append(fit_peak(name, data, first, last, expected_energy))
+            tmp_point = np.array(points[-1])
+
+            fit_x = np.linspace(np.min(x), np.max(x), 1000)
+            fit_y = gauss_peak(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
+
+            ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=2)
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        fig.tight_layout()
+        fig.savefig('_build/plot_peaks_' + name + '.pdf')
+        fig.clear
+
+
+    points = np.array(points)
+
+    list_mean_val = points[:, 0]
+    list_mean_err = points[:, 1]
+    list_full_width_val = np.abs(points[:, 2] * 2 * np.sqrt(2 * np.log(2)))
+    list_full_width_err = points[:, 3] * 2 * np.sqrt(2 * np.log(2))
+    list_area_val = points[:, 4]
+    list_area_err = points[:, 5]
+    list_expected_energy = points[:, 6]
+
+    T['energy_calibration_table'] = list(zip(
+        unitprint.siunitx(list_mean_val, list_mean_err),
+        unitprint.siunitx(list_full_width_val, list_full_width_err),
+        unitprint.siunitx(list_expected_energy),
+        ))
+
+
+
 
 
 def test_keys(T):
@@ -81,6 +364,9 @@ def main():
     T = {}
 
     ###########################################
+
+    job_total_cross_section(T)
+    job_energy_calibration(T)
 
     ###########################################
 
