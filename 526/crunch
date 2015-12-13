@@ -30,11 +30,11 @@ def gauss_peak(x, mean, width, area):
     '''
     return area / (width * np.sqrt(2 * np.pi)) * np.exp( - ((x - mean) / width)**2 / 2)
 
-def decay(x, tau, a):
+def decay(x, a):
     '''
     Exponentieller Abfall
     '''
-    return a * np.exp(- x / tau)
+    return np.exp(- x * a)
 
 def linear(x, slope, offset):
     return x * slope + offset
@@ -169,7 +169,7 @@ def job_total_cross_section(T):
     list_intensity_val /= rescale
     list_intensity_err /= rescale
 
-    popt, pconv = op.curve_fit(decay, list_dicke[:-1], list_intensity_val[:-1], p0=[20, 420000])
+    popt, pconv = op.curve_fit(decay, list_dicke[:-1], list_intensity_val[:-1], p0=[1])
     perr = np.sqrt(pconv.diagonal())
     x = np.linspace(np.min(list_dicke), np.max(list_dicke), 100)
     y = decay(x, *popt)
