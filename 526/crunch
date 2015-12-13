@@ -251,7 +251,7 @@ def job_energy_calibration(T):
         ax = fig.add_subplot(1, 1, 1)
 
         x, y = data[:, 0], data[:, 1]
-        ax.plot(x, y, marker=None, alpha=0.5, label='Daten '+name, color='#377eb8')
+        ax.plot(x, y, marker=None, alpha=0.5, label='Spektrum', color='#377eb8')
 
         x_untergrund, y_untergrund = data_untergrund[:, 0], data_untergrund[:, 1]
         ax.plot(x_untergrund, y_untergrund, marker=None, alpha=0.5, color='#e41a1c', label='Untergrund')
