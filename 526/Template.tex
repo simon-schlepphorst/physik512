@@ -271,8 +271,45 @@ nennt ihn Photo-Peak.
 
 
 \chapter{Durchführung}
+Experimentiert wird an einem rundem Versuchstisch mit Winkelskala.
+Bei \SI{180}{\degree} befindet sich eine fest montierte
+$^{137}\text{Cs}$-Quelle. Der Detektor lässt sich entweder direkt gegenüber
+dieser Quelle oder auf einem beweglichen Arm, mit dem sich ein Winkelbereich
+von \SI{35}{\degree} bis \SI{120}{\degree} abdecken lässt. Bei
+\SI{270}{\degree} wird im späteren Verlauf die $^{133}\text{Ba}$- beziehungsweise die
+$^{152}\text{Eu}$-Quelle so positioniert, das die Zählraten ungefähr gleich
+sind. Das erreicht man dadurch, das man die Quellen näher oder weiter von
+Kreiszentrum befestigt. 
+In der Mitte befindet sich Vorrichtung, auf der sich Absorbermaterialien stellen lassen.
 
-\section{Einstellen des Verstärkers}
+Für die erste Messung benutzen wir die $^{137}\text{Cs}$-Quelle. Sie dient der
+Einstellung der Versuchsparameter. Der Detektor wird gegenüber der Quelle
+positioniert und der Ausgang des Photomultipieres über ein R-Stück mit dem
+Oszilloskop verbunden. Man nutzt das T-Stück, damit es nicht zu Refelektionen
+am Kabelende kommt. Als nächstes erhöhen wir die Hochspannung des
+Photomultipliers von \SI{0}{\volt} auf \SI{700}{\volt} und erhalten \fehlt.
+
+Nun verbinden wir den Detektor mit dem Verstärer und diesen mit der MCA-Karte
+in Computer. Wir wählen die Verstärung so, dass der Photopeak des Spektrums
+ungefähr bei der Kanal-Nr. 7000 liegt. Die ersten Messungen nehmen wir mit
+einer Lebenszeit, Zeit nach Abzug der Totzeiten, von zehn Minuten auf.
+Nun nehmen wir mit unveränderten Aufbau ein Spektrum ohne Absorber~\ref{fig:plot_fit_peak_ohne} in der Mitte
+und jeweils ein mit \SI{1,0}{\milli\meter}, \SI{5,0}{\milli\meter},
+\SI{10,0}{\milli\meter} und \SI{20,0}{\milli\meter} dicken Aluminiumplättchen
+senkrecht zum Strahlengang auf.
+
+Für die Energiekalibrierung stellen wie den Detektor auf den beweglichen Arm
+und stellen ihn auf \SI{90}{\degree}. Zunächst nehmen wir eine Untergrund
+Messung vor, dann nehmen wir die bekannten Spektren der $^{133}\text{Ba}$- und
+der $^{152}\text{Eu}$-Quelle auf.
+
+Zuletzt wollen wir die Streuspektren der $^{137}\text{Cs}$-Quelle messen. Dafür
+entfernen wir die übrigen Quellen und den Bleikollimator, stellen einen Plexiglaszylinder 
+in die Mitte. Dieser
+sollte auf Grund seiner geringen Kernladungszahl für Comptonstreueffekte besonders
+geeignet. Nun nehmen wir in ein dem Bereich von \SIrange{35}{120}{\degree}
+jeweils alle \SI{5}{\degree} fünf Minuten lang das Spektrum auf.
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=\plotwidth]{plot_fit_peak_ohne}
