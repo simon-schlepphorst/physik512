@@ -95,7 +95,9 @@ def fit_peak(name, data, first, last, energy, show=False, save=False):
         ax.set_ylabel('Ereignisse / s')
         ax.legend(loc='best')
         fig.tight_layout()
-        pl.show()
+        fig.show()
+        print('Waiting for input ...')
+        input()
         fig.clear()
 
     if save:
