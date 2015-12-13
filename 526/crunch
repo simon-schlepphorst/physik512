@@ -307,7 +307,7 @@ def job_energy_calibration(T):
 
     list_mean_val = points[:, 0]
     list_mean_err = points[:, 1]
-    list_full_width_val = points[:, 2] * 2 * np.sqrt(2 * np.log(2))
+    list_full_width_val = np.abs(points[:, 2] * 2 * np.sqrt(2 * np.log(2)))
     list_full_width_err = points[:, 3] * 2 * np.sqrt(2 * np.log(2))
     list_area_val = points[:, 4]
     list_area_err = points[:, 5]

@@ -180,8 +180,26 @@ wird nun die Energiekalibrierung durchgeführt. Dazu werden an die Spitzen der
 Spektren Gaussfunktionen angepasst. Das Ergebnis ist in
 Abbildung~\ref{fig:plot_fit_peak_ohne} und Abbildungen~\fehlt%TODO\ref{ }
 zu sehen. Außerdem sind die Parameter der Gaußfunktionen nocheinmal in
-Tabelle~\fehlt%TODO\ref{ }
+Tabelle~\ref{tab:energiekalibrierung}
 aufgeführt.
+
+\begin{figure}
+	\centering
+	\begin{tabular}{SSS}
+		{Scheitelpunkte / Kanal} &
+		{FWHM / Kanal} &
+		{Energie / \si{\kilo\electronvolt}}\\
+		\midrule
+		%< for row in energy_calibration_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+	\caption{%
+		Anpassungeparameter für die Energiekalibrierung
+	}
+	\label{tab:energiekalibrierung}
+\end{figure}
+
 
 %TODO
 
