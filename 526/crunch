@@ -246,12 +246,28 @@ def job_energy_calibration(T):
     data_ba = load_data_normalized('m02_Ba', lower_cut, upper_cut)
     data_eu = load_data_normalized('m02_Eu', lower_cut, upper_cut)
 
+    for name, data in [('Ba', data_ba), ('Eu', data_eu)]:
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[:, 0], data[:, 1]
+        ax.plot(x, y, marker=None, alpha=0.5, label='Daten '+name, color='#377eb8')
+
+        x_untergrund, y_untergrund = data_untergrund[:, 0], data_untergrund[:, 1]
+        ax.plot(x_untergrund, y_untergrund, marker=None, alpha=0.5, color='#e41a1c', label='Untergrund')
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        ax.legend(loc='best')
+        fig.tight_layout()
+        fig.savefig('_build/plot_data_raw_' + name + '.pdf')
+        fig.clear
+
+
     data_ba[:, 1] -= data_untergrund[:, 1]
     data_eu[:, 1] -= data_untergrund[:, 1]
-
-
-    #fig = pl.figure()
-    #ax = fig.add_subplot(1, 1, 1)
 
     points = []
 
