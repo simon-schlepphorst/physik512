@@ -182,7 +182,7 @@ def job_total_cross_section(T):
 
     ax.margins(0.05)
     ax.grid(True)
-    ax.set_xlabel('Dicke')
+    ax.set_xlabel('Dicke / mm')
     ax.set_ylabel('relative Intensität')
     fig.tight_layout()
     fig.savefig('_build/total-cross-section-fit.pdf')
