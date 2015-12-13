@@ -69,7 +69,7 @@ def load_data_normalized(basename, lower_cut=0, upper_cut=-1):
 def fit_peak(name, data, first, last, energy, show=False, save=False):
     '''
     Passt einen Peak an
-    :show zeigt das gesamte Spektrum mit anpassung
+    :show zeigt die einzelne Anpassung
     :save speichert gesamtes Spektrum in Datei
 
     :return Mittelpunkt, Fehler Mittelpunkt, Breite, Fehler Breite, Fläche, Fehler Fläche, Energie
@@ -79,7 +79,26 @@ def fit_peak(name, data, first, last, energy, show=False, save=False):
     popt, pconv = op.curve_fit(gauss_peak, x, y, p0=[np.mean(x), 200, 100])
     perr = np.sqrt(pconv.diagonal())
 
-    if save or show:
+    if show:
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = gauss_peak(fit_x, *popt)
+
+        ax.plot(x, y, marker=None, label=name)
+        ax.plot(fit_x, fit_y, marker=None)
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        ax.legend(loc='best')
+        fig.tight_layout()
+        pl.show()
+        fig.clear()
+
+    if save:
         fig = pl.figure()
         ax = fig.add_subplot(1, 1, 1)
 
@@ -90,15 +109,13 @@ def fit_peak(name, data, first, last, energy, show=False, save=False):
 
         ax.plot(x, y, marker=None)
         ax.plot(fit_x, fit_y, marker=None)
+
         ax.margins(0.05)
         ax.grid(True)
         ax.set_xlabel('Kanal')
         ax.set_ylabel('Ereignisse / s')
         fig.tight_layout()
-        if show:
-            pl.show()
-        if save:
-            fig.savefig('_build/plot_fit_peak_'+ name +'.pdf')
+        fig.savefig('_build/plot_fit_peak_'+ name +'.pdf')
         fig.clear
 
     return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy
