@@ -148,8 +148,8 @@ def job_total_cross_section(T):
     list_dicke = np.array([0, 1, 5, 10, 20])
     list_mean_val = points[:, 0]
     list_mean_err = points[:, 1]
-    list_width_val = points[:, 2]
-    list_width_err = points[:, 3]
+    list_full_width_val = points[:, 2] * 2 * np.sqrt(2 * np.log(2))
+    list_full_width_err = points[:, 3] * 2 * np.sqrt(2 * np.log(2))
     list_area_val = points[:, 4]
     list_area_err = points[:, 5]
 
@@ -192,7 +192,7 @@ def job_total_cross_section(T):
     T['total_cross_section_table'] = list(zip(
         unitprint.siunitx(list_dicke),
         unitprint.siunitx(list_mean_val, list_mean_err),
-        unitprint.siunitx(list_width_val, list_width_err),
+        unitprint.siunitx(list_full_width_val, list_full_width_err),
         unitprint.siunitx(list_intensity_val, list_intensity_err),
         ))
 
