@@ -478,8 +478,8 @@ def job_scattering(T):
     for name, data, first, last in [
             ('w035', w035_data, 4700, 6200),
             ('w040', w040_data, 4000, 6100),
-            ('w045', w045_data, 2000, 7000),
-            ('w050', w050_data, 2000, 7000),
+            ('w045', w045_data, 4000, 7000),
+            ('w050', w050_data, 4000, 7000),
             ('w055', w055_data, 2000, 7000),
             ('w060', w060_data, 2000, 7000),
             ('w065', w065_data, 2000, 7000),
@@ -525,12 +525,25 @@ def job_scattering(T):
 
     list_winkel_val = np.array([35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120])
     list_winkel_err = np.array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5])
-    list_mean_val = energy_calibration(points[:, 0])
-    list_mean_err = energy_calibration(points[:, 1])
+    list_mean_val = points[:, 0]
+    list_mean_err = points[:, 1]
     list_full_width_val = np.abs(points[:, 2] * 2 * np.sqrt(2 * np.log(2)))
     list_full_width_err = points[:, 3] * 2 * np.sqrt(2 * np.log(2))
     list_area_val = points[:, 4]
     list_area_err = points[:, 5]
+    list_energy_val = energy_calibration(points[:, 0])
+    list_energy_err = np.abs(energy_calibration(points[:, 1]))
+
+
+    T['winkel_energie_table'] = list(zip(
+        unitprint.siunitx(list_winkel_val, list_winkel_err),
+        unitprint.siunitx(list_mean_val, list_mean_err),
+        unitprint.siunitx(list_full_width_val, list_full_width_err),
+        unitprint.siunitx(list_area_val, list_area_err),
+        unitprint.siunitx(list_energy_val, list_energy_err),
+        ))
+
+
 
 
 def test_keys(T):

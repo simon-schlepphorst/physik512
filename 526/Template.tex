@@ -409,6 +409,32 @@ erstellen:
 \end{figure}
 
 
+\section{Auswertung der Streuspektren}
+\subsection{Peakanpassung}
+
+\begin{figure}
+	\centering
+	\begin{tabular}{SSSSS}
+		{Winke} &
+		{Scheitelpunkte} &
+		{FWHM} &
+		{Fläche}&
+		{Energie / \si{\kilo\electronvolt}}\\
+		\midrule
+		%< for row in winkel_energie_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+	\caption{%
+		Anpassungeparameter der Streuspektren unter unterschiedlichen
+		Winkeln
+	}
+	\label{tab:peakanpassung}
+\end{figure}
+
+
+
+
 %TODO
 
 \chapter{Ergebnis}
