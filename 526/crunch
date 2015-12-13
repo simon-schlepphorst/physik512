@@ -231,8 +231,8 @@ def job_energy_calibration(T):
     data_eu[:, 1] -= data_untergrund[:, 1]
 
 
-    fig = pl.figure()
-    ax = fig.add_subplot(1, 1, 1)
+    #fig = pl.figure()
+    #ax = fig.add_subplot(1, 1, 1)
 
     points = []
 
@@ -241,14 +241,25 @@ def job_energy_calibration(T):
             ]
 
     fit_range_ba = [
+            (200, 500, 0),
+            (700, 1100, 0),
+            (3000, 3500, 0),
+            (3500, 4100, 0),
             ]
 
     fit_range_eu = [
+            (200, 700, 0),
+            (1100, 1500, 0),
+            (2500, 3000, 0),
+            (3300, 4100, 0),
             ]
 
     for name, data, fit_range in [('Cs', data_cs, fit_range_cs),
                               ('Ba', data_ba, fit_range_ba),
                               ('Eu', data_eu, fit_range_eu)]:
+
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
 
         x, y = data[:, 0], data[:, 1]
         ax.plot(x, y, marker=None, alpha=0.7, color='#377eb9', label=name)
@@ -262,7 +273,7 @@ def job_energy_calibration(T):
             fit_x = np.linspace(np.min(x), np.max(x), 1000)
             fit_y = gauss_peak(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
 
-            ax.plot(fit_x, fit_y, marker = None, color='#e41a1c', linewidth=1.5, label=name)
+            ax.plot(fit_x, fit_y, marker = None, color='#e41a1c', linewidth=1.5)
             print(i)
 
         print(name, i)
