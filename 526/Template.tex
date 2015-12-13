@@ -78,19 +78,177 @@ Winkelabhängigkeit von Intensität und der Energie der $\gamma$-Strahlung.
 \tableofcontents
 
 \chapter{Theorie}
-\section{Wechselwirkung von $\gamma$-Strahlung in Materie}
-Energiereiche Photonen, wie die zu betrachtenden $\gamma$-Teilchen können in
-Materie Wechselwirken. Hierbei hängt der dominierende Effekt von der
+%\section{Wechselwirkung von $\gamma$-Strahlung in Materie}
+%Energiereiche Photonen, wie die zu betrachtenden $\gamma$-Teilchen können in
+%Materie Wechselwirken. Hierbei hängt der dominierende Effekt von der
+%Energie der Teilchen und der Ordnungszahl ab.
+%TODO Skizze Wirkungsquerschnitt-energie 
+%Im unteren Energiebereich, ab dem Punkt wo die Energie höher ist als die
+%Bindungsernergie findet hauptsächlich der Photoeffekt statt. Im mittleren
+%Bereich dominiert der Compten-Effekt und ab einer Energie von
+%\SI{1022}{\kilo\electronvolt} kann auch vermehrt die Elektron-Positron-
+%Paarbildung auf treten.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Wechselwirkung von $\gamma$-Strahlung mit Materie}
+\label{sec:WW-strahlung-Materie}
+Die $\gamma$-Strahlung entsteht, wenn nach einem vorhergegangen Zerfall der
+Tochterkern nicht in seinen Grundzustand, sondern in einen angeregten Zustand
+zerfällt.
+Dieser angeregte Zustand zerfällt nach einiger Zeit durch Abstrahlung des
+$\gamma$-Quants in den Grundzustand. Diese Photonen sind sehr Energiereich,
+weshalb sie genug Energie haben, um auf verschiedene Weisen mit der Materie zu
+Wechselwirken.Hierbei hängt der dominierende Effekt von der
 Energie der Teilchen und der Ordnungszahl ab.
 %TODO Skizze Wirkungsquerschnitt-energie 
 Im unteren Energiebereich, ab dem Punkt wo die Energie höher ist als die
 Bindungsernergie findet hauptsächlich der Photoeffekt statt. Im mittleren
 Bereich dominiert der Compten-Effekt und ab einer Energie von
 \SI{1022}{\kilo\electronvolt} kann auch vermehrt die Elektron-Positron-
-Paarbildung auf treten.
+
+\subsection{Paarerzeugung}
+Ein weiterer Effekt, der bei Energien $E_\gamma \ge 2m_\text ec^2$ auftreten
+kann, ist die Elektron-Positron-Paarbildung.
+Dieser Effekt ist allerdings erst ab weit oberhalb dieser Schwelle relevant.
+Für den Wirkungsquerschnitt gilt $\sigma \propto Z^2$.
+
+\subsection{Photoeffekt}
+Der Photoeffekt beschreibt den Vorgang, bei welchem ein Photon ein Elektron aus
+dem Atom auslöst.
+Hierbei gibt das Photon seine komplette Energie ab.
+Die kinetische Energie des ausgelösten Elektrons hängt nur über die
+Bindungsenergie ($E_\text{Bind.}$) mit dem der Energie des Photons ($h\nu$),
+also dessen Frequenz ($\nu$) zusammen.
+Dieser Prozess kann nur in der Nähe eines Atomkerns stattfinden, weil dieser
+den Rückstoß aufnimmt.
+So bleibt bei diesen Vorgang Energie und Impuls erhalten. 
+\[ 
+    E = h\nu - E_\text{Bind.}
+\]
+Wenn man sich den Wirkungsquerschnitt $\sigma$ für diesen Prozess anschaut,
+dann stellt man eine große Abhängigkeit von der Ordnungszahl $Z$ fest.
+\[
+    \sigma \propto Z^5 E_\gamma^{\frac 72}
+\]
+Deshalb tritt dieser Effekt besonders häufig bei Elementen mit hoher Ordnungszahl
+auf.
+ 
+\subsection{Comptonstreuung}
+Wenn Photonen an einem Elektron streuen, dann spricht man vom Comptoneffekt. 
+Hierbei gibt das Photon einen Teil seiner an das Elektron ab und ändert dabei
+seine Frequenz.%TODO bild Comptonstreuung
+Die abgegebene Energie hängt dabei vom Streuwinkel ab.
+Für die Restenergie des Photons gilt:
+\[
+    E_\nu'(\phi) = \frac{E_\nu}{1+\frac{E_\nu}{m_\text ec^2}(1+\cos(\phi))}
+\]
+Die größte Energieänderung erhält man also bei einem Winkel von
+$\phi=\SI{180}{\degree}$.
+Diese Energieänderung berechnet sich durch:
+\[
+    \Delta\lambda = \frac{h}{m_\text ec}(1-\cos(\phi))
+\]
+Der Wirkungsquerschnitt entspricht $\sigma_\text C \propto \frac{Z}{E_\gamma}$.
+%TODO nur für coptoneffekt
+%TODO bild Spektrum im szintilator
+
+\subsection{Keine Wechselwirkung}
+Ein nicht unerheblicher Teil der $\gamma$-Strahlung kann auch Wechselwirkung
+Materie durchdringen.
+
+%TODO compton
+\section{Wirkungsquerschnitte}
+Hier muss zwischen dem differenziellen- und dem absoluten Wirkungsquerschnitt
+unterschieden werden.
+Die Herleitung für den Wirkungsquerschnitt des Comptoneffekt gelang untern
+Nutzung der Dirac-Gleichung. Verantwortlich hierfür waren Nishina und
+Klein, nach welchen auch die Darstellung, der Klein-Nishina-Plot, benannt ist.
+\[
+    \dod \sigma\Omega = \frac{r^2_\text{e}}{2}
+    \frac{1}{(1+\gamma(1-\cos(\theta)))^2}\del{1+\cos(\theta)^2+\frac{\gamma^2(1-\cos(\theta)^2)}{1+\gamma(1-\cos(\theta))}}
+\]
+\label{eq:dif-querschnitt}
+\ref{eq:dif-querschnitt} heißt Klein-Nishina Formel und beschreibt den
+differenziellen Wirkungsquerschnitt mit dem Stoßwinkel $\theta$.
+Um den totalen Wirkungsquerschnitt zu erhalten integriert man über dem
+Raumwinkel:
+\[
+    \sigma = 2\pi r^2_e
+    \del{\frac{1+\gamma}{\gamma^2}\del{\frac{2(1+\gamma)}{1+2\gamma}-\frac
+        1\gamma\ln(1+2\gamma)}+\frac
+    1{2\gamma}\ln(1+2\gamma)-\frac{1+3\gamma}{(1+2\gamma)^2}}
+\]
+%Wenn man hieraus das Energiespektrum ermitteln möchte, so kann man in der
+%Klein-Nishina-Formel 
+%\[
+%    \dod{\sigma}{T} = 
+%    \frac{\pi r^2_\text e}{m_\text ec^2\gamma^2} \del{
+%        2+\frac{s^2}{\gamma^2(1-s)^2}+\frac{s}{1-s}\del{s-\frac 2\gamma}}
+%\]
+
+Darstellen lässt sich die Winkelverteilung der Photonen durch den Wirkungsquerschnitt in einem
+Klein-Nishina Plot. 
+%TODO klein nishina plot
+
+\section{Szintillationsdetektor}
+Mit einem Szintillationsdetektor lassen sich Intensität und Energie von
+ionisierender Strahlung messen.
+Er besteht aus einem Szintillator und einem Photomultiplier.
+Der Szintillator ist ein dotierter Einkristall, der von energiereicher
+Strahlung zum Fluoreszieren angeregt werden kann und hinreichend
+durchlässig für das von ihm emittierte Licht ist.
+
+Innerhalb des vor Lichteinfall geschützten Szintillators entstehen durch
+ionisierende Strahlung Lichtblitze. 
+Diese entstehen dadurch, dass die Strahlung Atome durch die Effekt
+~\ref{sec:WW-strahlung-Materie} angeregt, welche entweder direkt
+wieder rekombinieren und Photonen aussenden oder über Stöße vorher einen Teil
+ihrer Energie abgeben.
+Somit ist die Intesität dieser Blitze abhängig von der Energie der einfallenden Strahlung.
+%TODO nur für coptoneffekt? Bild Spektrum
+In dem entstehenden Spektrum, bei dem die Intensität gegen Energie
+aufgetragen. Man erhält ein Compton-Kontinuum, welches die Comptonstreuung bis
+zu einem Winkel von \SI{180}{\degree} enthält. Da bei diesem Wert der maximale
+Energieübertrag stattfindet, hat erhält man eine scharfe Kante, die Compton
+Kante. Wird nicht nur ein Teil der Energie abgegeben, wie es bei Photoeffekt
+der Fall ist, entsteht der energetisch höher gelegene Ausschlag. Man nennt
+ihn Photo-Peak.
 
 
 
+\subsection{Photomultiplier}
+Aufgrund des Photoeffektes, werden an der Photokathode des Photomultipliers
+Elektronen ausgelöst.
+
+Durch den Aufbau weitern des Photomultiplieres kommt es zu einem Lawineneffekt,
+welcher die Elektronen vervielfacht und somit eine Detektion erleichtert.
+Die Amplitude des so entstanden Strompulses ist somit auch proportional zu der
+Energie der Eingangsstrahlung.
+%TODO für Driftkammer
+%Wenn man eine gute Energieauflösung möchte, sollte man allerdings eher einem
+%Halbleiterdetektor nutzen.
+
+\subsection{Energie und Zeitauflösung}
+Um mit dieser Art Detektor möglichst gute Auflösungen zu erhalten, greift man
+das Signal je nachdem ob man die Energie- oder die Zeitauflösung optimieren will
+an eine Dynode beziehungsweise an der Anode des Photomultipliers ab.
+Der Vorteil der Dynode für die Energieauflösung liegt da drin, dass noch keine
+Sättigung herrscht. Hierdurch ist die Proportionalität zwischen Signalhöhe und
+Energie nicht beeinträchtigt. Da das Signal allerdings nur sehr langsam
+ansteigt, man spricht von den Slow-Signal, ist die Zeitauflösung beeinträchtigt.
+Deswegen benutzt man hier das sogenannte Fast-Signal. Es wird an der Anode
+abgegriffen, da hier Sättigung vorliegt, wodurch das Signal schnell ansteigt.
+Die Amplitude ist allerdings nicht mehr proportional zur Energie.
+Um die Zeitauflösung ermitteln zu können nutzt man eine
+Slow-Fast-Koinzidenzschaltung. Man misst bekannte Linien und bestimmt aus den
+angepassten Funktionen die Halbwertsbreite.
+
+%TODO für Nukleare elektronik
+%Für die Zeitkalibrirung nutzt man
+%am besten ein Isotope, welches einen $\beta^+$-Zerfall besitzt. Dadurch kann
+%man gewährleisten, dass gleichzeitig zwei Photonen mit bekannter Wellenlänge
+%von \SI{511}{\ilko\electronenvot} durch die Rekombination von Elektron und
+%Positron entstehen.
 \chapter{Durchführung}
 
 %TODO
