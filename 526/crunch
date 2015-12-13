@@ -303,6 +303,23 @@ def job_energy_calibration(T):
         fig.clear
 
 
+    points = np.array(points)
+
+    list_mean_val = points[:, 0]
+    list_mean_err = points[:, 1]
+    list_full_width_val = points[:, 2] * 2 * np.sqrt(2 * np.log(2))
+    list_full_width_err = points[:, 3] * 2 * np.sqrt(2 * np.log(2))
+    list_area_val = points[:, 4]
+    list_area_err = points[:, 5]
+    list_expected_energy = points[:, 6]
+
+    T['energy_calibration_table'] = list(zip(
+        unitprint.siunitx(list_mean_val, list_mean_err),
+        unitprint.siunitx(list_full_width_val, list_full_width_err),
+        unitprint.siunitx(list_expected_energy),
+        ))
+
+
 
 
 
