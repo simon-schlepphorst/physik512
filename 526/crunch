@@ -335,6 +335,33 @@ def job_energy_calibration(T):
         unitprint.siunitx(list_expected_energy),
         ))
 
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    x, y = list_mean_val, list_expected_energy
+    ax.errorbar(list_mean_val, list_expected_energy, xerr=list_mean_err, marker='+', linestyle='none')
+
+    popt, pconv = op.curve_fit(linear, x, y)
+    perr = np.sqrt(pconv.diagonal())
+
+    fit_x = np.linspace(np.min(x), np.max(x), 100)
+    fit_y = linear(fit_x, *popt)
+    ax.plot(fit_x, fit_y)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Energie / keV')
+    fig.tight_layout()
+    fig.savefig('_build/plot_energy-calibrate-fit.pdf')
+    fig.clear
+
+    slope_val, slope_err = popt[0], perr[0]
+    offset_val, offset_err = popt[1], perr[1]
+
+    T['energy_slope'] = unitprint.siunitx(slope_val, slope_err)
+    T['energy_offset'] = unitprint.siunitx(offset_val, offset_err)
+
 
 
 
