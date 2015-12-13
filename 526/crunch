@@ -123,6 +123,37 @@ def fit_peak(name, data, first, last, energy, show=False, save=False):
 
     return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy
 
+def interpolate_ansprech():
+    '''
+    Interpoliert die Ansprechwahrscheinlichkeit mit cubischen Splines
+
+    Als Nebeneffekt wird die angepasste Funktion geplottet.
+
+    :return: Umrechnungsfunktion Energie → Ansprechwahrscheinlichkeit.
+    '''
+    data = np.loadtxt('Daten/Ansprechwahrscheinlichkeit.txt')
+    x, y = data[:, 0], data[:, 1]
+
+    converter = scipy.interpolate.interp1d(x, y, kind='cubic')
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    fit_x = np.linspace(min(x), max(x), 1000)
+    fit_y = converter(fit_x)
+
+    ax.plot(x, y, marker='+', linestyle='none')
+    ax.plot(fit_x, fit_y, marker=None, color='#377eb8', linewidth=2)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Energie / keV')
+    ax.set_ylabel('Detektoreffizienz')
+    fig.tight_layout()
+    fig.savefig('_build/plot_fit_anspechwahrscheinlichkeit.pdf')
+    fig.clear
+
+    return converter
 
 def job_total_cross_section(T):
     lower_cut = 200
@@ -544,6 +575,7 @@ def job_scattering(T):
         ))
 
 
+    converter = interpolate_ansprech()
 
 
 def test_keys(T):
