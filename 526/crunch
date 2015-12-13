@@ -362,8 +362,174 @@ def job_energy_calibration(T):
     T['energy_slope'] = unitprint.siunitx(slope_val, slope_err)
     T['energy_offset'] = unitprint.siunitx(offset_val, offset_err)
 
+    def energy_calibration(x):
+        return linear(x, slope_val, offset_val)
+    return energy_calibration
 
 
+def job_scattering(T):
+
+    energy_calibration = job_energy_calibration(T)
+
+    lower_cut = 200
+    upper_cut = 8000
+
+    w035_untergrund = load_data_normalized('m03_untergrund_35', lower_cut, upper_cut)
+    w040_untergrund = load_data_normalized('m03_untergrund_40', lower_cut, upper_cut)
+    w045_untergrund = load_data_normalized('m03_untergrund_45', lower_cut, upper_cut)
+    w050_untergrund = load_data_normalized('m03_untergrund_50', lower_cut, upper_cut)
+    w055_untergrund = load_data_normalized('m03_untergrund_55', lower_cut, upper_cut)
+    w060_untergrund = load_data_normalized('m03_untergrund_60', lower_cut, upper_cut)
+    w065_untergrund = load_data_normalized('m03_untergrund_65', lower_cut, upper_cut)
+    w070_untergrund = load_data_normalized('m03_untergrund_70', lower_cut, upper_cut)
+    w075_untergrund = load_data_normalized('m03_untergrund_75', lower_cut, upper_cut)
+    w080_untergrund = load_data_normalized('m03_untergrund_80', lower_cut, upper_cut)
+    w085_untergrund = load_data_normalized('m03_untergrund_85', lower_cut, upper_cut)
+    w090_untergrund = load_data_normalized('m03_untergrund_90', lower_cut, upper_cut)
+    w095_untergrund = load_data_normalized('m03_untergrund_95', lower_cut, upper_cut)
+    w100_untergrund = load_data_normalized('m03_untergrund_100', lower_cut, upper_cut)
+    w105_untergrund = load_data_normalized('m03_untergrund_105', lower_cut, upper_cut)
+    w110_untergrund = load_data_normalized('m03_untergrund_110', lower_cut, upper_cut)
+    w115_untergrund = load_data_normalized('m03_untergrund_115', lower_cut, upper_cut)
+    w120_untergrund = load_data_normalized('m03_untergrund_120', lower_cut, upper_cut)
+
+    w035_data = load_data_normalized('m03_PMMA_35', lower_cut, upper_cut)
+    w040_data = load_data_normalized('m03_PMMA_40', lower_cut, upper_cut)
+    w045_data = load_data_normalized('m03_PMMA_45', lower_cut, upper_cut)
+    w050_data = load_data_normalized('m03_PMMA_50', lower_cut, upper_cut)
+    w055_data = load_data_normalized('m03_PMMA_55', lower_cut, upper_cut)
+    w060_data = load_data_normalized('m03_PMMA_60', lower_cut, upper_cut)
+    w065_data = load_data_normalized('m03_PMMA_65', lower_cut, upper_cut)
+    w070_data = load_data_normalized('m03_PMMA_70', lower_cut, upper_cut)
+    w075_data = load_data_normalized('m03_PMMA_75', lower_cut, upper_cut)
+    w080_data = load_data_normalized('m03_PMMA_80', lower_cut, upper_cut)
+    w085_data = load_data_normalized('m03_PMMA_85', lower_cut, upper_cut)
+    w090_data = load_data_normalized('m03_PMMA_90', lower_cut, upper_cut)
+    w095_data = load_data_normalized('m03_PMMA_95', lower_cut, upper_cut)
+    w100_data = load_data_normalized('m03_PMMA_100', lower_cut, upper_cut)
+    w105_data = load_data_normalized('m03_PMMA_105', lower_cut, upper_cut)
+    w110_data = load_data_normalized('m03_PMMA_110', lower_cut, upper_cut)
+    w115_data = load_data_normalized('m03_PMMA_115', lower_cut, upper_cut)
+    w120_data = load_data_normalized('m03_PMMA_120', lower_cut, upper_cut)
+
+    for name, data, untergrund in [
+            ('w035', w035_data, w035_untergrund),
+            ('w040', w040_data, w040_untergrund),
+            ('w045', w045_data, w045_untergrund),
+            ('w050', w050_data, w050_untergrund),
+            ('w055', w055_data, w055_untergrund),
+            ('w060', w060_data, w060_untergrund),
+            ('w065', w065_data, w065_untergrund),
+            ('w070', w070_data, w070_untergrund),
+            ('w075', w075_data, w075_untergrund),
+            ('w080', w080_data, w080_untergrund),
+            ('w085', w085_data, w085_untergrund),
+            ('w090', w090_data, w090_untergrund),
+            ('w095', w095_data, w095_untergrund),
+            ('w100', w100_data, w100_untergrund),
+            ('w105', w105_data, w105_untergrund),
+            ('w110', w110_data, w110_untergrund),
+            ('w115', w115_data, w115_untergrund),
+            ('w120', w120_data, w120_untergrund),]:
+
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[:, 0], data[:, 1]
+        ax.plot(x, y, marker=None, alpha=0.6, label='Spektrum', color='#377eb8')
+
+        x_untergrund, y_untergrund = untergrund[:, 0], untergrund[:, 1]
+        ax.plot(x_untergrund, y_untergrund, marker=None, alpha=0.6, color='#e41a1c', label='Untergrund')
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        ax.legend(loc='best')
+        fig.tight_layout()
+        fig.savefig('_build/plot_raw_' + name + '.pdf')
+        fig.clear
+        pl.close()
+
+
+    w035_data[:, 1] -= w035_untergrund[:, 1]
+    w040_data[:, 1] -= w040_untergrund[:, 1]
+    w045_data[:, 1] -= w045_untergrund[:, 1]
+    w050_data[:, 1] -= w050_untergrund[:, 1]
+    w055_data[:, 1] -= w055_untergrund[:, 1]
+    w060_data[:, 1] -= w060_untergrund[:, 1]
+    w065_data[:, 1] -= w065_untergrund[:, 1]
+    w070_data[:, 1] -= w070_untergrund[:, 1]
+    w075_data[:, 1] -= w075_untergrund[:, 1]
+    w080_data[:, 1] -= w080_untergrund[:, 1]
+    w085_data[:, 1] -= w085_untergrund[:, 1]
+    w090_data[:, 1] -= w090_untergrund[:, 1]
+    w095_data[:, 1] -= w095_untergrund[:, 1]
+    w100_data[:, 1] -= w100_untergrund[:, 1]
+    w105_data[:, 1] -= w105_untergrund[:, 1]
+    w110_data[:, 1] -= w110_untergrund[:, 1]
+    w115_data[:, 1] -= w115_untergrund[:, 1]
+    w120_data[:, 1] -= w120_untergrund[:, 1]
+
+
+    points = []
+
+    for name, data, first, last in [
+            ('w035', w035_data, 2000, 7000),
+            ('w040', w040_data, 2000, 7000),
+            ('w045', w045_data, 2000, 7000),
+            ('w050', w050_data, 2000, 7000),
+            ('w055', w055_data, 2000, 7000),
+            ('w060', w060_data, 2000, 7000),
+            ('w065', w065_data, 2000, 7000),
+            ('w070', w070_data, 2000, 7000),
+            ('w075', w075_data, 2000, 7000),
+            ('w080', w080_data, 2000, 7000),
+            ('w085', w085_data, 2000, 7000),
+            ('w090', w090_data, 2000, 7000),
+            ('w095', w095_data, 2000, 7000),
+            ('w100', w100_data, 2000, 7000),
+            ('w105', w105_data, 2000, 7000),
+            ('w110', w110_data, 2000, 7000),
+            ('w115', w115_data, 2000, 7000),
+            ('w120', w120_data, 2000, 7000),]:
+
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[:, 0], data[:, 1]
+
+        first -= lower_cut
+        last -= lower_cut
+        points.append(fit_peak(name, data, first, last, 0))
+        tmp_point = np.array(points[-1])
+
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = gauss_peak(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
+
+        ax.plot(energy_calibration(x), y, marker=None, alpha=0.6, color='#377eb9')
+        ax.plot(energy_calibration(fit_x), fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=2)
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        fig.tight_layout()
+        fig.savefig('_build/plot_anpassung_' + name + '.pdf')
+        fig.clear
+        pl.close()
+
+
+    points = np.array(points)
+
+    list_winkel_val = np.array([35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120])
+    list_winkel_err = np.array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5])
+    list_mean_val = energy_calibration(points[:, 0])
+    list_mean_err = energy_calibration(points[:, 1])
+    list_full_width_val = np.abs(points[:, 2] * 2 * np.sqrt(2 * np.log(2)))
+    list_full_width_err = points[:, 3] * 2 * np.sqrt(2 * np.log(2))
+    list_area_val = points[:, 4]
+    list_area_err = points[:, 5]
 
 
 def test_keys(T):
@@ -393,7 +559,8 @@ def main():
     ###########################################
 
     job_total_cross_section(T)
-    job_energy_calibration(T)
+    #job_energy_calibration(T) <- Aufruf in job_scattering(T)
+    job_scattering(T)
 
     ###########################################
 
