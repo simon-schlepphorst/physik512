@@ -199,13 +199,14 @@ def job_total_cross_section(T):
     # Absorbtionseigenschaften von Aluminium
 
     dichte = 2.7
-    amu = 26.98
+    dichte_si = dichte * 1e-3
+    amu = 26.981528
     na = 6.022e23
 
-    n = dichte * na / amu
+    n = dichte_si * na / amu
 
-    sigma_val = np.log(popt[0]) / n
-    sigma_err = np.log(perr[0]) / n
+    sigma_val = popt[0] / n
+    sigma_err = perr[0] / n
 
     T['alu_dichte'] = unitprint.siunitx(dichte)
     T['alu_amu'] = unitprint.siunitx(amu)

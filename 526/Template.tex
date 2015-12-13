@@ -94,6 +94,41 @@
 
 \chapter{Auswertung}
 
+\section{Totaler Wirkungsquerschnitt}
+
+Es werden die Messdaten aus \fehlt%TODO\ref{}
+benutzt.
+An die Photopeaks der Spektren passen wir eine Gaussfunktion an. Das Resultat
+ist vergrößert in Abbildung~\ref{fig:amplituden} zu sehen. Die gesamten
+Spektren kann man in Abbildung~\ref{fig:plot_fit_peak_ohne} und im
+Anhang~\ref{anhang-wirkungsquerschnitt} betrachten.
+
+\begin{equation}
+	g\del x = \frac{a}{\varsigma \sqrt{2 \pi}} \exp\del{\frac{\del
+		{x - x_0}^2}{2 \varsigma^2}}
+		\quad \quad \quad \text{mit FWHM} \approx 2.355 \varsigma
+\end{equation}
+
+Die Flächen unter den Gaußkurven sind auf die Kurve ohne Absorber normiert als
+Intensitäten in Tabelle~\ref{tab:amplituden} aufgeführt. An diese wurde in
+Abbildung~\ref{fig:cross-section} eine Exponentialfunktion der folgenden Form
+angepasst:
+
+\begin{equation}
+	N\del x = N_0 \exp\del{-\sigma \rho_T x} \quad \quad \quad \text{mit }
+	\rho_T = \frac{N_A \rho}{M}
+\end{equation}
+
+Mit dem Ergenis aus der Anpassung und den Literaturwerten für Aluminium ($\rho
+= \SI{<< alu_dichte >>}{\gram\per\cubic\centi\metre}$, $M = \SI{<< alu_amu >>}
+{\atomicmassunit}$) ergibt sich für den totalen Wirkungsquerschnitt $\sigma$:
+
+\begin{align*}
+	&\sigma \rho_T = \SI{<< alu_a >>}{\per\milli\metre}
+	&&\rho_T = \SI{<< alu_n >>}{\per\cubic\milli\metre}
+	&&\implies \sigma = \SI{<< alu_sigma >>}{\barn}
+\end{align*}
+
 \begin{figure}
     \centering
     \includegraphics[width=\plotwidth]{total-cross-section-data}
@@ -129,6 +164,8 @@
     \centering
     \includegraphics[width=\plotwidth]{total-cross-section-fit}
     \caption{%
+	    Transmittierte relative Intensität abhängig von der Absoberdicke
+	    mit angepasster Exponentialfunktion
     }
     \label{fig:cross-section}
 \end{figure}
