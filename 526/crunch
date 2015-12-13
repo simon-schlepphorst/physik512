@@ -513,7 +513,7 @@ def job_scattering(T):
 
         ax.margins(0.05)
         ax.grid(True)
-        ax.set_xlabel('Kanal')
+        ax.set_xlabel('Energie / keV')
         ax.set_ylabel('Ereignisse / s')
         fig.tight_layout()
         fig.savefig('_build/plot_anpassung_' + name + '.pdf')
