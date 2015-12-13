@@ -99,6 +99,7 @@ def fit_peak(name, data, first, last, energy, show=False, save=False):
         print('Waiting for input ...')
         input()
         fig.clear()
+        pl.close
 
     if save:
         fig = pl.figure()
