@@ -274,10 +274,7 @@ def job_energy_calibration(T):
             fit_y = gauss_peak(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
 
             ax.plot(fit_x, fit_y, marker = None, color='#e41a1c', linewidth=1.5)
-            print(i)
 
-        print(name, i)
-        print()
         ax.margins(0.05)
         ax.grid(True)
         ax.set_xlabel('Kanal')
