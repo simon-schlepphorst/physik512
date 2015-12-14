@@ -70,9 +70,9 @@
 \begin{abstract}
     In diesem Versuch beschäftigen wir uns mit der Wechselwirkung von
     $\gamma$-Strahlung in Materie, wobei wir uns besonders mit der
-    Comptonstreuung beschäftigen.  Hierbei interessieren uns vor allen der
+    Comptonstreuung beschäftigen.  Hierbei interessieren uns vor allem der
     totale Wirkungsquerschnitt und die Winkelabhängigkeit von Intensität und
-    der Energie der $\gamma$-Strahlung.
+    Energie der $\gamma$-Strahlung.
 \end{abstract}
 
 \tableofcontents
@@ -97,17 +97,21 @@
 Die $\gamma$-Strahlung entsteht wenn nach einem vorhergegangen Zerfall der
 Tochterkern nicht in seinen Grundzustand, sondern in einen angeregten Zustand
 zerfällt.
-Dieser angeregte Zustand zerfällt nach einiger Zeit durch Abstrahlung des
+Dieser angeregte Zustand zerfällt nach einiger Zeit durch Abstrahlung eines
 $\gamma$-Quants in den Grundzustand. Diese Photonen sind sehr energiereich,
 weshalb sie genug Energie haben, um auf verschiedene Weisen mit der Materie zu
 wechselwirken. Hierbei hängt der dominierende Effekt von der
-Energie der Teilchen und der Ordnungszahl ab.
+Energie der Teilchen und der Ordnungszahl des Wechselwirkungspartners ab.
 %TODO Skizze Wirkungsquerschnitt-energie 
 Im unteren Energiebereich, ab dem Punkt wo die Energie höher ist als die
 Bindungsenergie, findet hauptsächlich der Photoeffekt statt. Im mittleren
 Bereich dominiert der Compton-Effekt und ab einer Energie von
 \SI{1022}{\kilo\electronvolt} kann auch vermehrt die
 Elektron-Positron-Erzeugung auftreten.
+
+Dabei darf aber nicht vergessen werden, dass es durchaus noch eine große
+Wahrscheinlichkeit gibt, dass $\gamma$-Strahlung nicht wechselwirkt.
+
 
 \subsection{Photoeffekt}
 Der Photoeffekt beschreibt den Vorgang, bei welchem ein Photon ein Elektron aus
@@ -157,9 +161,6 @@ Der Wirkungsquerschnitt entspricht $\sigma_\text C \propto \frac{Z}{E_\gamma}$.
 %TODO nur für coptoneffekt
 %TODO bild Spektrum im szintilator
 
-\subsection{Keine Wechselwirkung}
-Ein nicht unerheblicher Teil der $\gamma$-Strahlung kann auch ohne Wechselwirkung
-Materie durchdringen.
 
 \section{Wirkungsquerschnitte}
 Hier muss zwischen dem differenziellen- und dem absoluten Wirkungsquerschnitt
@@ -174,7 +175,7 @@ Klein, nach welchen auch die Darstellung, der Klein-Nishina-Plot, benannt ist.
 \label{eq:dif-querschnitt}
 \ref{eq:dif-querschnitt} heißt Klein-Nishina Formel und beschreibt den
 differenziellen Wirkungsquerschnitt mit dem Stoßwinkel $\theta$.
-Um den totalen Wirkungsquerschnitt zu erhalten integriert man über dem
+Um den totalen Wirkungsquerschnitt zu erhalten integriert man über den
 Raumwinkel:
 \[
     \sigma = 2\pi r^2_e
@@ -209,13 +210,13 @@ Der Szintillator ist ein dotierter Einkristall, der von energiereicher
 Strahlung zum Fluoreszieren angeregt werden kann und hinreichend
 durchlässig für das von ihm emittierte Licht ist.
 
-Innerhalb des vor Lichteinfall geschützten Szintillators entstehen durch
+Innerhalb des vor äußerem Lichteinfall geschützten Szintillators entstehen durch
 ionisierende Strahlung Lichtblitze. 
-Diese entstehen dadurch, dass die Strahlung Atome durch die Effekt
-~\ref{sec:WW-strahlung-Materie} anregt, welche entweder direkt
-wieder rekombinieren und Photonen aussenden oder über Stöße vorher einen Teil
-ihrer Energie abgeben.
-Somit ist die Intensität dieser Blitze abhängig von der Energie der einfallenden Strahlung.
+Diese entstehen dadurch, dass die Strahlung Atome durch die in Kapitel~\ref{sec:WW-strahlung-Materie}
+beschriebenen Effekte anregt. Beim zurückfallen in den Grundzustand senden
+diese dann wieder Photonen aus. Da die Anzahl der angeregten Atome von der
+Energie der einfallenden Strahlung abhängt, ist die Intensität dieser Blitze
+ebenfalls proportional zur Energie der einfallenden Strahlung.
 %TODO nur für coptoneffekt? Bild Spektrum
 %In dem entstehenden Spektrum, bei dem die Intensität gegen Energie
 %aufgetragen. Man erhält ein Compton-Kontinuum, welches die Comptonstreuung bis
@@ -244,15 +245,17 @@ Um mit dieser Art Detektor möglichst gute Auflösungen zu erhalten, greift man
 das Signal je nachdem ob man die Energie- oder die Zeitauflösung optimieren will
 an eine Dynode beziehungsweise an der Anode des Photomultipliers ab.
 Der Vorteil der Dynode für die Energieauflösung liegt da drin, dass noch keine
-Sättigung herrscht. Hier durch ist die Proportionalität zwischen Signalhöhe und
+Sättigung herrscht. Hierdurch ist die Proportionalität zwischen Signalhöhe und
 Energie nicht beeinträchtigt. Da das Signal allerdings nur sehr langsam
 ansteigt, man spricht von den Slow-Signal, ist die Zeitauflösung beeinträchtigt.
-Deswegen benutzt man hier das sogenannte Fast-Signal. Es wird an der Anode
+Deswegen benutzt man dafür das sogenannte Fast-Signal. Es wird an der Anode
 abgegriffen, da dort Sättigung vorliegt, wodurch das Signal schnell ansteigt.
 Die Amplitude ist allerdings nicht mehr proportional zur Energie.
-Um die Zeitauflösung ermitteln zu können nutzt man eine
-Slow-Fast-Koinzidenzschaltung. Man misst bekannte Linien und bestimmt aus den
-angepassten Funktionen die Halbwertsbreite.
+%Um die Zeitauflösung ermitteln zu können nutzt man eine
+%Slow-Fast-Koinzidenzschaltung. Man misst bekannte Linien und bestimmt aus den
+%angepassten Funktionen die Halbwertsbreite.
+In diesem Versuch benutzen wie das Slow-Signal, da uns die Energie der
+einfallenden Strahlung interessiert.
 
 %TODO für Nukleare elektronik
 %Für die Zeitkalibrirung nutzt man
@@ -264,7 +267,7 @@ angepassten Funktionen die Halbwertsbreite.
 \subsection{Multi-Channel-Analyzer}
 Um ein nach Amplituden sortiertes Spektrum zu erhalten, nutzen wir ein MCA.
 Dies ist ein Bauteil, welches einkommende Signale nach Amplitude sortiert und
-dann den Kanal, welcher der Impulshöhe entspricht, hoch setzt. So erhalten wir ein
+dann den Zähler im Kanal, welcher der Impulshöhe entspricht, hoch setzt. So erhalten wir ein
 Histogramm.
 
 %TODO Bild Spektrum
@@ -274,9 +277,11 @@ Histogramm.
 	\caption{%
 		Spekrum mit dargestelltem Comptoneinfluss \parencite{comptoneffekt}
 	}
+	\ref{fig:compton-spektrum}
 \end{figure}
 
-In dem entstehenden Spektrum, erkennt man ein Compton-Kontinuum, welches die 
+In dem entstehenden Spektrum (vgl. Abbildugn~\ref{fig:compton-spektrum}),
+erkennt man ein Compton-Kontinuum, welches die
 Comptonstreuung bis zu einem Winkel von \SI{180}{\degree} enthält. Da bei diesem
 Wert der maximale Energieübertrag stattfindet, erhält man eine scharfe Kante, 
 die Compton Kante. Wird nicht nur ein Teil sondern die gesamte Energie abgegeben, wie es bei 
@@ -288,16 +293,17 @@ nennt ihn Photo-Peak.
 Experimentiert wird an einem rundem Versuchstisch mit Winkelskala.
 Bei \SI{180}{\degree} befindet sich eine fest montierte
 $^{137}\text{Cs}$-Quelle. Der Detektor lässt sich entweder direkt gegenüber
-dieser Quelle oder auf einem beweglichen Arm, mit dem sich ein Winkelbereich
-von \SI{35}{\degree} bis \SI{120}{\degree} abdecken lässt montieren. Bei
+dieser Quelle oder auf einem beweglichen Arm, mit dem sich der Winkelbereich
+von \SI{35}{\degree} bis \SI{120}{\degree} abdecken lässt, montieren. Bei
 \SI{270}{\degree} wird im späteren Verlauf die $^{133}\text{Ba}$- beziehungsweise die
 $^{152}\text{Eu}$-Quelle so positioniert, dass die Zählraten ungefähr gleich
-sind. Das erreicht man dadurch, dass man die Quellen näher oder weiter vom
-Kreiszentrum befestigt. 
+sind. Das erreicht man dadurch, dass man die Distanz zwischen Quelle und
+Detektor variiert.
 In der Mitte befindet sich eine Vorrichtung, auf die sich Absorbermaterialien stellen lassen.
 
 Für die erste Messung benutzen wir die $^{137}\text{Cs}$-Quelle. Sie dient der
 Einstellung der Versuchsparameter. Der Detektor wird gegenüber der Quelle
+und hinter einem Bleikollimator
 positioniert und der Ausgang des Photomultipliers über ein T-Stück mit dem
 Oszilloskop verbunden. Man nutzt das T-Stück mit \SI{50}{\ohm}
 Abschlusswiderstand, damit es nicht zu Reflexionen
@@ -319,24 +325,24 @@ Nun verbinden wir den Detektor mit dem Verstärker und diesen mit der MCA-Karte
 in Computer. Wir wählen die Verstärkung so, dass der Photopeak des Spektrums
 ungefähr bei der Kanal~7000 liegt. Die ersten Messungen nehmen wir mit
 einer Lebenszeit (Zeit nach Abzug der Totzeiten) von zehn Minuten auf.
-Nun nehmen wir mit unveränderten Aufbau ein Spektrum ohne Absorber~\ref{fig:plot_fit_peak_ohne} in der Mitte
+Nun nehmen wir mit unveränderten Aufbau ein Spektrum ohne Absorber (vgl.
+Abbildung~\ref{fig:plot_fit_peak_ohne}) in der Mitte
 und jeweils ein mit \SI{1,0}{\milli\meter}, \SI{5,0}{\milli\meter},
 \SI{10,0}{\milli\meter} und \SI{20,0}{\milli\meter} dicken Aluminiumplättchen
-senkrecht zum Strahlengang auf. Das Spektrum ohne Absorber ist die
-Abbildung~\ref{fig:plot_fit_peak_ohne} zu sehen. Die anderen Spektren befinden
+senkrecht zum Strahlengang auf. Die Spektren mit Absorber befinden
 sich in Anhang~\ref{anhang-wirkungsquerschnitt}.
 
 Für die Energiekalibrierung stellen wie den Detektor auf den beweglichen Arm
 und stellen ihn auf \SI{90}{\degree}. Zunächst nehmen wir eine Untergrund
 Messung vor, dann nehmen wir die bekannten Spektren der $^{133}\text{Ba}$- und
-der $^{152}\text{Eu}$-Quelle auf. Diese Spektren finden sich in
+der $^{152}\text{Eu}$-Quelle auf. Diese Spektren befinden sich in
 Anhang~\ref{anhang-rohspektren-energiekalibrierung}.
 
 Zuletzt wollen wir die Streuspektren der $^{137}\text{Cs}$-Quelle messen. Dafür
 entfernen wir die übrigen Quellen und den Bleikollimator, stellen einen Plexiglaszylinder 
 in die Mitte. Dieser
 sollte auf Grund seiner geringen Kernladungszahl für Comptonstreueffekte besonders
-geeignet sein. Nun nehmen wir in ein dem Bereich von \SIrange{35}{120}{\degree}
+geeignet sein. Nun nehmen wir in dem Bereich von \SIrange{35}{120}{\degree}
 in Abständen von \SI{5}{\degree} jeweils fünf Minuten lang das Spektrum auf
 (vgl. Anhang~\ref{anhang-streuspektren-untergrund}).
 
@@ -532,7 +538,8 @@ auf.
 \end{equation}
 
 Die an die Daten angepasste Gerade sollte der Theorie nach eine Steigung von
-$\SI{662}{\kilo\electronvolt}$ aufweisen. Die Parameter sind aber:
+$\SI{662}{\kilo\electronvolt}$ aufweisen. Die in
+Abbildung~\ref{fig:plot_winkel-abh-fit} gewonnen Parameter sind aber:
 \begin{align}
 	E\del P = m P + n
 	&&\text{mit } m = \SI{<< scatter_energy_slope >>}{\kilo\electronvolt}\text{, }
@@ -544,14 +551,16 @@ so äußern können, finden wir aber auch nicht.
 
 Als nächstes skalieren wir die Flächen unter den Gaußkurven mit der
 Detektoreffizienz aus der Versuchsanleitung. Dazu haben wir einzelne Punkte aus
-der Grafik abgelesen und den Bereich dazwischen mit kubischen Splines
+\parencite[Abbildung P526.3]{physik512-Anleitung} abgelesen und den Bereich
+dazwischen mit kubischen Splines
 iterpoliert. Das Ergebnis ist in
 Abbildung~\ref{fig:plot_fit_anspechwahrscheinlichkeit} zu sehen.
 \begin{figure}
     \centering
     \includegraphics[width=\plotwidth]{plot_fit_anspechwahrscheinlichkeit}
     \caption{%
-	    Detektoreffizienz aus \parencite{physik512-Anleitung}. Datenpunkte
+	    Detektoreffizienz aus \parencite[Abbildung
+	    P526.3]{physik512-Anleitung}. Datenpunkte
 	    abgelesen und mit kubischen Splines interpoliert.
     }
     \label{fig:plot_fit_anspechwahrscheinlichkeit}
@@ -595,6 +604,8 @@ abweicht, dass sie schon fast wieder zum Graphen passt.
     \caption{%
 	    Klein-Nishina-Wirkungsquerschnitt mit skalierten Werten. Die
 	    $r$-Achse ist in \si{\milli\barn} dargestellt.
+	    Blau: theoretischer Klein-Nichina-Graph.
+	    Rot: Datenpunkte
     }
     \label{fig:plot_klein_nishina}
 \end{figure}
