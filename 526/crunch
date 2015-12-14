@@ -36,6 +36,22 @@ def decay(x, a):
     '''
     return np.exp(- x * a)
 
+def klein_nishina(energy_photon, energy_mass, theta):
+    '''
+    Klein-Nishina-Formel
+    '''
+    return 1 / (1 + energy_photon / energy_mass * (1 - np.cos(theta)))
+
+def differential_klein_nishina(energy_photon, energy_mass, theta):
+    '''
+    Differentieller Klein-Nishina-Wirkungsquerschnitt
+    '''
+    re = 2.818e-15
+
+    return re**2 / 2 * klein_nishina(energy_photon, energy_mass, theta) * \
+            (1 - klein_nishina(energy_photon, energy_mass, theta) * np.sin(theta)**2 \
+            + klein_nishina(energy_photon, energy_mass, theta)**2)
+
 def linear(x, slope, offset):
     return x * slope + offset
 
@@ -574,8 +590,85 @@ def job_scattering(T):
         unitprint.siunitx(list_energy_val, list_energy_err),
         ))
 
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
 
+    list_theta_val = list_winkel_val * np.pi / 180
+    x, y = klein_nishina(662, 511, list_theta_val), list_energy_val
+    ax.errorbar(x, y, yerr=list_energy_err, marker='+', linestyle='none')
+
+    popt, pconv = op.curve_fit(linear, x, y)
+    perr = np.sqrt(pconv.diagonal())
+
+    fit_x = np.linspace(np.min(x), np.max(x), 100)
+    fit_y = linear(fit_x, *popt)
+    ax.plot(fit_x, fit_y)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('P')
+    ax.set_ylabel('Energie / keV')
+    fig.tight_layout()
+    fig.savefig('_build/plot_winkel-abh-fit.pdf')
+    fig.clear
+
+    slope_val, slope_err = popt[0], perr[0]
+    offset_val, offset_err = popt[1], perr[1]
+
+    T['scatter_energy_slope'] = unitprint.siunitx(slope_val, slope_err)
+    T['scatter_energy_offset'] = unitprint.siunitx(offset_val, offset_err)
+
+
+    #fig = pl.figure()
+    #ax = fig.add_subplot(1, 1, 1, projection='polar')
+
+    #theta, r = list_winkel_val * np.pi / 180, list_energy_val
+
+    #ax.plot(theta, r, marker='.', linestyle='none', color='#377eb9', markersize=7)
+
+    #ax.margins(0.05)
+    #ax.grid(True)
+    #ax.set_rmin(0)
+    ##ax.set_rlabel('Energie / keV')
+    #fig.tight_layout()
+    #fig.savefig('_build/plot_energie_winkel.pdf')
+    #fig.clear
+
+
+    #Klein-Nishina-Plot erstellen
     converter = interpolate_ansprech()
+    list_intensity_val = list_area_val / converter(list_energy_val)
+
+    list_coefficients = differential_klein_nishina(662, 511, list_theta_val) / 1e-28 / 1e-3 / list_intensity_val
+    coefficient = np.mean(list_coefficients)
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1, projection='polar')
+
+    n = np.linspace(0, 1.0, 1000)
+    theta = 2 * np.pi * n
+    r = differential_klein_nishina(662, 511, theta) / 1e-28 / 1e-3
+    r_fit = list_intensity_val * coefficient
+
+    ax.plot(theta, r, marker=None, alpha=0.6, linewidth=2, color='#377eb9')
+    ax.plot(list_theta_val, r_fit, marker='.', linestyle='none', alpha=0.8, color='#e41a1c', markersize=5)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_rmin(0)
+    ax.set_rmax(40)
+    fig.tight_layout()
+    fig.savefig('_build/plot_klein_nishina.pdf')
+    fig.clear
+
+
+    T['scatter_winkel_table'] = list(zip(
+        unitprint.siunitx(list_winkel_val, list_winkel_err),
+        unitprint.siunitx(list_intensity_val),
+        unitprint.siunitx(list_coefficients),
+        unitprint.siunitx(list_energy_val, list_energy_err),
+        ))
+
 
 
 def test_keys(T):

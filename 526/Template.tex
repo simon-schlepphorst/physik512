@@ -438,6 +438,21 @@ Energiekalibrierung ausgehen.
 	\label{tab:peakanpassung}
 \end{figure}
 
+\begin{align}
+	E\del x = m x + n
+	&&\text{mit } m = \SI{<< scatter_energy_slope >>}{\kilo\electronvolt}\text{, }
+	\quad n = \SI{<< scatter_energy_offset >>}{\kilo\electronvolt}
+\end{align}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{plot_winkel-abh-fit}
+    \caption{%
+	    Winkelabhängigkeit der Photonenenergie nach Compton-Streuung
+    }
+    \label{fig:plot_winkel-abh-fit}
+\end{figure}
+
 
 \begin{figure}
     \centering
@@ -448,6 +463,35 @@ Energiekalibrierung ausgehen.
     }
     \label{fig:plot_fit_anspechwahrscheinlichkeit}
 \end{figure}
+
+\begin{figure}
+	\centering
+	\begin{tabular}{SSSS}
+		{Winkel} &
+		{korr. Intensität} &
+		{Koeffizienten}&
+		{Energie / \si{\kilo\electronvolt}}\\
+		\midrule
+		%< for row in scatter_winkel_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+	\caption{%
+		Anpassungeparameter an den Klein-Nishina-Wirkungsquerschnitt
+	}
+	\label{tab:klein-nishina-anpassung}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\plotwidth]{plot_klein_nishina}
+    \caption{%
+	    Klein-Nishina-Wirkungsquerschnitt mit skalierten Werten. Die
+	    $r$-Achse ist in \si{\milli\barn} dargestellt.
+    }
+    \label{fig:plot_klein_nishina}
+\end{figure}
+
 
 
 %TODO
