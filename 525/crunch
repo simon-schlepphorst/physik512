@@ -53,7 +53,7 @@ def load_data_normalized(basename):
 
     return data
 
-def fit_peak(name, data, first, last, energy=0, show=False, save=False):
+def fit_peak(name, data, first, last, energy=0, show=False, save=False, side='', num=0):
     '''
     Passt einen Peak an
     :show zeigt die einzelne Anpassung
@@ -89,10 +89,10 @@ def fit_peak(name, data, first, last, energy=0, show=False, save=False):
         pl.close
 
     if save:
-        fig = pl.figure()
+        fig = pl.figure(figsize=(6,4.25))
         ax = fig.add_subplot(1, 1, 1)
 
-        x, y = data[:, 0], data[:, 1]
+        x, y = data[first:last, 0], data[first:last, 1]
 
         fit_x = np.linspace(np.min(x), np.max(x), 1000)
         fit_y = gauss_peak(fit_x, *popt)
@@ -105,7 +105,7 @@ def fit_peak(name, data, first, last, energy=0, show=False, save=False):
         ax.set_xlabel('Kanal')
         ax.set_ylabel('Ereignisse / s')
         fig.tight_layout()
-        fig.savefig('_build/plot_fit_peak_'+ name +'.pdf')
+        fig.savefig('_build/plot_fit_peak_'+ side + '_' + '{}'.format(num) + '_' + name +'.pdf')
         fig.clear
 
     return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy
@@ -160,7 +160,7 @@ def energy_calibration(T, side):
         ax.plot(x, y, marker=None, alpha=0.6, color='#377eb9')
 
         for i, (first, last, expected_energy) in zip(itertools.count(1), fit_range):
-            points.append(fit_peak(name, data, first, last, expected_energy))
+            points.append(fit_peak(name, data, first, last, expected_energy, save=True, side=side, num=i))
             tmp_point = np.array(points[-1])
 
             fit_x = np.linspace(np.min(x), np.max(x), 1000)
