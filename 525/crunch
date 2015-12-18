@@ -215,8 +215,8 @@ def energy_calibration(T, side):
     slope_val, slope_err = popt[0], perr[0]
     offset_val, offset_err = popt[1], perr[1]
 
-    T[side + 'energy_slope'] = unitprint.siunitx(slope_val, slope_err)
-    T[side + 'energy_offset'] = unitprint.siunitx(offset_val, offset_err)
+    T[side + '_energy_slope'] = unitprint.siunitx(slope_val, slope_err)
+    T[side + '_energy_offset'] = unitprint.siunitx(offset_val, offset_err)
 
     def calibration(x):
         return linear(x, slope_val, offset_val)
