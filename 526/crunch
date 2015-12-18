@@ -36,6 +36,22 @@ def decay(x, a):
     '''
     return np.exp(- x * a)
 
+def klein_nishina(energy_photon, energy_mass, theta):
+    '''
+    Klein-Nishina-Formel
+    '''
+    return 1 / (1 + energy_photon / energy_mass * (1 - np.cos(theta)))
+
+def differential_klein_nishina(energy_photon, energy_mass, theta):
+    '''
+    Differentieller Klein-Nishina-Wirkungsquerschnitt
+    '''
+    re = 2.818e-15
+
+    return re**2 / 2 * klein_nishina(energy_photon, energy_mass, theta) * \
+            (1 - klein_nishina(energy_photon, energy_mass, theta) * np.sin(theta)**2 \
+            + klein_nishina(energy_photon, energy_mass, theta)**2)
+
 def linear(x, slope, offset):
     return x * slope + offset
 
@@ -123,6 +139,37 @@ def fit_peak(name, data, first, last, energy, show=False, save=False):
 
     return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy
 
+def interpolate_ansprech():
+    '''
+    Interpoliert die Ansprechwahrscheinlichkeit mit cubischen Splines
+
+    Als Nebeneffekt wird die angepasste Funktion geplottet.
+
+    :return: Umrechnungsfunktion Energie → Ansprechwahrscheinlichkeit.
+    '''
+    data = np.loadtxt('Daten/Ansprechwahrscheinlichkeit.txt')
+    x, y = data[:, 0], data[:, 1]
+
+    converter = scipy.interpolate.interp1d(x, y, kind='cubic')
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    fit_x = np.linspace(min(x), max(x), 1000)
+    fit_y = converter(fit_x)
+
+    ax.plot(x, y, marker='+', linestyle='none')
+    ax.plot(fit_x, fit_y, marker=None, color='#377eb8', linewidth=2)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Energie / keV')
+    ax.set_ylabel('Detektoreffizienz')
+    fig.tight_layout()
+    fig.savefig('_build/plot_fit_anspechwahrscheinlichkeit.pdf')
+    fig.clear
+
+    return converter
 
 def job_total_cross_section(T):
     lower_cut = 200
@@ -478,8 +525,8 @@ def job_scattering(T):
     for name, data, first, last in [
             ('w035', w035_data, 4700, 6200),
             ('w040', w040_data, 4000, 6100),
-            ('w045', w045_data, 2000, 7000),
-            ('w050', w050_data, 2000, 7000),
+            ('w045', w045_data, 4000, 7000),
+            ('w050', w050_data, 4000, 7000),
             ('w055', w055_data, 2000, 7000),
             ('w060', w060_data, 2000, 7000),
             ('w065', w065_data, 2000, 7000),
@@ -525,12 +572,103 @@ def job_scattering(T):
 
     list_winkel_val = np.array([35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120])
     list_winkel_err = np.array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5])
-    list_mean_val = energy_calibration(points[:, 0])
-    list_mean_err = energy_calibration(points[:, 1])
+    list_mean_val = points[:, 0]
+    list_mean_err = points[:, 1]
     list_full_width_val = np.abs(points[:, 2] * 2 * np.sqrt(2 * np.log(2)))
     list_full_width_err = points[:, 3] * 2 * np.sqrt(2 * np.log(2))
     list_area_val = points[:, 4]
     list_area_err = points[:, 5]
+    list_energy_val = energy_calibration(points[:, 0])
+    list_energy_err = np.abs(energy_calibration(points[:, 1]))
+
+
+    T['winkel_energie_table'] = list(zip(
+        unitprint.siunitx(list_winkel_val, list_winkel_err),
+        unitprint.siunitx(list_mean_val, list_mean_err),
+        unitprint.siunitx(list_full_width_val, list_full_width_err),
+        unitprint.siunitx(list_area_val, list_area_err),
+        unitprint.siunitx(list_energy_val, list_energy_err),
+        ))
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    list_theta_val = list_winkel_val * np.pi / 180
+    x, y = klein_nishina(662, 511, list_theta_val), list_energy_val
+    ax.errorbar(x, y, yerr=list_energy_err, marker='+', linestyle='none')
+
+    popt, pconv = op.curve_fit(linear, x, y)
+    perr = np.sqrt(pconv.diagonal())
+
+    fit_x = np.linspace(np.min(x), np.max(x), 100)
+    fit_y = linear(fit_x, *popt)
+    ax.plot(fit_x, fit_y)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('P')
+    ax.set_ylabel('Energie / keV')
+    fig.tight_layout()
+    fig.savefig('_build/plot_winkel-abh-fit.pdf')
+    fig.clear
+
+    slope_val, slope_err = popt[0], perr[0]
+    offset_val, offset_err = popt[1], perr[1]
+
+    T['scatter_energy_slope'] = unitprint.siunitx(slope_val, slope_err)
+    T['scatter_energy_offset'] = unitprint.siunitx(offset_val, offset_err)
+
+
+    #fig = pl.figure()
+    #ax = fig.add_subplot(1, 1, 1, projection='polar')
+
+    #theta, r = list_winkel_val * np.pi / 180, list_energy_val
+
+    #ax.plot(theta, r, marker='.', linestyle='none', color='#377eb9', markersize=7)
+
+    #ax.margins(0.05)
+    #ax.grid(True)
+    #ax.set_rmin(0)
+    ##ax.set_rlabel('Energie / keV')
+    #fig.tight_layout()
+    #fig.savefig('_build/plot_energie_winkel.pdf')
+    #fig.clear
+
+
+    #Klein-Nishina-Plot erstellen
+    converter = interpolate_ansprech()
+    list_intensity_val = list_area_val / converter(list_energy_val)
+
+    list_coefficients = differential_klein_nishina(662, 511, list_theta_val) / 1e-28 / 1e-3 / list_intensity_val
+    coefficient = np.mean(list_coefficients)
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1, projection='polar')
+
+    n = np.linspace(0, 1.0, 1000)
+    theta = 2 * np.pi * n
+    r = differential_klein_nishina(662, 511, theta) / 1e-28 / 1e-3
+    r_fit = list_intensity_val * coefficient
+
+    ax.plot(theta, r, marker=None, alpha=0.6, linewidth=2, color='#377eb9')
+    ax.plot(list_theta_val, r_fit, marker='.', linestyle='none', alpha=0.8, color='#e41a1c', markersize=5)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_rmin(0)
+    ax.set_rmax(40)
+    fig.tight_layout()
+    fig.savefig('_build/plot_klein_nishina.pdf')
+    fig.clear
+
+
+    T['scatter_winkel_table'] = list(zip(
+        unitprint.siunitx(list_winkel_val, list_winkel_err),
+        unitprint.siunitx(list_intensity_val),
+        unitprint.siunitx(list_coefficients),
+        unitprint.siunitx(list_energy_val, list_energy_err),
+        ))
+
 
 
 def test_keys(T):
