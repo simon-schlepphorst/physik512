@@ -83,6 +83,7 @@
 \chapter{Aufbau und Durchführung}
 %TODO
 
+\section{Slow-Koinzidenzkreis einstellen}
 %Na-22
 %Slow-Kreis
 
@@ -145,8 +146,38 @@
 	\label{fig:slow_signal_sca_trig}
 \end{figure}
 
-\fehlt%TODO Na-22 Spektren
-\fehlt%TODO Ba-133 Spektren
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_li_na_raw}
+		\caption{%
+			links
+		}
+		\label{fig:slow_signal_sca_trig-li_plot}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_re_na_raw}
+		\caption{%
+			rechts
+		}
+		\label{fig:slow_signal_sca_trig-re_plot}
+	\end{subfigure}
+	\caption{%
+		$^{22}\text{Na}$-Spektrum mit grob eingestelltem
+		Hauptverstärker
+	}
+	\label{fig:slow_signal_sca_trig_plot}
+\end{figure}
+
+Anschließend haben wir den Hauptverstärker für beide Seiten jeweils so
+eingestellt, dass der \SI{511}{\kilo\electronvolt} Peak aus dem
+$^{22}\text{Na}$ am rechten Rand des aufgenommen Spektrums liegt und das
+$^{133}\text{Ba}$-Spektrum ebenfalls vollständig aufgenommen wird. Dazu haben
+wir die Proben mehrmals gewechselt und den Verstärker feinjustiert, bis wir die
+in Abbildung~\ref{fig:slow_signal_hv_eingestellt_plot} und
+Abbildung~\ref{fig:ba_slow_signal_hv_eingestellt_plot} zu sehenden Spektren
+erhalten haben.
+
 
 \begin{figure}
 	\centering
@@ -170,6 +201,30 @@
 	}
 	\label{fig:slow_signal_hv_eingestellt}
 \end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_li_na}
+		\caption{%
+			links
+		}
+		\label{fig:slow_hv_eingestellt-li_plot}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_re_na}
+		\caption{%
+			rechts
+		}
+		\label{fig:slow_hv_eingestellt-re_plot}
+	\end{subfigure}
+	\caption{%
+		$^{22}\text{Na}$-Spektrum mit fertig eingestelltem
+		Hauptverstärker
+	}
+	\label{fig:slow_signal_hv_eingestellt_plot}
+\end{figure}
+
 
 \begin{figure}
 	\centering
@@ -295,8 +350,34 @@
 
 \fehlt%TODO Promp Kurven
 
+\clearpage
+
+\section{Messung der Lebensdauer}
 %Ba-133
 %Slow-Kreis
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_li_ba}
+		\caption{%
+			links
+		}
+		\label{fig:ba_slow_hv_eingestellt-li_plot}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_re_ba}
+		\caption{%
+			rechts
+		}
+		\label{fig:ba_slow_hv_eingestellt-re_plot}
+	\end{subfigure}
+	\caption{%
+		$^{133}\text{Ba}$-Spektrum mit fertig eingestelltem
+		Hauptverstärker
+	}
+	\label{fig:ba_slow_signal_hv_eingestellt_plot}
+\end{figure}
 
 \begin{figure}
 	\centering
