@@ -125,7 +125,7 @@ def energy_calibration(T, side):
     points = []
 
     for name, data in [('na_raw', data_na_raw), ('na', data_na_mov), ('ba', data_ba_mov)]:
-        fig = pl.figure()
+        fig = pl.figure(figsize=(4,3))
         ax = fig.add_subplot(1, 1, 1)
 
         x, y = data[:, 0], data[:, 1]
@@ -135,6 +135,7 @@ def energy_calibration(T, side):
         ax.grid(True)
         ax.set_xlabel('Kanal')
         ax.set_ylabel('Ereignisse / s')
+        fig.tight_layout()
         fig.savefig('_build/plot_spektrum_' + side + '_' + name + '.pdf')
         fig.clear
 
@@ -152,7 +153,7 @@ def energy_calibration(T, side):
 
     for name, data, fit_range in [('na', data_na_mov, fit_range_na), ('ba', data_ba_mov, fit_range_ba)]:
 
-        fig = pl.figure()
+        fig = pl.figure(figsize=(4,3))
         ax = fig.add_subplot(1, 1, 1)
 
         x, y = data[:, 0], data[:, 1]
@@ -192,7 +193,7 @@ def energy_calibration(T, side):
         unitprint.siunitx(list_expected_energy),
         ))
 
-    fig = pl.figure()
+    fig = pl.figure(figsize=(4,3))
     ax = fig.add_subplot(1, 1, 1)
 
     x, y = list_mean_val, list_expected_energy
@@ -209,6 +210,8 @@ def energy_calibration(T, side):
     ax.grid(True)
     ax.set_xlabel('Kanal')
     ax.set_ylabel('Energie / keV')
+    for label in ax.get_xticklabels():
+        label.set_rotation(45)
     fig.tight_layout()
     fig.savefig('_build/plot_energy_calibrate_fit_' + side + '.pdf')
     fig.clear
