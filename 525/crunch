@@ -135,7 +135,6 @@ def energy_calibration(T, side):
         ax.grid(True)
         ax.set_xlabel('Kanal')
         ax.set_ylabel('Ereignisse / s')
-        ax.legend(loc='best')
         fig.savefig('_build/plot_spektrum_' + side + '_' + name + '.pdf')
         fig.clear
 
@@ -226,6 +225,11 @@ def energy_calibration(T, side):
 
 
 
+def job_analysis(T):
+
+    calibration_li = energy_calibration(T, 'li')
+    calibration_re = energy_calibration(T, 're')
+
 
 
 
@@ -260,7 +264,7 @@ def main():
 
     ###########################################
 
-
+    job_analysis(T)
 
     ###########################################
 
