@@ -379,8 +379,11 @@ def time_calibration(T):
     ax.grid(True)
     ax.set_xlabel('Kanal')
     ax.set_ylabel('Zeit / ns')
-    for label in ax.get_xticklabels():
-        label.set_rotation(45)
+
+    # Setze die Anzahl der Ticks auf der Abszisse auf eine kleinere Zahl.
+    xloc = pl.MaxNLocator(5)
+    ax.xaxis.set_major_locator(xloc)
+
     fig.tight_layout()
     fig.savefig('_build/plot_time_calibrate_fit.pdf')
     fig.clear
