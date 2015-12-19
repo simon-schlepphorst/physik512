@@ -131,6 +131,7 @@ def energy_calibration(T, side):# {{{
 
     points = []
 
+    # Plotte rohe Spektren # {{{
     for name, data in [('na_raw', data_na_raw), ('na', data_na_mov), ('ba', data_ba_mov)]:
         fig = pl.figure(figsize=(4,3))
         ax = fig.add_subplot(1, 1, 1)
@@ -145,8 +146,9 @@ def energy_calibration(T, side):# {{{
         fig.tight_layout()
         fig.savefig('_build/plot_spektrum_' + side + '_' + name + '.pdf')
         fig.clear
-        pl.close()
+        pl.close()# }}}
 
+    # Anpassung der Kuven & Plot # {{{
     if side == 'li':
         fit_range_na = [
                 (6200, 7500, 511),
@@ -193,9 +195,9 @@ def energy_calibration(T, side):# {{{
         fig.tight_layout()
         fig.savefig('_build/plot_peaks_' + side + '_' + name + '.pdf')
         fig.clear
-        pl.close()
+        pl.close()# }}}
 
-
+    # Speichern der Parameter # {{{
     points = np.array(points)
 
     list_mean_val = points[:, 0]
@@ -210,8 +212,9 @@ def energy_calibration(T, side):# {{{
         unitprint.siunitx(list_mean_val, list_mean_err),
         unitprint.siunitx(list_full_width_val, list_full_width_err),
         unitprint.siunitx(list_expected_energy),
-        ))
+        ))# }}}
 
+    # Energieeichung: Plot & Formeln # {{{
     fig = pl.figure(figsize=(4,3))
     ax = fig.add_subplot(1, 1, 1)
 
@@ -251,7 +254,8 @@ def energy_calibration(T, side):# {{{
         return linear(x, slope_val, offset_val)
 
     def calibration_err(x):
-        return np.sqrt((x * slope_err)**2 + offset_err**2)
+        return np.sqrt((x * slope_err)**2 + offset_err**2)# }}}
+
 
     #TODO Energieauflösung hier bestimmen und in Tabellen ausgeben
 
