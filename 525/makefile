@@ -7,6 +7,7 @@ all_eps := $(wildcard Daten/*.GZ)
 all_pdf := $(all_eps:Daten/%.GZ=_build/%.pdf)
 
 _build/%.ps : Daten/%.GZ
+	mkdir -p _build
 	gzip -d -c $< > $@
 
 %-temp.pdf : %.ps
