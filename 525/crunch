@@ -107,6 +107,7 @@ def fit_peak(name, data, first, last, energy=0, show=False, save=False, side='',
         fig.tight_layout()
         fig.savefig('_build/plot_fit_peak_'+ side + '_' + '{}'.format(num) + '_' + name +'.pdf')
         fig.clear
+        pl.close()
 
     return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy
 
@@ -161,8 +162,6 @@ def energy_calibration(T, side):
                 (850, 1080, 80.9979),
                 (4400, 5100, 356.0129),
                 ]
-
-
 
     for name, data, fit_range in [('na', data_na_mov, fit_range_na), ('ba', data_ba_mov, fit_range_ba)]:
 
@@ -300,17 +299,124 @@ def extract_boundaries(T, name, threshold, energy, energy_err, show=False):
     fig.clear
     pl.close()
 
+def time_calibration(T):
+    '''
+    Erstellt die Zeitkalibrierung
+
+    :return Geradenfunktion
+    '''
+
+    data = load_data_normalized('Na_time_7-peaks')
+
+    points = []
+
+    fit_range = [
+            (1200, 1600),
+            (1800, 2200),
+            (2400, 2900),
+            (3000, 3500),
+            (3600, 4100),
+            (4300, 4700),
+            (4900, 5300),
+            ]
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    x, y = data[:, 0], data[:, 1]
+    ax.plot(x, y, marker=None, alpha=0.6, color='#377eb9')
+
+    for i, (first, last) in zip(itertools.count(1), fit_range):
+        points.append(fit_peak('time', data, first, last, i * 16, save=True, num=i))
+        tmp_point = np.array(points[-1])
+
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = gauss_peak(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
+
+        ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=2)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Ereignisse / s')
+    ax.set_xlim([1000,5500])
+    fig.tight_layout()
+    fig.savefig('_build/plot_time_calibration.pdf')
+    fig.clear
+    pl.close()
+
+
+    points = np.array(points)
+
+    list_mean_val = points[:, 0]
+    list_mean_err = points[:, 1]
+    list_full_width_val = np.abs(points[:, 2] * 2 * np.sqrt(2 * np.log(2)))
+    list_full_width_err = points[:, 3] * 2 * np.sqrt(2 * np.log(2))
+    list_area_val = points[:, 4]
+    list_area_err = points[:, 5]
+    list_expected_time = points[:, 6]
+
+    T['time_calibration_table'] = list(zip(
+        unitprint.siunitx(list_mean_val, list_mean_err),
+        unitprint.siunitx(list_full_width_val, list_full_width_err),
+        unitprint.siunitx(list_expected_time),
+        ))
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    x, y = list_mean_val, list_expected_time
+    ax.errorbar(list_mean_val, list_expected_time, xerr=list_mean_err, marker='+', linestyle='none')
+
+    popt, pconv = op.curve_fit(linear, x, y)
+    perr = np.sqrt(pconv.diagonal())
+
+    fit_x = np.linspace(np.min(x), np.max(x), 100)
+    fit_y = linear(fit_x, *popt)
+    ax.plot(fit_x, fit_y)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Zeit / ns')
+    for label in ax.get_xticklabels():
+        label.set_rotation(45)
+    fig.tight_layout()
+    fig.savefig('_build/plot_time_calibrate_fit.pdf')
+    fig.clear
+    pl.close()
+
+    slope_val, slope_err = popt[0], perr[0]
+    offset_val, offset_err = popt[1], perr[1]
+
+    T['time_slope'] = unitprint.siunitx(slope_val, slope_err)
+    T['time_offset'] = unitprint.siunitx(offset_val, offset_err)
+
+    def calibration(x):
+        return linear(x, slope_val, offset_val)
+
+    def calibration_err(x):
+        return np.sqrt((x * slope_err)**2 + offset_err**2)
+
+    #TODO Zeitauflösung hier bestimmen und in Tabellen ausgeben
+
+    return calibration, calibration_err
+
+
 def job_analysis(T):
 
-    calibration_li, calibration_err_li = energy_calibration(T, 'li')
-    calibration_re, calibration_err_re = energy_calibration(T, 're')
+    energy_li, energy_err_li = energy_calibration(T, 'li')
+    energy_re, energy_err_re = energy_calibration(T, 're')
 
-    extract_boundaries(T, 'li_Na', 0.03, calibration_li, calibration_err_li)
-    extract_boundaries(T, 're_Na', 0.03, calibration_re, calibration_err_re)
+    extract_boundaries(T, 'li_Na', 0.03, energy_li, energy_err_li)
+    extract_boundaries(T, 're_Na', 0.03, energy_re, energy_err_re)
 
-    extract_boundaries(T, 'li_Ba', 0.3, calibration_li, calibration_err_li)
-    extract_boundaries(T, 're_Ba', 0.3, calibration_re, calibration_err_re)
+    extract_boundaries(T, 'li_Ba', 0.3, energy_li, energy_err_li)
+    extract_boundaries(T, 're_Ba', 0.3, energy_re, energy_err_re)
 
+
+    time_li, time_err_li = time_calibration(T)
+    time_re, time_err_re = time_calibration(T)
 
 
 

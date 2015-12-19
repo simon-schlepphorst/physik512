@@ -642,7 +642,51 @@ Anhang~\ref{anhang-energiekalibrierung} zu sehen.
     \label{tab:sca_schwellen}
 \end{table}
 
+\clearpage
 
+\section{Zeiteichung}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{plot_time_calibration}
+	\caption{%
+		Um \SI{16}{\nano\second} versetzte \SI{511}{\kilo\electronvolt}
+		Linien aus $^{22}\text{Na}$ zur Zeiteichung
+	}
+	\label{fig:zeiteichung_peaks_plot}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{tabular}{SSS}
+		{Kanal} &
+		{FWHM} &
+		{Zeit / \si{\nano\second}}\\
+		\midrule
+		%< for row in time_calibration_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+	\caption{%
+		Anpassungsparameter für die Zeiteichung
+	}
+	\label{tab:zeiteichung}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{plot_time_calibrate_fit}
+	\caption{%
+		Zeiteichung
+	}
+	\label{fig:zeiteichung_plot}
+\end{figure}
+
+\begin{align}
+	t\del x = m x + n
+	&&\text{mit } m = \SI{<< time_slope >>}{\nano\second}\text{, }
+	\quad n = \SI{<< time_offset >>}{\nano\second}
+\end{align}
 
 \chapter{Ergebnis}
 %TODO
