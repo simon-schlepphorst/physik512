@@ -140,16 +140,28 @@ def energy_calibration(T, side):
         fig.clear
         pl.close()
 
+    if side == 'li':
+        fit_range_na = [
+                (6200, 7500, 511),
+                ]
 
-    fit_range_na = [
-            (6200, 7500, 511),
-            ]
+        fit_range_ba = [
+                (250, 450, 30.8502),
+                (1000, 1230, 80.9979),
+                (4600, 5200, 356.0129),
+                ]
 
-    fit_range_ba = [
-            (50, 600, 30.8502),
-            (800, 1300, 80.9979),
-            (4400, 5500, 356.0129),
-            ]
+    if side == 're':
+        fit_range_na = [
+                (6200, 7300, 511),
+                ]
+
+        fit_range_ba = [
+                (100, 250, 30.8502),
+                (850, 1080, 80.9979),
+                (4400, 5100, 356.0129),
+                ]
+
 
 
     for name, data, fit_range in [('na', data_na_mov, fit_range_na), ('ba', data_ba_mov, fit_range_ba)]:
