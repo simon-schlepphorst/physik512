@@ -696,6 +696,9 @@ Detektor:
 
 \subsection{Umrechnen der Schwellen}
 
+Mit der Energiekalibrierung können wir nun die beim Aufbau gewählten Schwellen
+für SCA und CFD in Energien umrechnen. Das Ergebnis ist in den
+Tabellen~\ref{tab:sca_schwellen} und \ref{tab:cfd_schwellen} zu sehen.
 \begin{table}[h]
     \centering
     \begin{tabular}{llSS}
@@ -734,6 +737,25 @@ Detektor:
 
 \section{Zeiteichung}
 
+Für die Zeiteichung haben wir an die mit jeweils \SI{16}{\nano\second} Abstand
+aufgenommenen Linien Gaußkurven angepasst. Einen groben Überblick liefert
+Abbildung~\ref{fig:zeiteichung_peaks_plot}. Mehr Details, sowie die zur
+Grundlage der Anpassungen gewählten Datenbereiche, kann man den Abbildungen in
+Anhang~\ref{anhang-zeiteichung} entnehmen.
+
+Mit den in Tabelle~\ref{tab:zeiteichung} und
+Abbildung~\ref{fig:zeiteichung_plot} dargestellten Anpassungsparametern können
+wir eine Zeiteichung erstellen und erhalten:
+\begin{align}
+	t\del x = m x + n
+	&&\text{mit } m = \SI{<< time_slope >>}{\nano\second}\text{, }
+	\quad n = \SI{<< time_offset >>}{\nano\second}
+\end{align}
+Dabei ist $n$ nur der Vollständigkeit halber aufgeführt. Da wir nur
+Zeitdifferenzen messen, können wir den Nullpunkt willkürlich festsetzen.
+
+\fehlt%TODO Zeitauflösung.
+
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{plot_time_calibration}
@@ -744,7 +766,7 @@ Detektor:
 	\label{fig:zeiteichung_peaks_plot}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\begin{tabular}{SSS}
 		{Kanal} &
@@ -770,12 +792,6 @@ Detektor:
 	\label{fig:zeiteichung_plot}
 \end{figure}
 
-\begin{align}
-	t\del x = m x + n
-	&&\text{mit } m = \SI{<< time_slope >>}{\nano\second}\text{, }
-	\quad n = \SI{<< time_offset >>}{\nano\second}
-\end{align}
-
 \section{Bestimmung der Lebenszeit}
 \begin{figure}
 	\centering
@@ -786,7 +802,6 @@ Detektor:
 	\label{fig:langzeit_plot}
 \end{figure}
 
-\fehlt%TODO Lebenszeitkurve
 
 \chapter{Ergebnis}
 %TODO
