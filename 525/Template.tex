@@ -78,7 +78,105 @@
 
 \chapter{Theorie}
 %TODO
+\section{Szintillationsdetektor}
+Mit einem Szintillationsdetektor lassen sich Intensität und Energie von
+ionisierender Strahlung messen.
+Er besteht aus einem Szintillator und einem Photomultiplier.
+Der Szintillator ist ein dotierter Einkristall, der von energiereicher
+Strahlung zum Fluoreszieren angeregt werden kann und hinreichend
+durchlässig für das von ihm emittierte Licht ist.
 
+Innerhalb des vor Lichteinfall geschützten Szintillators entstehen durch
+ionisierende Strahlung Lichtblitze. 
+Diese entstehen dadurch, dass die Strahlung Atome durch die Effekt
+~\ref{sec:WW-strahlung-Materie} anregt, welche entweder direkt
+wieder rekombinieren und Photonen aussenden oder über Stöße vorher einen Teil
+ihrer Energie abgeben.
+Somit ist die Intensität dieser Blitze abhängig von der Energie der einfallenden Strahlung.
+
+\subsection{Photomultiplier}
+Aufgrund des Photoeffektes, werden an der Photokathode des Photomultipliers
+Elektronen ausgelöst.
+
+Durch den Aufbau des Photomultipliers kommt es zu einem Lawineneffekt,
+welcher die Elektronen vervielfacht und somit eine Detektion erleichtert.
+Die Amplitude des so entstanden Strompulses ist somit auch proportional zu der
+Energie der Eingangsstrahlung.
+
+\subsection{Energie und Zeitauflösung}
+Um mit dieser Art Detektor möglichst gute Auflösungen zu erhalten, greift man
+das Signal je nachdem ob man die Energie- oder die Zeitauflösung optimieren will
+an eine Dynode beziehungsweise an der Anode des Photomultipliers ab.
+Der Vorteil der Dynode für die Energieauflösung liegt da drin, dass noch keine
+Sättigung herrscht. Hier durch ist die Proportionalität zwischen Signalhöhe und
+Energie nicht beeinträchtigt. Da das Signal allerdings nur sehr langsam
+ansteigt, man spricht von den Slow-Signal, ist die Zeitauflösung beeinträchtigt.
+Deswegen benutzt man hier das sogenannte Fast-Signal. Es wird an der Anode
+abgegriffen, da dort Sättigung vorliegt, wodurch das Signal schnell ansteigt.
+Die Amplitude ist allerdings nicht mehr proportional zur Energie.
+Um die Zeitauflösung ermitteln zu können nutzt man eine
+Slow-Fast-Koinzidenzschaltung. Man misst bekannte Linien und bestimmt aus den
+angepassten Funktionen die Halbwertsbreite.
+
+%TODO für Nukleare elektronik
+Für die Zeitkalibrirung nutzt man
+am besten ein Isotope, welches einen $\beta^+$-Zerfall besitzt. Dadurch kann
+man gewährleisten, dass gleichzeitig zwei Photonen mit bekannter Wellenlänge
+von \SI{511}{\ilko\electronenvot} durch die Rekombination von Elektron und
+Positron entstehen.
+
+\subsection{Splitter}
+Im laufe des Versuches wird es nötig sein, dass das Signal aufgeteilt wird,
+ohne dabei verformt zu werden. Hierfür nutzt man ein Bauteil, welches Splitter
+genannt wird. 
+
+\subsection{Einkanalanalysator}
+Der Einkanalanalysator, auch Single Channel Analyser, kurz SCA, genannt ist ein
+Bauteil, welches ähnlich eines Diskrimiators eine untere, aber auch eine obere
+Grenze besitzt. Wenn ein Signal die untere Grenze übersteigt, aber die obere
+Grenze nicht erreicht, so sendet der SCA ein digitales Signal aus, sobald das
+Signal wider unter die untere Grenze singt.
+
+\subsection{Vielkanalanalysator}
+Um ein nach Amplituden sortiertes Spektrum zu erhalten, nutzen wir ein MCA.
+Dies ist ein Bauteil, welches einkommende Signale nach Amplitude sortiert und
+dann den Kanal, welcher der Impulshöhe entspricht, hoch setzt. So erhalten wir ein
+Histogramm. Der MCA ist aus mhreren SCAs aufgebaut.
+
+\subsection{Contsant Fraction Diskrimiantor}
+Einen CFD ist ein Diskrimiantor und somit in der Lage ein analoges
+Eingangsignal in ein digitales Ausgangssignal umwandeln, wenn ein Signal einen
+bestimmten Wert übersteigt.
+Der Constant Fraction Diskriminator ist allerdings auch in der Lage Signale
+verschiedener größe zu detektieren, sofern sie die selbe Form haben, da diese
+dann die gleiche Anstiegszeit haben. Das digitale Signal wird abgegeben, sobald
+das analoge Signal einen bestimmten Bruchteil seiner Amplitude erreicht.
+
+\subsection{Verstärker}
+Ein Verstärker hat wie der Name schon sagt die Aufgabe ein Signal zu
+Verstärken. Man nutzt meist einen Vor- und einen Hauptverstärker um zu
+gewährleisten das die Verstärkung linear ist. 
+
+\subsection{Delays}
+Delays sollen die elektrischen Signale verzögern. Da die länge eines Kabels
+proportional zu dessen Verzögerung ist, kann man ein Kabel mit entsprechender
+Länge nutzten um eine bestimmte Verzögerung zu erhalten.
+
+\subsection{Koinzidenzeinheit}
+Mit der Koinzidenzeinheit lässt sich überprüfen, ob zwei Signale zeitnah
+nacheinander auftreffen. Hierzu werden die Eingangssignale über ein logisches
+AND mit einander verknüpft und im Falle eines Überlapes ein Ausgangssignal
+ausgegeben. Dadurch wird aber direkt die Zeitauflösung auf die doppelte
+Impulslänge begrenzt.
+
+\subsection{Zeit-Amplituden-Wandler}
+Der Zeit-Amplituden-Wandeler (tims-to-amplitude-converter oder auch TAC) soll
+aus der der zeitlichen Differenz zweier Signale ein Signal erstellen, welches
+in der Amplitude proportional zu der Dauer ist. Das lässt sich bespielsweise da
+durch realisieren, dass durch Eintreffen des ersten Signals ein Kondensator
+aufgeladen wird. Der Ladevorgang wird beendet sobald das zweite Signal
+eintrifft. Bei dem Entladen ist das resultierende Signal ist in der höhe
+proportional zu der Zeitdifferenz. 
 
 \chapter{Aufbau und Durchführung}
 %TODO
