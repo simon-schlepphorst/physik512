@@ -499,7 +499,23 @@ def job_time_calibration(T):# {{{
     def calibration_err(x):
         return np.sqrt((x * slope_err)**2 + offset_err**2)
 
-    #TODO Zeitauflösung hier bestimmen und in Tabellen ausgeben
+    # Zeitauflösung # {{{
+
+    print(list_full_width_val)
+    print(list_full_width_err)
+    print(slope_val, slope_err)
+    print(offset_val, offset_err)
+
+    list_full_width_time_val = list_full_width_val * slope_val
+    list_full_width_time_err = np.sqrt((list_full_width_err * slope_val)**2 +
+            (list_full_width_val * slope_err)**2)
+
+    full_width_time_val = np.mean(list_full_width_time_val)
+    full_width_time_err = np.sqrt(np.mean(list_full_width_time_err**2)/7)
+
+
+    T['time_resolution'] = unitprint.siunitx(full_width_time_val, full_width_time_err)# }}}
+
 
 
     #Auswertung der Langzeitmessung
