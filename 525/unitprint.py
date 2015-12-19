@@ -21,7 +21,7 @@ import math
 __docformat__ = "restructuredtext en"
 
 class Quantity(object):
-    def __init__(self, value, error=None, digits=3, error_digits=1, allowed_hang=3):
+    def __init__(self, value, error=None, digits=3, error_digits=2, allowed_hang=3):
         '''
         :param allowed_hang: If the value exponent is below or equal to this
         number, it will printed like that. So a 100 is preserved if this is set
