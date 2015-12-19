@@ -719,8 +719,9 @@ eine Gaußanpassung erschwert.
 
 Die Parameter der Anpassungen sind in Tabelle~\ref{tab:energiekalibrierung}
 aufgeführt. Mit diesen wurden dann die in
-Abbildung~\ref{fig:energiekalibrierung_plot} zu sehende Energiekalibrierungen
-je Detektor erstellt.
+Abbildung~\ref{fig:energiekalibrierung_plot} zu sehenden Energiekalibrierungen
+je Detektor erstellt. Die Datenpunkte sind mit Fehler dargestellt, allerdings
+ist dieser zu klein um in dieser Auflösung gesehen zu werden.
 
 \begin{figure}[h]
     \begin{minipage}[t]{0.45\textwidth}
@@ -728,7 +729,7 @@ je Detektor erstellt.
 	\begin{tabular}{SSS}
 		{Kanal} &
 		{FWHM} &
-		{Energie / \si{\kilo\electronvolt}}\\
+		{E / \si{\kilo\electronvolt}}\\
 		\midrule
 		%< for row in li_energy_calibration_table: ->%
 		<< ' & '.join(row) >> \\
@@ -741,7 +742,7 @@ je Detektor erstellt.
         \begin{tabular}{SSS}
 		{Kanal} &
 		{FWHM} &
-		{Energie / \si{\kilo\electronvolt}}\\
+		{E / \si{\kilo\electronvolt}}\\
 		\midrule
 		%< for row in re_energy_calibration_table: ->%
 		<< ' & '.join(row) >> \\
@@ -791,14 +792,20 @@ Detektor:
 
 \subsection{Energieauflösung}
 
-\fehlt
+Die absolute und relative Energieauflösung der einzelnen Linien
+stellen wir in Abbildung~\ref{tab:energieaufloesung} dar.
+Dabei fällt auf, dass die Auflösung stark von der Energie abhängt.
+
+Da es in diesem Semester keine parallelen Gruppen an einem anderen Aufbau gab,
+können wir die Energieauflösung auch nicht mit diesen vergleichen.
+
 \begin{figure}[h]
     \begin{minipage}[t]{0.45\textwidth}
 	\centering
 	\begin{tabular}{SSS}
 		{E / \si{\kilo\electronvolt}} &
 		{FWHM / \si{\kilo\electronvolt}} &
-		{rel. Auflösung / \si{\kilo\electronvolt}}\\
+		{rel. Auflösung}\\
 		\midrule
 		%< for row in li_energy_resolution_table: ->%
 		<< ' & '.join(row) >> \\
@@ -811,7 +818,7 @@ Detektor:
         \begin{tabular}{SSS}
 		{E / \si{\kilo\electronvolt}} &
 		{FWHM / \si{\kilo\electronvolt}} &
-		{rel. Auflösung / \si{\kilo\electronvolt}}\\
+		{rel. Auflösung}\\
 		\midrule
 		%< for row in re_energy_resolution_table: ->%
 		<< ' & '.join(row) >> \\
