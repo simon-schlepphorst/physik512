@@ -224,15 +224,43 @@ def energy_calibration(T, side):
 
     def calibration(x):
         return linear(x, slope_val, offset_val)
-    return calibration
 
+    def calibration_err(x):
+        return np.sqrt((x * slope_err)**2 + offset_err**2)
+
+    return calibration, calibration_err
+
+def extract_boundaries(T, name, threshold, energy, energy_err):
+    data = np.loadtxt('Daten/' + name + '_spektrum-filter.txt')
+    channel = data[:, 0]
+    counts = data[:, 1]
+
+    selection = counts > threshold
+
+    lower = np.min(channel[selection])
+    upper = np.max(channel[selection])
+
+    T[name + '_lower_channel'] = lower
+    T[name + '_upper_channel'] = upper
+
+    T[name + '_lower_energy'] = unitprint.siunitx(energy(lower), energy_err(lower))
+    T[name + '_upper_energy'] = unitprint.siunitx(energy(upper), energy_err(upper))
 
 
 
 def job_analysis(T):
 
-    calibration_li = energy_calibration(T, 'li')
-    calibration_re = energy_calibration(T, 're')
+    calibration_li, calibration_err_li = energy_calibration(T, 'li')
+    calibration_re, calibration_err_re = energy_calibration(T, 're')
+
+    extract_boundaries(T, 'li_Na', 5, calibration_li, calibration_err_li)
+    extract_boundaries(T, 're_Na', 5, calibration_re, calibration_err_re)
+
+    extract_boundaries(T, 'li_Ba', 100, calibration_li, calibration_err_li)
+    extract_boundaries(T, 're_Ba', 100, calibration_re, calibration_err_re)
+
+
+
 
 
 
