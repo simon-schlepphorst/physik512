@@ -304,6 +304,61 @@ def extract_boundaries(T, name, threshold, energy, energy_err, show=False):
     fig.clear
     pl.close()
 
+    #Nochmal das gleiche für die CFD-Schwellen
+    data = load_data_normalized(name + '_spektrum-cfd-close')
+    channel = data[:, 0]
+    counts = data[:, 1]
+
+    selection = counts > threshold
+
+    lower = np.min(channel[selection])
+    upper = np.max(channel[selection])
+
+    T[name + '_lower_cfd_channel'] = lower
+    T[name + '_upper_cfd_channel'] = upper
+
+    T[name + '_lower_cfd_energy'] = unitprint.siunitx(energy(lower), energy_err(lower))
+    T[name + '_upper_cfd_energy'] = unitprint.siunitx(energy(upper), energy_err(upper))
+
+    if show:
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[:, 0], data[:, 1]
+        ax.plot(x, y, marker=None, color='#377eb8')
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        ax.legend(loc='best')
+        fig.tight_layout()
+        fig.show()
+        print('Waiting for input ...')
+        input()
+        fig.clear()
+        pl.close()
+
+    lower -= 300
+    upper += 300
+
+    fig = pl.figure(figsize=(4,3))
+    ax = fig.add_subplot(1, 1, 1)
+
+    x, y = data[lower:upper, 0], data[lower:upper, 1]
+    ax.plot(x, y, marker=None, color='#377eb8')
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Ereignisse / s')
+    fig.tight_layout()
+    fig.savefig('_build/plot_spektrum_cfd_' + name + '.pdf')
+    fig.clear
+    pl.close()
+
+
+
 def time_calibration(T):
     '''
     Erstellt die Zeitkalibrierung

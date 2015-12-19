@@ -340,7 +340,33 @@ die Kanäle
 	\label{fig:fast_signal_cfd_trig}
 \end{figure}
 
-\fehlt%TODO eingestellte Spektren
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_cfd_li_Na}
+		\caption{%
+			links
+		}
+		\label{fig:fast_signal_cfd_plot-li}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_cfd_re_Na}
+		\caption{%
+			rechts
+		}
+		\label{fig:fast_signal_cfd_plot-re}
+	\end{subfigure}
+	\caption{%
+		$^{22}\text{Na}$-Spektrum nach dem Setzen der CFD Schwellen
+	}
+	\label{fig:fast_signal_cfd_plot}
+\end{figure}
+
+Durch das Einstellen des CFD haben wir links die Kanäle
+\numrange{<< li_Na_lower_cfd_channel >>}{<< li_Na_upper_cfd_channel >>} und rechts
+die Kanäle
+\numrange{<< re_Na_lower_cfd_channel >>}{<< re_Na_upper_cfd_channel >>} ausgewählt.
+
 
 \begin{figure}
 	\centering
@@ -497,6 +523,34 @@ die Kanäle
 
 \begin{figure}
 	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_cfd_li_Ba}
+		\caption{%
+			links
+		}
+		\label{fig:ba_fast_signal_cfd_plot-li}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_cfd_re_Ba}
+		\caption{%
+			rechts
+		}
+		\label{fig:ba_fast_signal_cfd_plot-re}
+	\end{subfigure}
+	\caption{%
+		$^{133}\text{Ba}$-Spektrum nach dem Setzen der CFD Schwellen
+	}
+	\label{fig:ba_fast_signal_cfd_plot}
+\end{figure}
+
+Durch das Einstellen des CFD haben wir links die Kanäle
+\numrange{<< li_Ba_lower_cfd_channel >>}{<< li_Ba_upper_cfd_channel >>} und rechts
+die Kanäle
+\numrange{<< re_Ba_lower_cfd_channel >>}{<< re_Ba_upper_cfd_channel >>} ausgewählt.
+
+
+\begin{figure}
+	\centering
 	\includegraphics[width=\textwidth]{TEK00046}
 	\caption{%
 		Slow-Fast Koinzidenz
@@ -626,6 +680,9 @@ Anhang~\ref{anhang-energiekalibrierung} zu sehen.
 \end{align}
 
 \begin{table}
+\subsection{Umrechnen der Schwellen}
+
+\begin{table}[h]
     \centering
     \begin{tabular}{llSS}
         Probe & Seite & {untere Schwelle / \si{\kilo\electronvolt}} & {obere
@@ -641,6 +698,23 @@ Anhang~\ref{anhang-energiekalibrierung} zu sehen.
     }
     \label{tab:sca_schwellen}
 \end{table}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{llSS}
+        Probe & Seite & {untere Schwelle / \si{\kilo\electronvolt}} & {obere
+    Schwelle} / \si{\kilo\electronvolt} \\
+        \midrule
+        Na & links & << li_Na_lower_cfd_energy >> & << li_Na_upper_cfd_energy >> \\
+        Na & rechts & << re_Na_lower_cfd_energy >> & << re_Na_upper_cfd_energy >> \\
+        Ba & links & << li_Ba_lower_cfd_energy >> & << li_Ba_upper_cfd_energy >> \\
+        Ba & rechts & << re_Ba_lower_cfd_energy >> & << re_Ba_upper_cfd_energy >> \\
+    \end{tabular}
+    \caption{%
+        Lage der CFD Schwellen.
+    }
+    \label{tab:cfd_schwellen}
+\end{table}
+
 
 \clearpage
 
