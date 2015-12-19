@@ -792,6 +792,38 @@ Detektor:
 \subsection{Energieauflösung}
 
 \fehlt
+\begin{figure}[h]
+    \begin{minipage}[t]{0.45\textwidth}
+	\centering
+	\begin{tabular}{SSS}
+		{E / \si{\kilo\electronvolt}} &
+		{FWHM / \si{\kilo\electronvolt}} &
+		{rel. Auflösung / \si{\kilo\electronvolt}}\\
+		\midrule
+		%< for row in li_energy_resolution_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \begin{tabular}{SSS}
+		{E / \si{\kilo\electronvolt}} &
+		{FWHM / \si{\kilo\electronvolt}} &
+		{rel. Auflösung / \si{\kilo\electronvolt}}\\
+		\midrule
+		%< for row in re_energy_resolution_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+    \end{minipage}
+	\caption{%
+		Energieauflösung
+	}
+	\label{tab:energieaufloesung}
+\end{figure}
+
 
 \subsection{Umrechnen der Schwellen}
 
