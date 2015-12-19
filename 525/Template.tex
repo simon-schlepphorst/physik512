@@ -70,7 +70,8 @@
 \maketitle
 
 \begin{abstract}
-	%TODO
+	Das Versuchsziel ist es die Lebensdeuer des angeregten $\frac 52^+$
+        Zustandes einer $^{133}\text{Cs}$ Quelle zu bestimmen.
 \end{abstract}
 
 
@@ -176,10 +177,45 @@ in der Amplitude proportional zu der Dauer ist. Das lässt sich bespielsweise da
 durch realisieren, dass durch Eintreffen des ersten Signals ein Kondensator
 aufgeladen wird. Der Ladevorgang wird beendet sobald das zweite Signal
 eintrifft. Bei dem Entladen ist das resultierende Signal ist in der höhe
-proportional zu der Zeitdifferenz. 
+proportional zu der Zeitdifferenz.
 
-\chapter{Aufbau und Durchführung}
+\section{Aufbau zur Zerfallszeitmessung}
+Um Zerfallszeiten zu messen, nutzen wir eine Fast-Slow-Koinzidenzschaltung, da
+wir sowohl eine gut Zeit- als auch Energieauflösung benötigen. Die Schaltung
+sieht dabei wie Folgt aus: 
+Zwei Detektoren sind so ausgerichtet, dass sie sich gegenüber stehen und die
+Probe im Selben Abstand zwischen ihnen steht. An die Detektoren wird je ein
+Photomultipliere angeschlossen. Die Slow-Ausgänge werden genutzt um die
+Koinzidenz von Ereignissen zu überprüfen. Hierzu schneidet man mit dem SCA die
+Energibereiche aus, die verglichen werden sollen. Die beiden Signale aus den
+SCAs werden in eine Koinzidenzeinheit geführt und wenn diese ein Signal
+produziert, so wird das Signal aus der Fast-Schaltung genutzt, Es dient also
+als Trigger. Die Fast-Schaltung beginnt am Fast-Ausgang des Photomultiplieres.
+Von da aus gehen die Signale durch CFDs. Das Signal der einen Seite dient als
+Startsignal des TAC, das andere als Stopsignal. Von dort aus wird die so
+modelierte Amplitude von einen MCA in ein Histogram gespeichert, sofern im
+Slow-Kreis festgestellt wurde, dass es relevant ist.
+\fehlt Schaltskizze
+
+\section{Zerfallsschema von $^{22}\text{Na}$ und $^{133}\text{Ba}$}
+Der $^{22}\text{Na}$ zerfällt hauptsächlich über einen $\beta^+$-Zerfall in ein
+angeregtes $^{22}\text{Ne}$, welches ein Photon mit einer Energie von
+\SI{1274,6}{\kilo\electronvolt} emittiert. Das Positron anhiliert  mit einem
+Elektron und sendet zeitgleich zwei Photonen mit jeweils \SI{511}{\kilo\elektronenvolt}
+aus. Diese fliegen genau in entgegengesetzte Richtung. Deshalb eignet
+sich dieser Zerfall hervorragend zur Zeit-Kalibrierung. 
+
+Für $^{133}\text{Ba}$ ist der wahrscheinlichste Zerfall ein Zerfall über
+Elektroneneinfang, bei dem es in angeregtes $^{133}\text{Cs}$ zerfällt und erst
+ein Photon mit \SI{356}{\kilo\elektronenvolt} abstrahlt. Der entstandene
+Zustand ist der angeregte $\frac 52^+$ Zustand, dessen Lebensdauer wir
+bestimmen wollen, bevor er über Abstrahlung eines Photons mit \SI{81}{\kilo\elektronenvolt}
+zerfällt.
+\fehlt Zerfallsschemen
+
+\chapter{Durchführung}
 %TODO
+
 
 %Na-22
 %Slow-Kreis
