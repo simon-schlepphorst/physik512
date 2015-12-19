@@ -270,10 +270,13 @@ def extract_boundaries(T, name, threshold, energy, energy_err, show=False):
         fig.clear()
         pl.close()
 
+    lower -= 300
+    upper += 300
+
     fig = pl.figure(figsize=(4,3))
     ax = fig.add_subplot(1, 1, 1)
 
-    x, y = data[:, 0], data[:, 1]
+    x, y = data[lower:upper, 0], data[lower:upper, 1]
     ax.plot(x, y, marker=None, color='#377eb8')
 
     ax.margins(0.05)
@@ -285,19 +288,16 @@ def extract_boundaries(T, name, threshold, energy, energy_err, show=False):
     fig.clear
     pl.close()
 
-
-
-
 def job_analysis(T):
 
     calibration_li, calibration_err_li = energy_calibration(T, 'li')
     calibration_re, calibration_err_re = energy_calibration(T, 're')
 
-    extract_boundaries(T, 'li_Na', 0.01, calibration_li, calibration_err_li)
-    extract_boundaries(T, 're_Na', 0.01, calibration_re, calibration_err_re)
+    extract_boundaries(T, 'li_Na', 0.03, calibration_li, calibration_err_li)
+    extract_boundaries(T, 're_Na', 0.03, calibration_re, calibration_err_re)
 
-    extract_boundaries(T, 'li_Ba', 0.2, calibration_li, calibration_err_li)
-    extract_boundaries(T, 're_Ba', 0.2, calibration_re, calibration_err_re)
+    extract_boundaries(T, 'li_Ba', 0.3, calibration_li, calibration_err_li)
+    extract_boundaries(T, 're_Ba', 0.3, calibration_re, calibration_err_re)
 
 
 
