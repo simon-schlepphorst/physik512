@@ -258,11 +258,6 @@ def energy_calibration(T, side):# {{{
 
     # Energieauflösung # {{{
 
-    print(list_full_width_val)
-    print(list_full_width_err)
-    print(slope_val, slope_err)
-    print(offset_val, offset_err)
-
     list_full_width_energy_val = calibration(list_full_width_val)
     list_full_width_energy_err = np.sqrt((list_full_width_err * slope_val)**2 +
             (list_full_width_val * slope_err)**2 + offset_err**2)
@@ -500,11 +495,6 @@ def job_time_calibration(T):# {{{
         return np.sqrt((x * slope_err)**2 + offset_err**2)
 
     # Zeitauflösung # {{{
-
-    print(list_full_width_val)
-    print(list_full_width_err)
-    print(slope_val, slope_err)
-    print(offset_val, offset_err)
 
     list_full_width_time_val = list_full_width_val * slope_val
     list_full_width_time_err = np.sqrt((list_full_width_err * slope_val)**2 +
