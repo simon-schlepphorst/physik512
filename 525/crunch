@@ -31,6 +31,12 @@ def gauss_peak(x, mean, width, area):
 def linear(x, slope, offset):
     return x * slope + offset
 
+def decay(x, a, b):
+    '''
+    Exponentieller Abfall
+    '''
+    return np.exp(- x / a) * b
+
 def extract_livetime(metafile):
     with open(metafile) as f:
         for line in f:
@@ -465,23 +471,38 @@ def time_calibration(T):
 
     data = load_data_normalized('Ba_langzeit')
 
+    x, y = calibration(data[:, 0]), data[:, 1]
+
+    start = 1900
+    selection = y > 0.02
+
+    lower = np.min(x[selection])
+    #upper = np.max(x[selection])
+    upper = 4600
+
+    print(start, lower, upper)
+
+    print(x[start:upper])
+
+    popt, pconv = op.curve_fit(decay, x[start:upper], y[start:upper], p0=[10, 0.4])
+    perr = np.sqrt(pconv.diagonal())
+    print(popt, perr)
+
+    x_fit = np.linspace(calibration(start), calibration(upper), 1000)
+    y_fit = decay(x_fit, *popt)
+
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
 
-    x, y = calibration(data[:, 0]), data[:, 1]
     ax.plot(x, y, marker=None, alpha=0.6, color='#377eb9')
 
-    popt, pconv = op.curve_fit(linear, x, y)
-    perr = np.sqrt(pconv.diagonal())
-
-    #fit_x = np.linspace(np.min(x), np.max(x), 100)
-    #fit_y = linear(fit_x, *popt)
-    #ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=2)
+    ax.plot(x_fit, y_fit, marker = None, alpha=0.6, color='#e41a1c', linewidth=2)
 
     ax.margins(0.05)
     ax.grid(True)
     ax.set_xlabel('Zeit / ns')
     ax.set_ylabel('Ereignisse / s')
+    ax.set_yscale('log')
     fig.tight_layout()
     fig.savefig('_build/plot_langzeit_fit.pdf')
     fig.clear
@@ -503,8 +524,7 @@ def job_analysis(T):
     extract_boundaries(T, 're_Ba', 0.3, energy_re, energy_err_re)
 
 
-    time_li, time_err_li = time_calibration(T)
-    time_re, time_err_re = time_calibration(T)
+    time, time_err = time_calibration(T)
 
 
 
