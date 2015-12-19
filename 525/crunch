@@ -293,11 +293,11 @@ def job_analysis(T):
     calibration_li, calibration_err_li = energy_calibration(T, 'li')
     calibration_re, calibration_err_re = energy_calibration(T, 're')
 
-    extract_boundaries(T, 'li_Na', 0.01, calibration_li, calibration_err_li, True)
-    extract_boundaries(T, 're_Na', 0.01, calibration_re, calibration_err_re, True)
+    extract_boundaries(T, 'li_Na', 0.01, calibration_li, calibration_err_li)
+    extract_boundaries(T, 're_Na', 0.01, calibration_re, calibration_err_re)
 
-    extract_boundaries(T, 'li_Ba', 0.2, calibration_li, calibration_err_li, True)
-    extract_boundaries(T, 're_Ba', 0.2, calibration_re, calibration_err_re, True)
+    extract_boundaries(T, 'li_Ba', 0.2, calibration_li, calibration_err_li)
+    extract_boundaries(T, 're_Ba', 0.2, calibration_re, calibration_err_re)
 
 
 
