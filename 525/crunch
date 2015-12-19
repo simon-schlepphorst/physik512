@@ -37,14 +37,14 @@ def decay(x, a, b):
     '''
     return np.exp(- x / a) * b
 
-def extract_livetime(metafile):
+def extract_livetime(metafile):# {{{
     with open(metafile) as f:
         for line in f:
             m = _livetime_pattern.search(line)
             if m:
-                return float(m.group(1))
+                return float(m.group(1))# }}}
 
-def load_data_normalized(basename):
+def load_data_normalized(basename):# {{{
     '''
     Loads the data and normalizes it to give events per second.
     '''
@@ -57,9 +57,9 @@ def load_data_normalized(basename):
 
     data[:, 1] /= livetime
 
-    return data
+    return data# }}}
 
-def fit_peak(name, data, first, last, energy=0, show=False, save=False, side='', num=0):
+def fit_peak(name, data, first, last, energy=0, show=False, save=False, side='', num=0):# {{{
     '''
     Passt einen Peak an
     :show zeigt die einzelne Anpassung
@@ -115,9 +115,9 @@ def fit_peak(name, data, first, last, energy=0, show=False, save=False, side='',
         fig.clear
         pl.close()
 
-    return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy
+    return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy# }}}
 
-def energy_calibration(T, side):
+def energy_calibration(T, side):# {{{
     '''
     Erstellt die Einergiekalibrierung
     Fertigt roh und moved Plots an
@@ -255,9 +255,9 @@ def energy_calibration(T, side):
 
     #TODO Energieauflösung hier bestimmen und in Tabellen ausgeben
 
-    return calibration, calibration_err
+    return calibration, calibration_err# }}}
 
-def extract_boundaries(T, name, threshold, energy, energy_err, show=False):
+def extract_boundaries(T, name, threshold, energy, energy_err, show=False):# {{{
     data = load_data_normalized(name + '_spektrum-filter')
     channel = data[:, 0]
     counts = data[:, 1]
@@ -362,10 +362,21 @@ def extract_boundaries(T, name, threshold, energy, energy_err, show=False):
     fig.savefig('_build/plot_spektrum_cfd_' + name + '.pdf')
     fig.clear
     pl.close()
+# }}}
 
+def job_energy_calibration(T):# {{{
+    '''
+    Energiekalibrierung und Auswertung für beide Seite
+    '''
 
+    for side in ['li', 're']:
+        energy_val, energy_err = energy_calibration(T, side)
 
-def time_calibration(T):
+        extract_boundaries(T, side + '_Na', 0.03, energy_val, energy_err)
+        extract_boundaries(T, side + '_Ba', 0.3, energy_val, energy_err)
+# }}}
+
+def job_time_calibration(T):# {{{
     '''
     Erstellt die Zeitkalibrierung
 
@@ -469,6 +480,8 @@ def time_calibration(T):
 
     #TODO Zeitauflösung hier bestimmen und in Tabellen ausgeben
 
+
+    #Auswertung der Langzeitmessung
     data = load_data_normalized('Ba_langzeit')
 
     x, y = calibration(data[:, 0]), data[:, 1]
@@ -506,33 +519,7 @@ def time_calibration(T):
     fig.tight_layout()
     fig.savefig('_build/plot_langzeit_fit.pdf')
     fig.clear
-    pl.close()
-
-
-    return calibration, calibration_err
-
-
-def job_analysis(T):
-
-    energy_li, energy_err_li = energy_calibration(T, 'li')
-    energy_re, energy_err_re = energy_calibration(T, 're')
-
-    extract_boundaries(T, 'li_Na', 0.03, energy_li, energy_err_li)
-    extract_boundaries(T, 're_Na', 0.03, energy_re, energy_err_re)
-
-    extract_boundaries(T, 'li_Ba', 0.3, energy_li, energy_err_li)
-    extract_boundaries(T, 're_Ba', 0.3, energy_re, energy_err_re)
-
-
-    time, time_err = time_calibration(T)
-
-
-
-
-
-
-
-
+    pl.close()# }}}
 
 
 
@@ -562,7 +549,8 @@ def main():
 
     ###########################################
 
-    job_analysis(T)
+    job_energy_calibration(T)
+    job_time_calibration(T)
 
     ###########################################
 
