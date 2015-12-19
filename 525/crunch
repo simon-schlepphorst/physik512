@@ -86,7 +86,7 @@ def fit_peak(name, data, first, last, energy=0, show=False, save=False, side='',
         print('Waiting for input ...')
         input()
         fig.clear()
-        pl.close
+        pl.close()
 
     if save:
         fig = pl.figure(figsize=(6,4.25))
@@ -138,6 +138,7 @@ def energy_calibration(T, side):
         fig.tight_layout()
         fig.savefig('_build/plot_spektrum_' + side + '_' + name + '.pdf')
         fig.clear
+        pl.close()
 
 
     fit_range_na = [
@@ -175,6 +176,7 @@ def energy_calibration(T, side):
         fig.tight_layout()
         fig.savefig('_build/plot_peaks_' + side + '_' + name + '.pdf')
         fig.clear
+        pl.close()
 
 
     points = np.array(points)
@@ -215,6 +217,7 @@ def energy_calibration(T, side):
     fig.tight_layout()
     fig.savefig('_build/plot_energy_calibrate_fit_' + side + '.pdf')
     fig.clear
+    pl.close()
 
     slope_val, slope_err = popt[0], perr[0]
     offset_val, offset_err = popt[1], perr[1]
@@ -228,10 +231,12 @@ def energy_calibration(T, side):
     def calibration_err(x):
         return np.sqrt((x * slope_err)**2 + offset_err**2)
 
+    #TODO Energieauflösung hier bestimmen und in Tabellen ausgeben
+
     return calibration, calibration_err
 
-def extract_boundaries(T, name, threshold, energy, energy_err):
-    data = np.loadtxt('Daten/' + name + '_spektrum-filter.txt')
+def extract_boundaries(T, name, threshold, energy, energy_err, show=False):
+    data = load_data_normalized(name + '_spektrum-filter')
     channel = data[:, 0]
     counts = data[:, 1]
 
@@ -246,6 +251,41 @@ def extract_boundaries(T, name, threshold, energy, energy_err):
     T[name + '_lower_energy'] = unitprint.siunitx(energy(lower), energy_err(lower))
     T[name + '_upper_energy'] = unitprint.siunitx(energy(upper), energy_err(upper))
 
+    if show:
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[:, 0], data[:, 1]
+        ax.plot(x, y, marker=None, color='#377eb8')
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        ax.legend(loc='best')
+        fig.tight_layout()
+        fig.show()
+        print('Waiting for input ...')
+        input()
+        fig.clear()
+        pl.close()
+
+    fig = pl.figure(figsize=(4,3))
+    ax = fig.add_subplot(1, 1, 1)
+
+    x, y = data[:, 0], data[:, 1]
+    ax.plot(x, y, marker=None, color='#377eb8')
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Ereignisse / s')
+    fig.tight_layout()
+    fig.savefig('_build/plot_spektrum_filter_' + name + '.pdf')
+    fig.clear
+    pl.close()
+
+
 
 
 def job_analysis(T):
@@ -253,11 +293,11 @@ def job_analysis(T):
     calibration_li, calibration_err_li = energy_calibration(T, 'li')
     calibration_re, calibration_err_re = energy_calibration(T, 're')
 
-    extract_boundaries(T, 'li_Na', 5, calibration_li, calibration_err_li)
-    extract_boundaries(T, 're_Na', 5, calibration_re, calibration_err_re)
+    extract_boundaries(T, 'li_Na', 0.01, calibration_li, calibration_err_li, True)
+    extract_boundaries(T, 're_Na', 0.01, calibration_re, calibration_err_re, True)
 
-    extract_boundaries(T, 'li_Ba', 100, calibration_li, calibration_err_li)
-    extract_boundaries(T, 're_Ba', 100, calibration_re, calibration_err_re)
+    extract_boundaries(T, 'li_Ba', 0.2, calibration_li, calibration_err_li, True)
+    extract_boundaries(T, 're_Ba', 0.2, calibration_re, calibration_err_re, True)
 
 
 
