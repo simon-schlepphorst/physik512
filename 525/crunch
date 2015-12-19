@@ -325,7 +325,7 @@ def time_calibration(T):
             (4900, 5300),
             ]
 
-    fig = pl.figure()
+    fig = pl.figure(figsize=(8,4))
     ax = fig.add_subplot(1, 1, 1)
 
     x, y = data[:, 0], data[:, 1]
