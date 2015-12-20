@@ -110,7 +110,7 @@ def main():
 
         matchness = overlap_integral / self_integral
 
-        if matchness >= +0:
+        if matchness >= +5:
             linestyle, color = next(attr_iter)
             ax.plot(x, y / self_integral, label=nuclide, color=color, linestyle=linestyle, linewidth=4)
 
