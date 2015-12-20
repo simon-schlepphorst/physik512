@@ -5,6 +5,7 @@
 
 import argparse
 import itertools
+import pprint
 
 import numpy as np
 import matplotlib.pyplot as pl
@@ -30,6 +31,8 @@ linestyles = [
     'solid',
     'dashed',
 ]
+
+pp = pprint.PrettyPrinter()
 
 def lorentz_peak(x, mean, width, area, offset):
     return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2) + offset
@@ -90,6 +93,8 @@ def main():
             '88-Ra-224',
     ]
 
+    candidates = []
+
     for element in elements:
         if element in exclude:
             continue
@@ -108,17 +113,20 @@ def main():
         overlap = y * messwerte[:, 1]
         overlap_integral = scipy.integrate.simps(overlap, x)
 
-        matchness = overlap_integral / self_integral
+        score = overlap_integral / self_integral
 
-        if matchness >= +0.0008:
-            linestyle, color = next(attr_iter)
-            ax.plot(x, y / self_integral, label=nuclide, color=color, linestyle=linestyle, linewidth=4)
+        results[element] = score
 
-        results[element] = matchness
+        candidates.append((score, element, y / self_integral))
 
         m = max(m, np.max(y))
 
+    pp.pprint(candidates)
 
+
+    for score, element, y in itertools.islice(reversed(sorted(candidates)), 22):
+        linestyle, color = next(attr_iter)
+        ax.plot(x, y, label=element, color=color, linestyle=linestyle, linewidth=2)
 
     ax.legend(loc='best')
 
@@ -135,14 +143,11 @@ def main():
     ax.margins(.05)
     fig.tight_layout()
 
-    # Interaktiver Plot --->
-
-    fig.show()
-    input()
-
-    # <---
-
-    fig.savefig('_build/element_match.pdf')
+    if options.show:
+        fig.show()
+        input()
+    else:
+        fig.savefig('_build/element_match.pdf')
 
     results_sorted = sorted([(matchness, element) for element, matchness in results.items()])
 
@@ -153,29 +158,6 @@ def main():
 
 
 
-    #for peak in peaks[:2]:
-    #    print(peak)
-
-    #    selection = (lines['E(gamma)'] < (peak + pad)) & (lines['E(gamma)'] > (peak - pad))
-    #    selected = lines[selection]
-
-    #    sorted_ = selected.sort_values(by='P', ascending=False)
-
-    #    print(sorted_)
-
-    #    break
-
-    #    for id, iso, z, energy, i1, i2, i3 in selected.itertuples():
-    #        print(iso, energy)
-
-    #        selection2 = lines['Nuclide'] == iso
-    #        selected2 = lines[selection2]
-
-    #        print(selected2)
-
-    #    print()
-
-
 def _parse_args():
     '''
     Parses the command line arguments.
@@ -184,6 +166,7 @@ def _parse_args():
     :rtype: Namespace
     '''
     parser = argparse.ArgumentParser(description='')
+    parser.add_argument('--show', action='store_true')
     options = parser.parse_args()
 
     return options
