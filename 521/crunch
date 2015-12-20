@@ -25,6 +25,16 @@ import unitprint
 
 _livetime_pattern = re.compile(r'LIVETIME: (\d+\.?\d*)')
 
+'''
+Farbtabelle
+'''
+
+# '#e41a1c'
+# '#377eb9'
+# '#4daf4a'
+# '#984ea4'
+# '#ff7f01'
+
 def lorentz_peak(x, mean, width, area, offset):
     return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2) + offset
 
