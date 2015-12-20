@@ -68,7 +68,7 @@ def main():
 
     m = 0
 
-    attr_iter = itertools.product(linestyles, colors)
+    attr_iter = itertools.cycle(itertools.product(linestyles, colors))
 
     exclude = [
             '11-Na-22',
@@ -111,7 +111,7 @@ def main():
         matchness = overlap_integral / self_integral
 
         if matchness >= +0.0008:
-            linestyle, color = itertools.repeat(next(attr_iter))
+            linestyle, color = next(attr_iter)
             ax.plot(x, y / self_integral, label=nuclide, color=color, linestyle=linestyle, linewidth=4)
 
         results[element] = matchness
