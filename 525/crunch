@@ -31,14 +31,20 @@ def gauss_peak(x, mean, width, area):
 def linear(x, slope, offset):
     return x * slope + offset
 
-def extract_livetime(metafile):
+def decay(x, a, b):
+    '''
+    Exponentieller Abfall
+    '''
+    return np.exp(- x / a) * b
+
+def extract_livetime(metafile):# {{{
     with open(metafile) as f:
         for line in f:
             m = _livetime_pattern.search(line)
             if m:
-                return float(m.group(1))
+                return float(m.group(1))# }}}
 
-def load_data_normalized(basename):
+def load_data_normalized(basename):# {{{
     '''
     Loads the data and normalizes it to give events per second.
     '''
@@ -51,7 +57,502 @@ def load_data_normalized(basename):
 
     data[:, 1] /= livetime
 
-    return data
+    return data# }}}
+
+def fit_peak(name, data, first, last, energy=0, show=False, save=False, side='', num=0):# {{{
+    '''
+    Passt einen Peak an
+    :show zeigt die einzelne Anpassung
+    :save speichert gesamtes Spektrum in Datei
+
+    :return Mittelpunkt, Fehler Mittelpunkt, Breite, Fehler Breite, Fläche, Fehler Fläche, Energie
+    '''
+
+    x, y = data[first:last, 0], data[first:last, 1]
+    popt, pconv = op.curve_fit(gauss_peak, x, y, p0=[np.mean(x), 200, 100])
+    perr = np.sqrt(pconv.diagonal())
+
+    if show:
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = gauss_peak(fit_x, *popt)
+
+        ax.plot(x, y, marker=None, label=name)
+        ax.plot(fit_x, fit_y, marker=None)
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        ax.legend(loc='best')
+        fig.tight_layout()
+        fig.show()
+        print('Waiting for input ...')
+        input()
+        fig.clear()
+        pl.close()
+
+    if save:
+        fig = pl.figure(figsize=(6,4.25))
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[first:last, 0], data[first:last, 1]
+
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = gauss_peak(fit_x, *popt)
+
+        ax.plot(x, y, marker=None, alpha=0.6, color='#377eb8')
+        ax.plot(fit_x, fit_y, marker=None, alpha=0.6, color='#e41a1c', linewidth=2)
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        fig.tight_layout()
+        fig.savefig('_build/plot_fit_peak_'+ side + '_' + '{}'.format(num) + '_' + name +'.pdf')
+        fig.clear
+        pl.close()
+
+    return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy# }}}
+
+def energy_calibration(T, side):# {{{
+    '''
+    Erstellt die Einergiekalibrierung
+    Fertigt roh und moved Plots an
+
+    :return Geradenfunktion
+    '''
+
+    data_na_raw = load_data_normalized(side + '_Na_spektrum-roh')
+    data_na_mov = load_data_normalized(side + '_Na_spektrum-moved')
+    data_ba_mov = load_data_normalized(side + '_Ba_spektrum-moved')
+
+    points = []
+
+    # Plotte rohe Spektren # {{{
+    for name, data in [('na_raw', data_na_raw), ('na', data_na_mov), ('ba', data_ba_mov)]:
+        fig = pl.figure(figsize=(4,3))
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[:, 0], data[:, 1]
+        ax.plot(x, y, marker=None, color='#377eb8')
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        fig.tight_layout()
+        fig.savefig('_build/plot_spektrum_' + side + '_' + name + '.pdf')
+        fig.clear
+        pl.close()# }}}
+
+    # Anpassung der Kuven & Plot # {{{
+    if side == 'li':
+        fit_range_na = [
+                (6200, 7500, 511),
+                ]
+
+        fit_range_ba = [
+                (250, 450, 30.8502),
+                (1000, 1230, 80.9979),
+                (4600, 5200, 356.0129),
+                ]
+
+    if side == 're':
+        fit_range_na = [
+                (6200, 7300, 511),
+                ]
+
+        fit_range_ba = [
+                (100, 250, 30.8502),
+                (850, 1080, 80.9979),
+                (4400, 5100, 356.0129),
+                ]
+
+    for name, data, fit_range in [('na', data_na_mov, fit_range_na), ('ba', data_ba_mov, fit_range_ba)]:
+
+        fig = pl.figure(figsize=(4,3))
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[:, 0], data[:, 1]
+        ax.plot(x, y, marker=None, alpha=0.6, color='#377eb9')
+
+        for i, (first, last, expected_energy) in zip(itertools.count(1), fit_range):
+            points.append(fit_peak(name, data, first, last, expected_energy, save=True, side=side, num=i))
+            tmp_point = np.array(points[-1])
+
+            fit_x = np.linspace(np.min(x), np.max(x), 1000)
+            fit_y = gauss_peak(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
+
+            ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=2)
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        fig.tight_layout()
+        fig.savefig('_build/plot_peaks_' + side + '_' + name + '.pdf')
+        fig.clear
+        pl.close()# }}}
+
+    # Speichern der Parameter # {{{
+    points = np.array(points)
+
+    list_mean_val = points[:, 0]
+    list_mean_err = points[:, 1]
+    list_full_width_val = np.abs(points[:, 2] * 2 * np.sqrt(2 * np.log(2)))
+    list_full_width_err = points[:, 3] * 2 * np.sqrt(2 * np.log(2))
+    list_area_val = points[:, 4]
+    list_area_err = points[:, 5]
+    list_expected_energy = points[:, 6]
+
+    T[side + '_energy_calibration_table'] = list(zip(
+        unitprint.siunitx(list_mean_val, list_mean_err),
+        unitprint.siunitx(list_full_width_val, list_full_width_err),
+        unitprint.siunitx(list_expected_energy),
+        ))# }}}
+
+    # Energieeichung: Plot & Formeln # {{{
+    fig = pl.figure(figsize=(4,3))
+    ax = fig.add_subplot(1, 1, 1)
+
+    x, y = list_mean_val, list_expected_energy
+    ax.errorbar(list_mean_val, list_expected_energy, xerr=list_mean_err, marker='+', linestyle='none')
+
+    popt, pconv = op.curve_fit(linear, x, y)
+    perr = np.sqrt(pconv.diagonal())
+
+    fit_x = np.linspace(np.min(x), np.max(x), 100)
+    fit_y = linear(fit_x, *popt)
+    ax.plot(fit_x, fit_y)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Energie / keV')
+
+    ax.set_xlim([0,7350])
+
+    # Setze die Anzahl der Ticks auf der Abszisse auf eine kleinere Zahl.
+    xloc = pl.MaxNLocator(5)
+    ax.xaxis.set_major_locator(xloc)
+
+    fig.tight_layout()
+    fig.savefig('_build/plot_energy_calibrate_fit_' + side + '.pdf')
+    fig.clear
+    pl.close()
+
+    slope_val, slope_err = popt[0], perr[0]
+    offset_val, offset_err = popt[1], perr[1]
+
+    T[side + '_energy_slope'] = unitprint.siunitx(slope_val, slope_err)
+    T[side + '_energy_offset'] = unitprint.siunitx(offset_val, offset_err)
+
+    def calibration(x):
+        return linear(x, slope_val, offset_val)
+
+    def calibration_err(x):
+        return np.sqrt((x * slope_err)**2 + offset_err**2)# }}}
+
+    # Energieauflösung # {{{
+
+    list_full_width_energy_val = calibration(list_full_width_val)
+    list_full_width_energy_err = np.sqrt((list_full_width_err * slope_val)**2 +
+            (list_full_width_val * slope_err)**2 + offset_err**2)
+    list_resolution_val = list_full_width_energy_val / list_expected_energy
+    list_resolution_err = list_full_width_energy_err / list_expected_energy
+
+    T[side + '_energy_resolution_table'] = list(zip(
+        unitprint.siunitx(list_expected_energy),
+        unitprint.siunitx(list_full_width_energy_val, list_full_width_energy_err),
+        unitprint.siunitx(list_resolution_val, list_resolution_err),
+        ))# }}}
+
+
+    return calibration, calibration_err# }}}
+
+def extract_boundaries(T, name, threshold, energy, energy_err, show=False):# {{{
+    data = load_data_normalized(name + '_spektrum-filter')
+    channel = data[:, 0]
+    counts = data[:, 1]
+
+    selection = counts > threshold
+
+    lower = np.min(channel[selection])
+    upper = np.max(channel[selection])
+
+    T[name + '_lower_channel'] = lower
+    T[name + '_upper_channel'] = upper
+
+    T[name + '_lower_energy'] = unitprint.siunitx(energy(lower), energy_err(lower))
+    T[name + '_upper_energy'] = unitprint.siunitx(energy(upper), energy_err(upper))
+
+    if show:
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[:, 0], data[:, 1]
+        ax.plot(x, y, marker=None, color='#377eb8')
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        ax.legend(loc='best')
+        fig.tight_layout()
+        fig.show()
+        print('Waiting for input ...')
+        input()
+        fig.clear()
+        pl.close()
+
+    lower -= 300
+    upper += 300
+
+    fig = pl.figure(figsize=(4,3))
+    ax = fig.add_subplot(1, 1, 1)
+
+    x, y = data[lower:upper, 0], data[lower:upper, 1]
+    ax.plot(x, y, marker=None, color='#377eb8')
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Ereignisse / s')
+    fig.tight_layout()
+    fig.savefig('_build/plot_spektrum_filter_' + name + '.pdf')
+    fig.clear
+    pl.close()
+
+    #Nochmal das gleiche für die CFD-Schwellen
+    data = load_data_normalized(name + '_spektrum-cfd-close')
+    channel = data[:, 0]
+    counts = data[:, 1]
+
+    selection = counts > threshold
+
+    lower = np.min(channel[selection])
+    upper = np.max(channel[selection])
+
+    T[name + '_lower_cfd_channel'] = lower
+    T[name + '_upper_cfd_channel'] = upper
+
+    T[name + '_lower_cfd_energy'] = unitprint.siunitx(energy(lower), energy_err(lower))
+    T[name + '_upper_cfd_energy'] = unitprint.siunitx(energy(upper), energy_err(upper))
+
+    if show:
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[:, 0], data[:, 1]
+        ax.plot(x, y, marker=None, color='#377eb8')
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        ax.legend(loc='best')
+        fig.tight_layout()
+        fig.show()
+        print('Waiting for input ...')
+        input()
+        fig.clear()
+        pl.close()
+
+    lower -= 300
+    upper += 300
+
+    fig = pl.figure(figsize=(4,3))
+    ax = fig.add_subplot(1, 1, 1)
+
+    x, y = data[lower:upper, 0], data[lower:upper, 1]
+    ax.plot(x, y, marker=None, color='#377eb8')
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Ereignisse / s')
+    fig.tight_layout()
+    fig.savefig('_build/plot_spektrum_cfd_' + name + '.pdf')
+    fig.clear
+    pl.close()
+# }}}
+
+def job_energy_calibration(T):# {{{
+    '''
+    Energiekalibrierung und Auswertung für beide Seite
+    '''
+
+    for side in ['li', 're']:
+        energy_val, energy_err = energy_calibration(T, side)
+
+        extract_boundaries(T, side + '_Na', 0.03, energy_val, energy_err)
+        extract_boundaries(T, side + '_Ba', 0.3, energy_val, energy_err)
+# }}}
+
+def job_time_calibration(T):# {{{
+    '''
+    Erstellt die Zeitkalibrierung
+
+    :return Geradenfunktion
+    '''
+
+    data = load_data_normalized('Na_time_7-peaks')
+
+    points = []
+
+    fit_range = [
+            (1200, 1600),
+            (1800, 2200),
+            (2450, 2850),
+            (3050, 3450),
+            (3650, 4050),
+            (4300, 4700),
+            (4900, 5300),
+            ]
+
+    fig = pl.figure(figsize=(8,4))
+    ax = fig.add_subplot(1, 1, 1)
+
+    x, y = data[:, 0], data[:, 1]
+    ax.plot(x, y, marker=None, alpha=0.6, color='#377eb9')
+
+    for i, (first, last) in zip(itertools.count(1), fit_range):
+        points.append(fit_peak('time', data, first, last, i * 16, save=True, num=i))
+        tmp_point = np.array(points[-1])
+
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = gauss_peak(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
+
+        ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=2)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Ereignisse / s')
+    ax.set_xlim([1000,5500])
+    fig.tight_layout()
+    fig.savefig('_build/plot_time_calibration.pdf')
+    fig.clear
+    pl.close()
+
+
+    points = np.array(points)
+
+    list_mean_val = points[:, 0]
+    list_mean_err = points[:, 1]
+    list_full_width_val = np.abs(points[:, 2] * 2 * np.sqrt(2 * np.log(2)))
+    list_full_width_err = points[:, 3] * 2 * np.sqrt(2 * np.log(2))
+    list_area_val = points[:, 4]
+    list_area_err = points[:, 5]
+    list_expected_time = points[:, 6]
+
+    T['time_calibration_table'] = list(zip(
+        unitprint.siunitx(list_mean_val, list_mean_err),
+        unitprint.siunitx(list_full_width_val, list_full_width_err),
+        unitprint.siunitx(list_expected_time),
+        ))
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    x, y = list_mean_val, list_expected_time
+    ax.errorbar(list_mean_val, list_expected_time, xerr=list_mean_err, marker='+', linestyle='none')
+
+    popt, pconv = op.curve_fit(linear, x, y)
+    perr = np.sqrt(pconv.diagonal())
+
+    fit_x = np.linspace(np.min(x), np.max(x), 100)
+    fit_y = linear(fit_x, *popt)
+    ax.plot(fit_x, fit_y)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Zeit / ns')
+
+    # Setze die Anzahl der Ticks auf der Abszisse auf eine kleinere Zahl.
+    xloc = pl.MaxNLocator(5)
+    ax.xaxis.set_major_locator(xloc)
+
+    fig.tight_layout()
+    fig.savefig('_build/plot_time_calibrate_fit.pdf')
+    fig.clear
+    pl.close()
+
+    slope_val, slope_err = popt[0], perr[0]
+    offset_val, offset_err = popt[1], perr[1]
+
+    T['time_slope'] = unitprint.siunitx(slope_val, slope_err)
+    T['time_offset'] = unitprint.siunitx(offset_val, offset_err)
+
+    def calibration(x):
+        return linear(x, slope_val, offset_val)
+
+    def calibration_err(x):
+        return np.sqrt((x * slope_err)**2 + offset_err**2)
+
+    # Zeitauflösung # {{{
+
+    list_full_width_time_val = list_full_width_val * slope_val
+    list_full_width_time_err = np.sqrt((list_full_width_err * slope_val)**2 +
+            (list_full_width_val * slope_err)**2)
+
+    full_width_time_val = np.mean(list_full_width_time_val)
+    full_width_time_err = np.sqrt(np.mean(list_full_width_time_err**2)/7)
+
+
+    T['time_resolution'] = unitprint.siunitx(full_width_time_val, full_width_time_err)# }}}
+
+
+
+    #Auswertung der Langzeitmessung
+    data = load_data_normalized('Ba_langzeit')
+
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    x, y = calibration(data[:, 0]), data[:, 1]
+    ax.plot(x, y, marker=None, alpha=0.6, color='#377eb9')
+
+    points = []
+
+    fit_range = [
+            (1770, 1950),
+            (2100, 2410),
+            (2470, 2610),
+            (2610, 2900),
+            (2990, 3500),
+            ]
+
+    for i, (first, last) in zip(itertools.count(1), fit_range):
+        popt, pconv = op.curve_fit(decay, x[first:last], y[first:last], p0=[10, 0.4])
+        perr = np.sqrt(pconv.diagonal())
+
+        fit_x = np.linspace(calibration(first), calibration(last), 1000)
+        #fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        #fit_y = gauss_peak(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
+        fit_y = decay(fit_x, *popt)
+
+        ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=2)
+
+        print(popt)
+        print(perr)
+        print()
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Zeit / ns')
+    ax.set_ylabel('Ereignisse / s')
+    #ax.set_yscale('log')
+    fig.tight_layout()
+    fig.savefig('_build/plot_langzeit_fit.pdf')
+    fig.clear
+    pl.close()# }}}
+
 
 
 def test_keys(T):
@@ -80,7 +581,8 @@ def main():
 
     ###########################################
 
-
+    job_energy_calibration(T)
+    job_time_calibration(T)
 
     ###########################################
 

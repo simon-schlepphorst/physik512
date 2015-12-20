@@ -1,10 +1,10 @@
-REPORT-FILE from 12/08/2015 17:34:04.156 - 17:36:13.375  written 12/08/2015 17:36:28
-REALTIME: 129.219     
-TOTALSUM: 2334507     
-ROISUM: 2334507     
-MAXVAL: 4026        
-LIVETIME: 124.552     
-cmline0=12/08/2015 17:34:04.156 - 17:36:13.375 
+REPORT-FILE from 12/08/2015 18:09:44.953 - 18:10:48.750  written 12/08/2015 18:11:01
+REALTIME: 63.789      
+TOTALSUM: 1164507     
+ROISUM: 1164507     
+MAXVAL: 2025        
+LIVETIME: 61.540      
+cmline0=12/08/2015 18:09:44.953 - 18:10:48.750 
 range=8192
 prena=0
 mcsmode=4
@@ -38,7 +38,7 @@ dwellunit=0
 syncout=909
 histlen=0
 autoinc=0 
-;datname=C:\Dokumente und Einstellungen\k125\Eigene Dateien\P5_WS2015-16\Gruppe_a\li_Ba_spektrum-moved.mcd
+;datname=C:\Dokumente und Einstellungen\k125\Eigene Dateien\P5_WS2015-16\Gruppe_a\li_Ba_spektrum-moved_v2.mcd
 savedata=0
 fmt=3 
 smoothpts=5 
@@ -47,4 +47,4 @@ caloff=0.000000
 calfact=1.000000
 calfact2=0
 calfact3=0
-calunit=keV
+calunit=

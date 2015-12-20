@@ -89,8 +89,9 @@ durchlässig für das von ihm emittierte Licht ist.
 
 Innerhalb des vor Lichteinfall geschützten Szintillators entstehen durch
 ionisierende Strahlung Lichtblitze. 
-Diese entstehen dadurch, dass die Strahlung Atome durch die Effekt
-~\ref{sec:WW-strahlung-Materie} anregt, welche entweder direkt
+\fehlt%der Sinn im nächsten Satz
+Diese entstehen dadurch, dass die Strahlung Atome durch die
+Effekt~\ref{sec:WW-strahlung-Materie} anregt, welche entweder direkt
 wieder rekombinieren und Photonen aussenden oder über Stöße vorher einen Teil
 ihrer Energie abgeben.
 Somit ist die Intensität dieser Blitze abhängig von der Energie der einfallenden Strahlung.
@@ -123,7 +124,7 @@ angepassten Funktionen die Halbwertsbreite.
 Für die Zeitkalibrirung nutzt man
 am besten ein Isotope, welches einen $\beta^+$-Zerfall besitzt. Dadurch kann
 man gewährleisten, dass gleichzeitig zwei Photonen mit bekannter Wellenlänge
-von \SI{511}{\ilko\electronenvot} durch die Rekombination von Elektron und
+von \SI{511}{\kilo\electronvolt} durch die Rekombination von Elektron und
 Positron entstehen.
 
 \subsection{Splitter}
@@ -260,6 +261,7 @@ vor. Hiebei stellt man die Einkanal Fenster so ein, dass für das Startsignal
 des TACs die \SI{356}{\kilo\elektronenvolt} und für das Stopsignal
 die\SI{81}{\kilo\elektronenvolt}-Linie dient.
 
+\section{Slow-Koinzidenzkreis einstellen}
 %Na-22
 %Slow-Kreis
 
@@ -322,8 +324,38 @@ die\SI{81}{\kilo\elektronenvolt}-Linie dient.
 	\label{fig:slow_signal_sca_trig}
 \end{figure}
 
-\fehlt%TODO Na-22 Spektren
-\fehlt%TODO Ba-133 Spektren
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_li_na_raw}
+		\caption{%
+			links
+		}
+		\label{fig:slow_signal_sca_trig-li_plot}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_re_na_raw}
+		\caption{%
+			rechts
+		}
+		\label{fig:slow_signal_sca_trig-re_plot}
+	\end{subfigure}
+	\caption{%
+		$^{22}\text{Na}$-Spektrum mit grob eingestelltem
+		Hauptverstärker
+	}
+	\label{fig:slow_signal_sca_trig_plot}
+\end{figure}
+
+Anschließend haben wir den Hauptverstärker für beide Seiten jeweils so
+eingestellt, dass der \SI{511}{\kilo\electronvolt} Peak aus dem
+$^{22}\text{Na}$ am rechten Rand des aufgenommen Spektrums liegt und das
+$^{133}\text{Ba}$-Spektrum ebenfalls vollständig aufgenommen wird. Dazu haben
+wir die Proben mehrmals gewechselt und den Verstärker feinjustiert, bis wir die
+in Abbildung~\ref{fig:slow_signal_hv_eingestellt_plot} und
+Abbildung~\ref{fig:ba_slow_signal_hv_eingestellt_plot} zu sehenden Spektren
+erhalten haben.
+
 
 \begin{figure}
 	\centering
@@ -351,6 +383,30 @@ die\SI{81}{\kilo\elektronenvolt}-Linie dient.
 \begin{figure}
 	\centering
 	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_li_na}
+		\caption{%
+			links
+		}
+		\label{fig:slow_hv_eingestellt-li_plot}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_re_na}
+		\caption{%
+			rechts
+		}
+		\label{fig:slow_hv_eingestellt-re_plot}
+	\end{subfigure}
+	\caption{%
+		$^{22}\text{Na}$-Spektrum mit fertig eingestelltem
+		Hauptverstärker
+	}
+	\label{fig:slow_signal_hv_eingestellt_plot}
+\end{figure}
+
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \textwidth}
 		\includegraphics[width=\textwidth]{TEK00019}
 		\caption{%
 			links
@@ -371,7 +427,32 @@ die\SI{81}{\kilo\elektronenvolt}-Linie dient.
 	\label{fig:slow_signal_sca_eingestellt}
 \end{figure}
 
-\fehlt%TODO Schwellen extrahieren
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_filter_li_Na}
+		\caption{%
+			links
+		}
+		\label{fig:slow_sca_eingestellt-li_plot}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_filter_re_Na}
+		\caption{%
+			rechts
+		}
+		\label{fig:slow_sca_eingestellt-re_plot}
+	\end{subfigure}
+	\caption{%
+		$^{22}\text{Na}$-Spektrum nach Auswahl durch SCA
+	}
+	\label{fig:slow_signal_sca_eingestellt_plot}
+\end{figure}
+
+Durch das Einstellen des SCA haben wir links die Kanäle
+\numrange{<< li_Na_lower_channel >>}{<< li_Na_upper_channel >>} und rechts
+die Kanäle
+\numrange{<< re_Na_lower_channel >>}{<< re_Na_upper_channel >>} ausgewählt.
 
 \begin{figure}
 	\centering
@@ -437,7 +518,33 @@ die\SI{81}{\kilo\elektronenvolt}-Linie dient.
 	\label{fig:fast_signal_cfd_trig}
 \end{figure}
 
-\fehlt%TODO eingestellte Spektren
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_cfd_li_Na}
+		\caption{%
+			links
+		}
+		\label{fig:fast_signal_cfd_plot-li}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_cfd_re_Na}
+		\caption{%
+			rechts
+		}
+		\label{fig:fast_signal_cfd_plot-re}
+	\end{subfigure}
+	\caption{%
+		$^{22}\text{Na}$-Spektrum nach dem Setzen der CFD Schwellen
+	}
+	\label{fig:fast_signal_cfd_plot}
+\end{figure}
+
+Durch das Einstellen des CFD haben wir links die Kanäle
+\numrange{<< li_Na_lower_cfd_channel >>}{<< li_Na_upper_cfd_channel >>} und rechts
+die Kanäle
+\numrange{<< re_Na_lower_cfd_channel >>}{<< re_Na_upper_cfd_channel >>} ausgewählt.
+
 
 \begin{figure}
 	\centering
@@ -472,8 +579,34 @@ die\SI{81}{\kilo\elektronenvolt}-Linie dient.
 
 \fehlt%TODO Promp Kurven
 
+\clearpage
+
+\section{Messung der Lebensdauer}
 %Ba-133
 %Slow-Kreis
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_li_ba}
+		\caption{%
+			links
+		}
+		\label{fig:ba_slow_hv_eingestellt-li_plot}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_re_ba}
+		\caption{%
+			rechts
+		}
+		\label{fig:ba_slow_hv_eingestellt-re_plot}
+	\end{subfigure}
+	\caption{%
+		$^{133}\text{Ba}$-Spektrum mit fertig eingestelltem
+		Hauptverstärker
+	}
+	\label{fig:ba_slow_signal_hv_eingestellt_plot}
+\end{figure}
 
 \begin{figure}
 	\centering
@@ -498,7 +631,33 @@ die\SI{81}{\kilo\elektronenvolt}-Linie dient.
 	\label{fig:ba_slow_signal_sca_eingestellt}
 \end{figure}
 
-\fehlt%TODO Schwellen extrahieren
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_filter_li_Ba}
+		\caption{%
+			links
+		}
+		\label{fig:ba_slow_sca_eingestellt-li_plot}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_filter_re_Ba}
+		\caption{%
+			rechts
+		}
+		\label{fig:ba_slow_sca_eingestellt-re_plot}
+	\end{subfigure}
+	\caption{%
+		$^{133}\text{Ba}$-Spektrum nach Auswahl durch SCA
+	}
+	\label{fig:ba_slow_signal_sca_eingestellt_plot}
+\end{figure}
+
+Durch das Einstellen des SCA haben wir links die Kanäle
+\numrange{<< li_Ba_lower_channel >>}{<< li_Ba_upper_channel >>} und rechts
+die Kanäle
+\numrange{<< re_Ba_lower_channel >>}{<< re_Ba_upper_channel >>} ausgewählt.
+
 
 \begin{figure}
 	\centering
@@ -542,6 +701,34 @@ die\SI{81}{\kilo\elektronenvolt}-Linie dient.
 
 \begin{figure}
 	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_cfd_li_Ba}
+		\caption{%
+			links
+		}
+		\label{fig:ba_fast_signal_cfd_plot-li}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_spektrum_cfd_re_Ba}
+		\caption{%
+			rechts
+		}
+		\label{fig:ba_fast_signal_cfd_plot-re}
+	\end{subfigure}
+	\caption{%
+		$^{133}\text{Ba}$-Spektrum nach dem Setzen der CFD Schwellen
+	}
+	\label{fig:ba_fast_signal_cfd_plot}
+\end{figure}
+
+Durch das Einstellen des CFD haben wir links die Kanäle
+\numrange{<< li_Ba_lower_cfd_channel >>}{<< li_Ba_upper_cfd_channel >>} und rechts
+die Kanäle
+\numrange{<< re_Ba_lower_cfd_channel >>}{<< re_Ba_upper_cfd_channel >>} ausgewählt.
+
+
+\begin{figure}
+	\centering
 	\includegraphics[width=\textwidth]{TEK00046}
 	\caption{%
 		Slow-Fast Koinzidenz
@@ -553,6 +740,286 @@ die\SI{81}{\kilo\elektronenvolt}-Linie dient.
 
 \chapter{Auswertung}
 %TODO
+\section{Energiekalibrierung}
+
+\subsection{Anpassen der Spektren}
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_peaks_li_na}
+		\caption{%
+			links
+		}
+		\label{fig:na_peaks-li_plot}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_peaks_re_na}
+		\caption{%
+			rechts
+		}
+		\label{fig:na_peaks-re_plot}
+	\end{subfigure}
+	\caption{%
+		$^{22}\text{Na}$-Spektren mit angepassten Gaußkurven
+	}
+	\label{fig:na_peaks_plot}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_peaks_li_ba}
+		\caption{%
+			links
+		}
+		\label{fig:ba_peaks-li_plot}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_peaks_re_ba}
+		\caption{%
+			rechts
+		}
+		\label{fig:ba_peaks-re_plot}
+	\end{subfigure}
+	\caption{%
+		$^{133}\text{Ba}$-Spektren mit angepassten Gaußkurven
+	}
+	\label{fig:ba_peaks_plot}
+\end{figure}
+
+Um die Energieeichung erstellen zu können passen wir zunächst Gaußkurven an die
+\SIlist{31;81;356;511}{\kilo\electronvolt} Linien an (vgl.
+Abbildung~\ref{fig:na_peaks_plot} und \ref{fig:ba_peaks_plot}).
+Die einzelnen Anpassungen sind detailiert, mit dem jeweils als Grundlage
+gewählten Datenbereich, auf den Abbildungen in
+Anhang~\ref{anhang-energiekalibrierung} zu sehen.
+Da nur eine recht kurze Messzeit von etwa \SI{2}{\minute} gewählt wurde sind
+besonders die schmalen $^{133}\text{Ba}$-Linien nicht sehr gut ausgeformt, was
+eine Gaußanpassung erschwert.
+
+Die Parameter der Anpassungen sind in Tabelle~\ref{tab:energiekalibrierung}
+aufgeführt. Mit diesen wurden dann die in
+Abbildung~\ref{fig:energiekalibrierung_plot} zu sehenden Energiekalibrierungen
+je Detektor erstellt. Die Datenpunkte sind mit Fehler dargestellt, allerdings
+ist dieser zu klein um in dieser Auflösung gesehen zu werden.
+
+\begin{figure}[h]
+    \begin{minipage}[t]{0.45\textwidth}
+	\centering
+	\begin{tabular}{SSS}
+		{Kanal} &
+		{FWHM} &
+		{E / \si{\kilo\electronvolt}}\\
+		\midrule
+		%< for row in li_energy_calibration_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \begin{tabular}{SSS}
+		{Kanal} &
+		{FWHM} &
+		{E / \si{\kilo\electronvolt}}\\
+		\midrule
+		%< for row in re_energy_calibration_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+    \end{minipage}
+	\caption{%
+		Anpassungsparameter für die Energiekalibrierung
+	}
+	\label{tab:energiekalibrierung}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_energy_calibrate_fit_li}
+		\caption{%
+			links
+		}
+		\label{fig:energiekalibrierung-li_plot}
+	\end{subfigure}
+	\begin{subfigure}{0.49 \textwidth}
+		\includegraphics[width=\textwidth]{plot_energy_calibrate_fit_re}
+		\caption{%
+			rechts
+		}
+		\label{fig:energiekalibrierung-re_plot}
+	\end{subfigure}
+	\caption{%
+		Energiekalibrierung
+	}
+	\label{fig:energiekalibrierung_plot}
+\end{figure}
+
+Als Ergebnis für die Geradenanpassung erhalten wir für den linken und rechten
+Detektor:
+\begin{align}
+	E_l\del x = m x + n
+	&&\text{mit } m = \SI{<< li_energy_slope >>}{\kilo\electronvolt}\text{, }
+	\quad n = \SI{<< li_energy_offset >>}{\kilo\electronvolt}
+\end{align}
+\begin{align}
+	E_r\del x = m x + n
+	&&\text{mit } m = \SI{<< re_energy_slope >>}{\kilo\electronvolt}\text{, }
+	\quad n = \SI{<< re_energy_offset >>}{\kilo\electronvolt}
+\end{align}
+
+\subsection{Energieauflösung}
+
+Die absolute und relative Energieauflösung der einzelnen Linien
+stellen wir in Abbildung~\ref{tab:energieaufloesung} dar.
+Dabei fällt auf, dass die Auflösung stark von der Energie abhängt.
+
+Da es in diesem Semester keine parallelen Gruppen an einem anderen Aufbau gab,
+können wir die Energieauflösung auch nicht mit diesen vergleichen.
+
+\begin{figure}[h]
+    \begin{minipage}[t]{0.45\textwidth}
+	\centering
+	\begin{tabular}{SSS}
+		{E / \si{\kilo\electronvolt}} &
+		{FWHM / \si{\kilo\electronvolt}} &
+		{rel. Auflösung}\\
+		\midrule
+		%< for row in li_energy_resolution_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \begin{tabular}{SSS}
+		{E / \si{\kilo\electronvolt}} &
+		{FWHM / \si{\kilo\electronvolt}} &
+		{rel. Auflösung}\\
+		\midrule
+		%< for row in re_energy_resolution_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+    \end{minipage}
+	\caption{%
+		Energieauflösung
+	}
+	\label{tab:energieaufloesung}
+\end{figure}
+
+
+\subsection{Umrechnen der Schwellen}
+
+Mit der Energiekalibrierung können wir nun die beim Aufbau gewählten Schwellen
+für SCA und CFD in Energien umrechnen. Das Ergebnis ist in den
+Tabellen~\ref{tab:sca_schwellen} und \ref{tab:cfd_schwellen} zu sehen.
+\begin{table}[h]
+    \centering
+    \begin{tabular}{llSS}
+        Probe & Seite & {untere Schwelle / \si{\kilo\electronvolt}} & {obere
+    Schwelle} / \si{\kilo\electronvolt} \\
+        \midrule
+        Na & links & << li_Na_lower_energy >> & << li_Na_upper_energy >> \\
+        Na & rechts & << re_Na_lower_energy >> & << re_Na_upper_energy >> \\
+        Ba & links & << li_Ba_lower_energy >> & << li_Ba_upper_energy >> \\
+        Ba & rechts & << re_Ba_lower_energy >> & << re_Ba_upper_energy >> \\
+    \end{tabular}
+    \caption{%
+        Lage der SCA Schwellen.
+    }
+    \label{tab:sca_schwellen}
+\end{table}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{llSS}
+        Probe & Seite & {untere Schwelle / \si{\kilo\electronvolt}} & {obere
+    Schwelle} / \si{\kilo\electronvolt} \\
+        \midrule
+        Na & links & << li_Na_lower_cfd_energy >> & << li_Na_upper_cfd_energy >> \\
+        Na & rechts & << re_Na_lower_cfd_energy >> & << re_Na_upper_cfd_energy >> \\
+        Ba & links & << li_Ba_lower_cfd_energy >> & << li_Ba_upper_cfd_energy >> \\
+        Ba & rechts & << re_Ba_lower_cfd_energy >> & << re_Ba_upper_cfd_energy >> \\
+    \end{tabular}
+    \caption{%
+        Lage der CFD Schwellen.
+    }
+    \label{tab:cfd_schwellen}
+\end{table}
+
+
+\clearpage
+
+\section{Zeiteichung}
+
+Für die Zeiteichung haben wir an die mit jeweils \SI{16}{\nano\second} Abstand
+aufgenommenen Linien Gaußkurven angepasst. Einen groben Überblick liefert
+Abbildung~\ref{fig:zeiteichung_peaks_plot}. Mehr Details, sowie die zur
+Grundlage der Anpassungen gewählten Datenbereiche, kann man den Abbildungen in
+Anhang~\ref{anhang-zeiteichung} entnehmen.
+
+Mit den in Tabelle~\ref{tab:zeiteichung} und
+Abbildung~\ref{fig:zeiteichung_plot} dargestellten Anpassungsparametern können
+wir eine Zeiteichung erstellen und erhalten:
+\begin{align}
+	t\del x = m x + n
+	&&\text{mit } m = \SI{<< time_slope >>}{\nano\second}\text{, }
+	\quad n = \SI{<< time_offset >>}{\nano\second}
+\end{align}
+Dabei ist $n$ nur der Vollständigkeit halber aufgeführt. Da wir nur
+Zeitdifferenzen messen, können wir den Nullpunkt willkürlich festsetzen.
+
+Indem wir mit der Zeiteichung die Halbwertsbreiten in Zeiten umrechnen und
+anschließend über diese mitteln erhalten wir eine Zeitauflösung von
+\SI{<< time_resolution >>}{\nano\second}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{plot_time_calibration}
+	\caption{%
+		Um \SI{16}{\nano\second} versetzte \SI{511}{\kilo\electronvolt}
+		Linien aus $^{22}\text{Na}$ zur Zeiteichung
+	}
+	\label{fig:zeiteichung_peaks_plot}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{tabular}{SSS}
+		{Kanal} &
+		{FWHM} &
+		{Zeit / \si{\nano\second}}\\
+		\midrule
+		%< for row in time_calibration_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+	\caption{%
+		Anpassungsparameter für die Zeiteichung
+	}
+	\label{tab:zeiteichung}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{plot_time_calibrate_fit}
+	\caption{%
+		Zeiteichung
+	}
+	\label{fig:zeiteichung_plot}
+\end{figure}
+
+\section{Bestimmung der Lebenszeit}
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{plot_langzeit_fit}
+	\caption{%
+		Lebenszeitkurve
+	}
+	\label{fig:langzeit_plot}
+\end{figure}
 
 
 \chapter{Ergebnis}
@@ -564,6 +1031,162 @@ die\SI{81}{\kilo\elektronenvolt}-Linie dient.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{appendix}
+\chapter{Anhang}
+
+\section{Abbildungen zur Energiekalibrierung} \label{anhang-energiekalibrierung}
+
+\subsection{Linker Detektor}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{plot_fit_peak_li_1_na}
+    \caption{%
+	    \SI{511}{\kilo\electronvolt} Linie im $^{22}\text{Na}$-Spektrum mit
+	    Gaußanpassungen
+   }
+    \label{fig:plot_fit_peak_li_1_Na}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{plot_fit_peak_li_1_ba}
+    \caption{%
+	    \SI{31}{\kilo\electronvolt} Linie im $^{133}\text{Ba}$-Spektrum mit
+	    Gaußanpassungen
+   }
+    \label{fig:plot_fit_peak_li_1_Ba}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plot_fit_peak_li_2_ba}
+    \caption{%
+	    \SI{81}{\kilo\electronvolt} Linie im $^{133}\text{Ba}$-Spektrum mit
+	    Gaußanpassungen
+   }
+    \label{fig:plot_fit_peak_li_2_Ba}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plot_fit_peak_li_3_ba}
+    \caption{%
+	    \SI{356}{\kilo\electronvolt} Linie im $^{133}\text{Ba}$-Spektrum mit
+	    Gaußanpassungen
+   }
+    \label{fig:plot_fit_peak_li_3_Ba}
+\end{figure}
+\clearpage
+
+\subsection{Rechter Detektor}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plot_fit_peak_re_1_na}
+    \caption{%
+	    \SI{511}{\kilo\electronvolt} Linie im $^{22}\text{Na}$-Spektrum mit
+	    Gaußanpassungen
+   }
+    \label{fig:plot_fit_peak_re_1_Na}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plot_fit_peak_re_1_ba}
+    \caption{%
+	    \SI{31}{\kilo\electronvolt} Linie im $^{133}\text{Ba}$-Spektrum mit
+	    Gaußanpassungen
+   }
+    \label{fig:plot_fit_peak_re_1_Ba}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plot_fit_peak_re_2_ba}
+    \caption{%
+	    \SI{81}{\kilo\electronvolt} Linie im $^{133}\text{Ba}$-Spektrum mit
+	    Gaußanpassungen
+   }
+    \label{fig:plot_fit_peak_re_2_Ba}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plot_fit_peak_re_3_ba}
+    \caption{%
+	    \SI{356}{\kilo\electronvolt} Linie im $^{133}\text{Ba}$-Spektrum mit
+	    Gaußanpassungen
+   }
+    \label{fig:plot_fit_peak_re_3_Ba}
+\end{figure}
+\clearpage
+
+\section{Abbildungen zur Zeiteichung} \label{anhang-zeiteichung}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plot_fit_peak__1_time}
+    \caption{%
+	    \SI{511}{\kilo\electronvolt} Linie mit
+	    Gaußanpassungen und \SI{16}{\nano\second} Versatz
+   }
+    \label{fig:plot_fit_peak__1_time}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plot_fit_peak__2_time}
+    \caption{%
+	    \SI{511}{\kilo\electronvolt} Linie mit
+	    Gaußanpassungen und \SI{32}{\nano\second} Versatz
+   }
+    \label{fig:plot_fit_peak__2_time}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plot_fit_peak__3_time}
+    \caption{%
+	    \SI{511}{\kilo\electronvolt} Linie mit
+	    Gaußanpassungen und \SI{48}{\nano\second} Versatz
+   }
+    \label{fig:plot_fit_peak__3_time}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plot_fit_peak__4_time}
+    \caption{%
+	    \SI{511}{\kilo\electronvolt} Linie mit
+	    Gaußanpassungen und \SI{64}{\nano\second} Versatz
+   }
+    \label{fig:plot_fit_peak__4_time}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plot_fit_peak__5_time}
+    \caption{%
+	    \SI{511}{\kilo\electronvolt} Linie mit
+	    Gaußanpassungen und \SI{80}{\nano\second} Versatz
+   }
+    \label{fig:plot_fit_peak__5_time}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plot_fit_peak__6_time}
+    \caption{%
+	    \SI{511}{\kilo\electronvolt} Linie mit
+	    Gaußanpassungen und \SI{96}{\nano\second} Versatz
+   }
+    \label{fig:plot_fit_peak__6_time}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plot_fit_peak__7_time}
+    \caption{%
+	    \SI{511}{\kilo\electronvolt} Linie mit
+	    Gaußanpassungen und \SI{112}{\nano\second} Versatz
+   }
+    \label{fig:plot_fit_peak__7_time}
+\end{figure}
+\clearpage
+
+
+
+
+
+
+
+
+
 
 %TODO
 
