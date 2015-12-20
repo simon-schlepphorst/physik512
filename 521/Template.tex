@@ -68,11 +68,11 @@
 \maketitle
 
 \begin{abstract}
-In diesen Versuch geht es darum, die Eigenschaften von einem
-Szintillationsdetektor und einem Ge-Halbleiterdetektor bei der
-$\gamma$-Spektroskopie zu vergleichen.
-Dabei sind die Energieauflösung und die Nachweiswahrscheinlichkeit die
-zu untersuchenden Eigenschaften.
+    In diesen Versuch geht es darum, die Eigenschaften von einem
+    Szintillationsdetektor und einem Ge-Halbleiterdetektor bei der
+    $\gamma$-Spektroskopie zu vergleichen.
+    Dabei sind die Energieauflösung und die Nachweiswahrscheinlichkeit die
+    zu untersuchenden Eigenschaften.
 \end{abstract}
 
 
@@ -81,24 +81,26 @@ zu untersuchenden Eigenschaften.
 \chapter{Theorie}
 
 \section{Wechselwirkung von $\gamma$-Strahlung mit Materie}
-Die $\gamma$-Strahlung entsteht, wenn nach einem vorhergegangen Zerfall der
+
+Die $\gamma$-Strahlung entsteht wenn nach einem vorhergegangen Zerfall der
 Tochterkern nicht in seinen Grundzustand, sondern in einen angeregten Zustand
 zerfällt.
 Dieser angeregte Zustand zerfällt nach einiger Zeit durch Abstrahlung des
-$\gamma$-Quants in den Grundzustand. Diese Photonen sind sehr Energiereich,
+$\gamma$-Quants in den Grundzustand. Diese Photonen sind sehr energiereich,
 weshalb sie genug Energie haben, um auf verschiedene Weisen mit der Materie zu
 Wechselwirken.
 Die Art diese Wechselwirkung hängt von der Ordnungszahl der bestrahlten Atome
 und der Energie der $\gamma$-Strahlung ab.
 
 \subsection{Photoeffekt}
+
 Der Photoeffekt beschreibt den Vorgang, bei welchem ein Photon ein Elektron aus
 dem Atom auslöst.
 Hierbei gibt das Photon seine komplette Energie ab.
 Die kinetische Energie des ausgelösten Elektrons hängt nur über die
 Bindungsenergie ($E_\text{Bind.}$) mit dem der Energie des Photons ($h\nu$),
 also dessen Frequenz ($\nu$) zusammen.
-Dieser Prozess kann nur in der Nähe eines Atomkerns stattfinden, weil dieser
+Dieser Prozess kann nur in der Nähe eines Atomkerns stattfinden weil dieser
 den Rückstoß aufnimmt.
 So bleibt bei diesen Vorgang Energie und Impuls erhalten. 
 \[ 
@@ -113,14 +115,16 @@ Deshalb tritt dieser Effekt besonders häufig bei Elementen mit hoher Ordnungsza
 auf.
 
 \subsection{Paarerzeugung}
+
 Ein weiterer Effekt, der bei Energien $E_\gamma \ge 2m_\text ec^2$ auftreten
 kann, ist die Elektron-Positron-Paarbildung.
-Dieser Effekt ist allerdings erst ab weit oberhalb dieser Schwelle relevant.
+Dieser Effekt ist allerdings erst weit oberhalb dieser Schwelle relevant.
 Für den Wirkungsquerschnitt gilt $\sigma \propto Z^2$.
 
 \subsection{Comptonstreuung}
+
 Wenn Photonen an einem Elektron streuen, dann spricht man vom Comptoneffekt. 
-Hierbei gibt das Photon einen Teil seiner an das Elektron ab und ändert dabei
+Hierbei gibt das Photon einen Teil seiner Energie an das Elektron ab und ändert dabei
 seine Frequenz.
 Die abgegebene Energie hängt dabei vom Streuwinkel ab.
 Für die Restenergie des Photons gilt:
@@ -136,10 +140,12 @@ Diese Energieänderung berechnet sich durch:
 Der Wirkungsquerschnitt entspricht $\sigma_\text C \propto \frac{Z}{E_\gamma}$.
 
 \subsection{Keine Wechselwirkung}
+
 Ein nicht unerheblicher Teil der $\gamma$-Strahlung kann auch Wechselwirkung
 Materie durchdringen.
 
 \section{Szintillationsdetektor}
+
 Mit einem Szintillationsdetektor lassen sich Intensität und Energie von
 ionisierender Strahlung messen.
 Er besteht aus einem Szintillator und einem Photomultiplier.
@@ -150,24 +156,28 @@ durchlässig für das von ihm emittierte Licht ist.
 Innerhalb des vor Lichteinfall geschützten Szintillators entstehen durch
 ionisierende Strahlung Lichtblitze. 
 Wie viele dieser Blitze auftreten ist von der Energie der Strahlung abhängig.
-Aufgrund des Photoeffektes, werden an der Photokathode des Photomultipliers
+Aufgrund des Photoeffektes werden an der Photokathode des Photomultipliers
 Elektronen ausgelöst.
+% FIXME Was soll der folgende Satz?
 Durch den Aufbau weitern des Photomultiplieres kommt es zu einem Lawineneffekt,
 welcher die Elektronen vervielfacht und somit eine Detektion erleichtert.
 Die Amplitude des so entstanden Strompulses ist somit auch proportional zu der
 Energie der Eingangsstrahlung.
 
-Wenn man eine gute Energieauflösung möchte, sollte man allerdings eher einem
+Wenn man eine gute Energieauflösung möchte, sollte man allerdings eher einen
 Halbleiterdetektor nutzen.
 
+% TODO Und warum sollte man das?
+
 \section{Halbleiterdetektor}
+
 Die Basis des Halbleiterdetektors bildet die Verarmungszone, die zwischen einem
 $p$- und einem $n$-dotieren Halbleiter entsteht.
 
 Betrachtet man das Bändermodel vom Halbleitern, so kann man sich die Dotierung
 des Halbleiters als weiteres dünnes Band knapp unter dem Leitungsband
 ($n$-dotiert) oder knapp über dem Valenzband ($p$-dotiert) vorstellen.
-Dabei erhält man die Dotierung eines Kristalls, in dem man fremde Atome in den
+Dabei erhält man die Dotierung eines Kristalls indem man fremde Atome in den
 Kristall einbindet.
 Wenn man eine positive Dotierung möchte, so fügt man in den Kristall Atome mit
 einer niedrigeren Anzahl Valenzelektronen ein, für die negative Dotierung nutzt
@@ -179,12 +189,13 @@ $p$-dotierten Bereich übergehen.
 Hierdurch bildet sich durch die zurückbleibenden Ionenrümpfe ein elektrisches Feld aus, welches
 der weitern Verbreiterung der Verarmungszone entgegen wirkt.
 Es entspricht somit einer Diode.
-Wenn man diese nun in Sperrichtung betreibt, kann man die Verarmungszone weiter
+Wenn man diese nun in Sperrrichtung betreibt, kann man die Verarmungszone weiter
 verbreitern.
 Das ist erwünscht, da nur in diesen Bereich des Detektors Ereignisse
 gemessen werden können.
 
 \subsection{Multi-Channel-Analyzer}
+
 Um ein nach Amplituden sortiertes Spektrum zu erhalten, nutzen wir ein MCA.
 Dies ist ein Bauteil, welches einkommende Signale nach Amplitude sortiert und
 dann den Kanal, welcher der Impulshöhe entspricht, hoch setzt. So erhalten wir ein
@@ -197,7 +208,8 @@ Histogramm.
 %In dem entstehenden Spektrum, erkennt man ein Compton-Kontinuum, welches die 
 %Comptonstreuung bis zu einem Winkel von \SI{180}{\degree} enthält. Da bei diesem
 %Wert der maximale Energieübertrag stattfindet, erhält man eine scharfe Kante, 
-%die Compton Kante. Wird nicht nur ein Teil sondern die gesamte Energie abgegeben, wie es bei 
+%die Compton Kante. Wird nicht nur ein Teil sondern die gesamte Energie
+%abgegeben, wie es beim
 %Photoeffekt der Fall ist, entsteht der energetisch höher gelegene Ausschlag. Man 
 %nennt ihn Photo-Peak.
 
@@ -207,7 +219,7 @@ Histogramm.
 
 Der Aufbau dieses Experiments sieht wie folgt aus:
 
-Der jeweilige Detektor in an einen Signalverstärker angeschlossen, welcher
+Der jeweilige Detektor ist an einen Signalverstärker angeschlossen, welcher
 wiederum an einen Vielkanalanalysator angeschlossen ist.
 
 Für die Durchführung müssen zunächst die Betriebsparameter, wie die
@@ -215,8 +227,8 @@ Verstärkung des Signalverstärkers eingestellt werden.
 Dazu werden die Proben jeweils einzeln vor die Detektoren gestellt und das
 Ausgangssignal des Signalverstärkers am Oszilloskop betrachtet.
 Die Verstärkung ist so eingestellt, dass die für die Energiekalibrierung
-wichtige \SI{1408}{\kilo\electronvolt} Linie des $^{152}\text{Eu}$
-innerhalb des Messbereichts liegt.
+wichtige \SI{1408}{\kilo\electronvolt}-Linie des $^{152}\text{Eu}$
+innerhalb des Messbereichs liegt.
 %TODO Foto vom Aufbau
 
 Nun messen wir mit beiden Detektoren sowohl die drei Proben, $^{60}\text{Co}$,
