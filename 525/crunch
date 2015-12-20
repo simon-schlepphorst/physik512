@@ -521,7 +521,11 @@ def job_time_calibration(T):# {{{
     points = []
 
     fit_range = [
-            (1900, 4600),
+            (1770, 1950),
+            (2100, 2410),
+            (2470, 2610),
+            (2610, 2900),
+            (2990, 3500),
             ]
 
     for i, (first, last) in zip(itertools.count(1), fit_range):
@@ -535,13 +539,15 @@ def job_time_calibration(T):# {{{
 
         ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=2)
 
-        points.append([popt, pconv])
+        print(popt)
+        print(perr)
+        print()
 
     ax.margins(0.05)
     ax.grid(True)
     ax.set_xlabel('Zeit / ns')
     ax.set_ylabel('Ereignisse / s')
-    ax.set_yscale('log')
+    #ax.set_yscale('log')
     fig.tight_layout()
     fig.savefig('_build/plot_langzeit_fit.pdf')
     fig.clear
