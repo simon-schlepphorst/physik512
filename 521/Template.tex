@@ -3,7 +3,7 @@
 \usepackage{../../header}
 
 \usepackage{placeins}
-%\usepackage[maxfloats=50]{morefloats}
+\usepackage[maxfloats=50]{morefloats}
 
 \usepackage{csquotes}
 
@@ -659,6 +659,18 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
 \begin{appendix}
 
 %TODO
+
+\foreach \num in {1,...,20}
+{
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{plot_fit_peak__\num_langzeit}
+        \caption{%
+            %
+        }
+        \label{fig:}
+    \end{figure}
+}
 
 \end{appendix}
 
