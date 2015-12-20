@@ -110,7 +110,7 @@ def main():
 
         matchness = overlap_integral / self_integral
 
-        if matchness >= +5:
+        if matchness >= +0.0008:
             linestyle, color = itertools.repeat(next(attr_iter))
             ax.plot(x, y / self_integral, label=nuclide, color=color, linestyle=linestyle, linewidth=4)
 
@@ -148,8 +148,8 @@ def main():
 
     # Zeige Matchness an
 
-    #for matchness, element in results_sorted:
-    #   print('{:5s} {:+.10f}'.format(element, matchness))
+    for matchness, element in results_sorted:
+       print('{:5s} {:+.10f}'.format(element, matchness))
 
 
 
