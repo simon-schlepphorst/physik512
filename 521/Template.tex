@@ -126,11 +126,10 @@ Ausschlag gebend ist der Effekt allerdings erst weit oberhalb dieser Schwelle.
 Für den Wirkungsquerschnitt gilt $\sigma \propto Z^2$.
 
 \subsection{Comptonstreuung}
-
 Wenn Photonen an einem Elektron streuen, spricht man vom Comptoneffekt. 
 Hierbei gibt das Photon einen Teil seiner Energie an das Elektron ab und ändert dabei
-seine Frequenz.
-Die abgegebene Energie hängt dabei vom Streuwinkel ab.
+die eigene Frequenz.
+Die abgegebene Energie hängt vom Streuwinkel ab.
 Für die Restenergie des Photons gilt:
 \[
     E_\nu'(\phi) = \frac{E_\nu}{1+\frac{E_\nu}{m_\text ec^2}(1+\cos(\phi))}
@@ -144,7 +143,7 @@ Diese Energieänderung berechnet sich durch:
 Der Wirkungsquerschnitt entspricht $\sigma_\text C \propto \frac{Z}{E_\gamma}$.
 
 \subsection{Keine Wechselwirkung}
-Ein nicht unerheblicher Teil der $\gamma$-Strahlung kann auch Wechselwirkung
+Ein nicht unerheblicher Teil der $\gamma$-Strahlung kann auch ohne Wechselwirkung
 Materie durchdringen.
 
 \section{Szintillationsdetektor}
@@ -159,16 +158,16 @@ durchlässig für das von ihm emittierte Licht ist.
 Innerhalb des vor Lichteinfall geschützten Szintillators entstehen durch
 ionisierende Strahlung Lichtblitze. 
 Wie viele dieser Blitze auftreten ist von der Energie der Strahlung abhängig.
-Aufgrund des Photoeffektes werden an der Photokathode des Photomultipliers
+Durch den Photoeffekt werden an der Photokathode des Photomultipliers
 Elektronen ausgelöst.
-Durch den weiteren Aufbau des Photomultiplieres kommt es zu einem Lawineneffekt,
-welcher die Elektronen vervielfacht und somit ein Signal verstärkt.
-Die Amplitude des so entstanden Strompulses ist somit auch proportional zu der
+Es kommt innerhalb des Photomultiplieres zu einem Lawineneffekt,
+der die Elektronen vervielfacht und somit ein Signal verstärkt.
+Die Amplitude des entstanden Strompulses ist somit auch proportional zu der
 Energie der Eingangsstrahlung.
 
 Wenn man eine gute Energieauflösung möchte, ist diese Detektorart nicht
 besonders geeignet. Hier empfiehlt es sich einen Halbleiterdetektor zu
-verwenden. Dieser ist dafür deutlich besser geeignet ist, wie im Verlauf noch
+verwenden. Dieser ist dafür deutlich besser geeignet ist, wie im weiteren Verlauf noch
 deutlich wird.
 
 % TODO Und warum sollte man das?
@@ -197,12 +196,14 @@ Wenn man diese nun in Sperrrichtung betreibt, kann man die Verarmungszone weiter
 verbreitern.
 Das ist erwünscht, da nur in diesen Bereich des Detektors Ereignisse
 gemessen werden können.
+Wenn ein $\gamma$-Quant innerhalb der Verarmungszone  ein Elektronen-Loch-Paar
+erzeugt, werden diese zu den Seiten hin abgesaugt und ergeben das Signal.
 
 \subsection{Multi-Channel-Analyzer}
 
 Um ein nach Amplituden sortiertes Spektrum zu erhalten, nutzen wir ein MCA.
-Dies ist ein Bauteil, welches einkommende Signale nach Amplitude sortiert und
-dann den Kanal, der der Impulshöhe entspricht, hoch setzt. So erhalten wir ein
+Es ist ein Bauteil, dass einkommende Signale nach Amplitude sortiert und
+dann den entsprechenden Kanal hoch zählt. So erhalten wir ein
 Histogramm.
 
 %TODO Bild Spektrum
@@ -211,22 +212,19 @@ Histogramm.
 
 In dem schematischen Spektrum, erkennt man ein Compton-Kontinuum, welches die 
 Comptonstreuung bis zu einem Winkel von \SI{180}{\degree} enthält. Da bei diesem
-Wert der maximale Energieübertrag stattfindet, erhält man eine scharfe Kante, 
-die Compton Kante. Wird nicht nur ein Teil sondern die gesamte Energie
-abgegeben, wie es beim
+Wert der maximale Energieübertrag stattfindet, erhält man die scharfe Compton Kante.
+Wird nicht nur ein Teil sondern die gesamte Energie abgegeben, wie es beim
 Photoeffekt der Fall ist, entsteht der energetisch höher gelegene Ausschlag. Man 
 nennt ihn Photo-Peak.
 
-
-
 \chapter{Aufbau und Durchführung}
 
-Der Aufbau dieses Experiments sieht wie folgt aus:
+Der Aufbau des Experiments sieht wie folgt aus:
 
-Der jeweilige Detektor ist an einen Signalverstärker angeschlossen, welcher
+Die Detektoren sind an einen Signalverstärker angeschlossen, der
 wiederum an einen Vielkanalanalysator angeschlossen ist.
 
-Für die Durchführung müssen zunächst die Betriebsparameter, wie die
+Für die Durchführung müssen zunächst die Betriebsparameter wie die
 Verstärkung des Signalverstärkers eingestellt werden.
 Dazu werden die Proben jeweils einzeln vor die Detektoren gestellt und das
 Ausgangssignal des Signalverstärkers am Oszilloskop betrachtet.
@@ -235,9 +233,9 @@ wichtige \SI{1408}{\kilo\electronvolt}-Linie des $^{152}\text{Eu}$
 innerhalb des Messbereichs liegt.
 %TODO Foto vom Aufbau
 
-Nun messen wir mit beiden Detektoren sowohl die drei Proben, $^{60}\text{Co}$,
-$^{137}\text{Cs}$ und $^{152}\text{Eu}$, als auch den Untergrund. Jede dieser
-Messungen wird über einen Zeitraum von fünf Minuten aufgenommen.
+Nun messen wir mit beiden Detektoren für alle drei Proben, $^{60}\text{Co}$,
+$^{137}\text{Cs}$ und $^{152}\text{Eu}$, und den Untergrund jeweils ein
+Spektrum. Jede dieser Messungen wird über einen Zeitraum von fünf Minuten aufgenommen.
 
 Für die Langzeitmessung mit dem Ge-Detektor wird eine Bleiabschirmung
 aufgebaut, mit der über Nacht der Untergrund gemessen wird, bevor die Bodenprobe
@@ -248,11 +246,10 @@ innerhalb der Abschirmung positioniert wird und erneut über Nacht gemessen wird
 Bevor wir anfangen können die Spektren zu untersuchen, müssen zunächst die
 Aufnahmezeiten angepasst werden, da wir die Realzeit auf \SI{600}{\second} gesetzt
 haben und diese durch Totzeiten des Detektors von der Aufnahmezeit abweicht.
-Nach Anpassung der Zeit müssen wir die
-Untergrundmessung von der Messung der Spektren abziehen.
-Von den gefilterten Spektren untersuchen wir im folgenden die durch
-$\gamma$-Zerfall entstandenen Ausschläge, wie man in
-Abbildung~\ref{fig:energiekalibrierung} sieht.
+Nach Anpassung der Zeit müssen wir die Untergrundmessung von der Messung der Spektren 
+abziehen. Von den gefilterten Spektren untersuchen wir im folgenden die durch
+$\gamma$-Zerfall entstandenen Ausschläge, wie in
+Abbildung~\ref{fig:energiekalibrierung} zu sehen ist.
 % FIXME Satzende?
 
 \begin{figure}
@@ -265,12 +262,13 @@ Abbildung~\ref{fig:energiekalibrierung} sieht.
     \label{fig:energiekalibrierung}
 \end{figure}
 
-Da die Spektren mit einem Vielkanalanalysator aufgenommen werden, muss eine
+Weil die Spektren mit einem Vielkanalanalysator aufgenommen werden, muss eine
 Energiekalibrierung vorgenommen werden. Hierbei wird den Nummern der 8192
 Kanäle die Energie zugeordnet der sie entsprechen.
-Das lässt sich erreichen indem wir durch Anpassen von Verteilungsfunktionen an die
-Ausschläge bekannter $\gamma$-Übergänge deren Schwerpunkt in Kanalnummer
-erhalten. An die Daten aus dem NaJ(Ti)-Detektor haben wir Gaußkurven und an die
+Das erreichen wir indem wir an Ausschläge bekannter $\gamma$-Übergänge
+Verteilungsfunktionen anpassen. Über den Schwerpunkt erhalten wir die Kanalnummer zu 
+der vorgegebenen Energie . 
+An die Daten aus dem NaJ(Ti)-Detektor haben wir Gaußkurven und an die
 aus dem Ge-Detektor Lorentzkurven angepasst, da diese näher an den Daten liegen.
 Somit wurde den Kanalnummern eine Energie zugeordnet. Das ist in
 Abbildung~\ref{fig:Ge-peaks} zu sehen.
