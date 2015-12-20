@@ -639,6 +639,28 @@ in der Medizin eingesetzt.
 	}
 	\label{fig:langzeit_probe_peaks}
 \end{figure}
+
+
+
+\begin{figure}[h]
+	\centering
+	\begin{tabular}{SSSS}
+		{E / \si{\kilo\electronvolt}}\\
+		{FWHM} &
+		{Intensität} &
+		{Offset}\\
+		\midrule
+		%< for row in langzeit_calibration_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+	\caption{%
+		Anpassungsparameter für die Energiekalibrierung
+	}
+	\label{tab:energiekalibrierung}
+\end{figure}
+
+
 \chapter{Ergebnis}
 
 In diesen Versuch haben wir gut sehen können, dass die Energie- und Zeitauflösung der
