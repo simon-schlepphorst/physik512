@@ -215,7 +215,50 @@ zerfällt.
 
 \chapter{Durchführung}
 %TODO
+Bei der Durchführung geht es darum den oben beschriebenen Schaltplan Schritt
+für Schritt auf zu bauen und die einzelnen Bauteile entsprechend zu
+Kalibrieren. Die folgenden Schritte werden sowohl führ die rechte wie auch die
+linke Seite des Aufbaus durchgefüht. Zu beginn nutzen wir das $^{22}\text{Na}$
+Präparat. 
 
+Nachdem die Hochspannung an den Szintillationsspektrometer angelegt wurde, wird
+zunächst das Signal aus dem Slow-Ausgang oszilloskopiert.%TODO bild
+Als nächstes nutzen wir den Splitter um das Signal aus dem Hauptverstärker
+reflektions frei aufzuteilen. Da das Signal dadurch allerdings schwächer wird,
+bleibt der Splitter im gesamten weiteren Verlauf eingebaut. Die eine Hälfte des
+Signals geht durch einen Verzögerer in das Oszilloskop, Kanal 1, während das zweite Signal erst
+durch einen SCA läuft. %TODO 
+Auf dem Oszilloskop identifizieren wir die deutlichste Linie als die \SI{511}{\kilo\elektronenvolt}
+Linie und versuchen diese über die Verstärkung auf \SIrange{3}{4}{\volt}
+einzustellen. Als nächstes verzögern wir das Analogsignal, damit es von dem
+Digitalsignal des SCA überdeckt wird.
+
+Nun wird das Signal aus dem Hauptverstärker und das SCA-Signal in den MCA
+gegeben und Datensätze aufgenommen. Wir wählen die Verstärkung so, dass die
+\SI{511}{\kilo\elektronenvolt}-Linie sich am rechten Spektrumsrand befindet.
+Außerdem muss die \SI{81}{\kilo\elektronenvolt}-Linie des $^{133}\text{Cs}$ in dem Spektrum
+auftauchen.
+
+Nun werden die Einkanalfenster auf den \SI{511}{\kilo\elektronenvolt}
+eingestellt. Dafür stellt man die obere und die untere Grenz so ein, dass das
+Signal gut umschlossen ist. Wenn man beide Seiten eingestellt hat, dann stellen
+wir die Koinzidenz her. Hierfür betrachten wir die beiden Signal auf de,
+Oszilloskop und verzögern die Signale so, dass sie möglichst gut überlagern. 
+
+Als nächstes stellen wir den Fast-Kreis ein. Als erstes oszilloskopieren wir
+das Fast-Signal. Dann stellen wir die Schwelle von dem CFD ein.
+Bei dem erstellen der Fast-Koinzidenz ist wichtig zu entscheiden, welches
+Signal als Start- und welches als Stop-Signal für den TAC benutzt werden soll.
+Im Zweifelsfall kann man hier ein Verzögerer nutzen. Dabei sollte man darauf
+achten, dass die Verzögerungseinheit möglichst klein gewählt werden. 
+
+% zeitlicher abgleich von Fast- und slow signal
+%TODO zeiteichung
+Um Die Lebensdauer des angeregten $\frac 52^+$ Zustandes der $^{133}\text{Cs}$
+Quelle zu bestimmen tauscht man die Quellen und geht bei der Einstellung ebenso
+vor. Hiebei stellt man die Einkanal Fenster so ein, dass für das Startsignal
+des TACs die \SI{356}{\kilo\elektronenvolt} und für das Stopsignal
+die\SI{81}{\kilo\elektronenvolt}-Linie dient.
 
 %Na-22
 %Slow-Kreis
