@@ -8,6 +8,8 @@ all_pdf := $(all_eps:Daten/%.GZ=_build/%.png)
 
 all: $(all_pdf)
 
+.PRECIOUS: %.png %.pdf
+
 _build:
 	mkdir -p _build
 

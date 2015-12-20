@@ -389,7 +389,7 @@ Anschließend haben wir den Hauptverstärker für beide Seiten jeweils so
 eingestellt, dass der \SI{511}{\kilo\electronvolt} Peak aus dem
 $^{22}\text{Na}$ am rechten Rand des aufgenommen Spektrums liegt und das
 $^{133}\text{Ba}$-Spektrum ebenfalls vollständig aufgenommen wird. Dazu haben
-wir die Proben mehrmals gewechselt und den Verstärker feinjustiert, bis wir die
+wir die Proben mehrmals gewechselt und den Verstärker feinjustiert bis wir die
 in Abbildung~\ref{fig:slow_signal_hv_eingestellt_plot} und
 Abbildung~\ref{fig:ba_slow_signal_hv_eingestellt_plot} zu sehenden Spektren
 erhalten haben.
@@ -615,7 +615,7 @@ die Kanäle
 	\label{fig:slow_fast_koinzidenz}
 \end{figure}
 
-\fehlt%TODO Promp Kurven
+\fehlt%TODO Prompt Kurven
 
 \clearpage
 
@@ -825,7 +825,7 @@ die Kanäle
 \end{figure}
 
 Um die Energieeichung erstellen zu können passen wir zunächst Gaußkurven an die
-\SIlist{31;81;356;511}{\kilo\electronvolt} Linien an (vgl.
+\SIlist{31;81;356;511}{\kilo\electronvolt} Linien an (vgl.\
 Abbildung~\ref{fig:na_peaks_plot} und \ref{fig:ba_peaks_plot}).
 Die einzelnen Anpassungen sind detailiert, mit dem jeweils als Grundlage
 gewählten Datenbereich, auf den Abbildungen in
@@ -897,14 +897,16 @@ ist dieser zu klein um in dieser Auflösung gesehen zu werden.
 Als Ergebnis für die Geradenanpassung erhalten wir für den linken und rechten
 Detektor:
 \begin{align}
-	E_l\del x = m x + n
-	&&\text{mit } m = \SI{<< li_energy_slope >>}{\kilo\electronvolt}\text{, }
-	\quad n = \SI{<< li_energy_offset >>}{\kilo\electronvolt}
-\end{align}
-\begin{align}
-	E_r\del x = m x + n
-	&&\text{mit } m = \SI{<< re_energy_slope >>}{\kilo\electronvolt}\text{, }
-	\quad n = \SI{<< re_energy_offset >>}{\kilo\electronvolt}
+    E_l\del x &= m x + n
+    &\text{mit} \qquad m &= \SI{<< li_energy_slope >>}{\kilo\electronvolt}
+    \,,
+    &
+    \quad n &= \SI{<< li_energy_offset >>}{\kilo\electronvolt} \\
+    E_r\del x &= m x + n
+    &\text{mit} \qquad m &= \SI{<< re_energy_slope >>}{\kilo\electronvolt}
+    \,,
+    &
+    \quad n &= \SI{<< re_energy_offset >>}{\kilo\electronvolt}
 \end{align}
 
 \subsection{Energieauflösung}
