@@ -236,7 +236,7 @@ $^{137}\text{Cs}$ und $^{152}\text{Eu}$, als auch den Untergrund. Jede dieser
 Messungen wird über einen Zeitraum von fünf Minuten aufgenommen.
 
 Für die Langzeitmessung mit dem Ge-Detektor wird eine Bleiabschirmung
-aufgebaut, mit der über Nacht der Untergrund gemessen wir, bevor die Bodenprobe
+aufgebaut, mit der über Nacht der Untergrund gemessen wird bevor die Bodenprobe
 innerhalb der Abschirmung positioniert wird und erneut über Nacht gemessen wird.
 
 \chapter{Auswertung}
@@ -248,6 +248,7 @@ Nach Anpassung der Zeit müssen wir die
 Untergrundmessung von der Messung der Spektren abziehen.
 Von den gefilterten Spektren untersuchen wir im folgenden die durch
 $\gamma$-Zerfall entstandenen Ausschläge. Abbildung~\ref{fig:energiekalibrierung}
+% FIXME Satzende?
 
 \begin{figure}
     \centering
@@ -262,11 +263,12 @@ $\gamma$-Zerfall entstandenen Ausschläge. Abbildung~\ref{fig:energiekalibrierun
 Da die Spektren mit einem Vielkanalanalysator aufgenommen werden, muss eine
 Energiekalibrierung vorgenommen werden. Hierbei wird den Nummern der 8192
 Kanäle die Energie zugeordnet der sie entsprechen.
-Das lässt sich erreichen, indem wir durch anpassen von Verteilungsfunktionen an die
-Ausschläge bekannter $\gamma$-Übergänge deren Schwerpunkt in Kananlnummer
+Das lässt sich erreichen indem wir durch Anpassen von Verteilungsfunktionen an die
+Ausschläge bekannter $\gamma$-Übergänge deren Schwerpunkt in Kanalnummer
 erhalten. An die Daten aus dem NaJ(Ti)-Detektor haben wir Gaußkurven und an die
 aus dem Ge-Detektor Lorentzkurven angepasst, da diese näher an den Daten liegen.
-Somit wurde den Kanalenummern eine Energie zugeordnet. Abbildung~\ref{fig:Ge-peaks}
+Somit wurde den Kanalnummern eine Energie zugeordnet. Abbildung~\ref{fig:Ge-peaks}
+% FIXME Satzende?
 
 \begin{tabular}{SSSSSS}
     {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
@@ -277,8 +279,8 @@ Somit wurde den Kanalenummern eine Energie zugeordnet. Abbildung~\ref{fig:Ge-pea
     %< endfor >%
 \end{tabular}
 
-Für den NaJ(Ti)-Detektor nutzen wir die beiden best getrennten Linien des
-$^{152}\text{Eu}$, die Linie des $^{137}\text{Cs}$ und die Linien des
+Für den NaJ(Ti)-Detektor nutzen wir die beiden am besten getrennten Linien des
+$^{152}\text{Eu}$: die Linie des $^{137}\text{Cs}$ und die Linien des
 $^{60}\text{Co}$.
 
 \begin{tabular}{SSSSSS}
@@ -300,7 +302,7 @@ $^{60}\text{Co}$.
 
 Da die Energieauflösung des Ge-Detektors deutlich besser ist als die des 
 NaJ(Ti)-Detektors lassen sich deutlich mehr Linien des $^{152}\text{Eu}$
-erkennen und trennen, sodass wir davon sieben verwerten konnten.
+erkennen und trennen sodass wir davon sieben verwerten konnten.
 
 \begin{figure}
     \centering
@@ -314,7 +316,7 @@ erkennen und trennen, sodass wir davon sieben verwerten konnten.
 
 \end{figure}
 
-Das Energie zu Kanal Verhältnis haben wir grafisch in
+Das Energie-zu-Kanal Verhältnis haben wir grafisch in
 Abbildung~\ref{fig:ge_kanal} für den
 Ge-Detektor und in Abbildung~\ref{fig:sz_kanal} für den NaJ(Ti)-Detektor aufgetragen.
 Die angepassten Geraden haben folgende Werte:
@@ -360,7 +362,7 @@ lässt sich die intrinsische Halbwertsbreite $\Delta E_d$ bestimmen.
 \]
 Dieser Zusammenhang wurde in Abbildung~\ref{fig:halbwertsbreite} untersucht und die Konstante
 ermittelt.
-Mit dem Wert, den wir für die intrinsische Halbwertsbreite gefunden, haben lässt
+Mit dem Wert, den wir für die intrinsische Halbwertsbreite gefunden haben, lässt
 sich wie folgt der elektronische Anteil der Halbwertsbreite bestimmen.
 \[
 	\Delta E(E_\gamma)=\sqrt{\Delta E_d(E_\gamma))^2+(\Delta E_e)^2}
@@ -393,7 +395,7 @@ Ge-Detektor
 \]
 
 
-Die Absolute Peakeffizienz wird aus dem Verhältnis der Ereignisse im Photopeak
+Die absolute Peakeffizienz wird aus dem Verhältnis der Ereignisse im Photopeak
 und aller ausgestrahlten $\gamma$-Quanten der Probe gebildet. Dazu benutzen wir
 die bekannten Werte der $^{137}\text{Cs}$ Probe (\SI{0.925}{\mega\becquerel},
 April 1985). Daraus erhalten wir eine aktuelle Aktivität von:
@@ -585,7 +587,16 @@ Intensitäten der $\gamma$-Zerfälle aus einer Datenbank
 \parencite{IAEA-gamma-ray-database} entnommen.
 Aus dieser Datenbank haben wir Spektren generiert und diese mit unserem gemessen
 Spektrum verglichen.
-Ein Kriterium war, wie sehr unsere Daten die generierten Spektren
+% FIXME Und wie wurden die Spektren generiert? Es wurden die Energien und
+% Wirkungsquerschnitte genommen. Die Höhe der Linie wurde als proportional zum
+% Wirkungsquerschnitt angenommen. Eine feste Breite, die zu den restlichen
+% Linien des Detektors passte, wurde ausgesucht. Mit diesen Parametern
+% (Mittelwert, Höhe und Breite) wurde für jede Linie eine Lorentzkurve
+% generiert und auf das bisherige Spektrum für dieses Isotop addiert. Am Ende
+% gab es so ein Spektrum für jedes Element mit unterschiedlichen Höhen für die
+% verschiedenen Zerfallskanäle. Die Spektren wurden dann noch am Stück so
+% normiert, dass sie gut zur Messung passen und vergleichbar sind.
+Ein Kriterium ist, wie sehr unsere Daten die generierten Spektren
 ausfüllen. Wenn alle Linien eines Isotops sowohl in der Lage als auch den
 Höhenverhältnissen
 mit den entsprechenden Linien des gemessenen Spektrums überein stimmen, so haben
@@ -598,10 +609,10 @@ Das Resultat ist in Abbildung~\ref{fig:element_match} zu sehen.
 Dabei lassen sich die meisten Isotope natürlichen Zerfallsreihen zuordnen.
 
 \begin{center}
-\begin{tabular}{lc}
-	Thorium-Reihe: & $^{212}\text{Pb}$ \quad  $^{212}\text{Bi}$ \quad $^{208}\text{Tl}$
-	\\ \\
-	Radon-Reihe: & $^{214}\text{Pb}$ \quad  $^{214}\text{Bi}$
+\begin{tabular}{ll}
+	Thorium-Reihe: & $^{212}\text{Pb}$ \leadsto $^{212}\text{Bi}$ \leadsto $^{208}\text{Tl}$
+	\\
+	Radon-Reihe: & $^{214}\text{Pb}$ \leadsto  $^{214}\text{Bi}$
 \end{tabular}
 \end{center}
 
@@ -613,9 +624,9 @@ in der Medizin eingesetzt.
 
 In diesen Versuch haben wir gut sehen können, dass die Energie- und Zeitauflösung der
 beiden Detektoren sehr unterschiedlich ist. Wir haben auch sehen können, dass
-die Energiekalbrierung gut funktioniert. 
-Dadurch lassen sich gut die die Isotope der Bodenprobe bestimmen. Das nicht
-alle Linie zugeordnet werden konnten liegt vermutlich daran, dass die
+die Energiekalibrierung gut funktioniert. 
+Dadurch lassen sich gut die Isotope der Bodenprobe bestimmen. Das nicht
+alle Linien zugeordnet werden konnten liegt vermutlich daran, dass die
 verwendete Datenbank nicht vollständig ist. Die identifizierten Isotope passen
 sehr gut zu dem was man erwarten würde. Besonders die deutliche Linie des
 nicht natürlich vorkommenden $^{137}\text{Cs}$-Isotops, die sich auf das Unglück
