@@ -7,10 +7,11 @@ import argparse
 import itertools
 import pprint
 
-import numpy as np
 import matplotlib.pyplot as pl
+import numpy as np
 import pandas as pd
 import scipy.integrate
+import scipy.ndimage.filters
 
 
 colors = [
@@ -52,6 +53,9 @@ def main():
     messwerte = np.loadtxt('_build/langzeit.tsv')
 
     messwerte = messwerte[messwerte[:, 0] > 200]
+
+    messwerte_smooth = scipy.ndimage.filters.gaussian_filter(messwerte[:, 1], 100)
+    ohne_untergrund = messwerte[:, 1] - messwerte_smooth
 
     #print(messwerte.shape)
 
@@ -110,7 +114,7 @@ def main():
 
 
         self_integral = scipy.integrate.simps(y, x)
-        overlap = y * messwerte[:, 1]
+        overlap = y * ohne_untergrund
         overlap_integral = scipy.integrate.simps(overlap, x)
 
         score = overlap_integral / self_integral
@@ -119,14 +123,10 @@ def main():
 
         candidates.append((score, element, y / self_integral))
 
-        m = max(m, np.max(y))
-
-    pp.pprint(candidates)
-
-
     for score, element, y in itertools.islice(reversed(sorted(candidates)), 22):
         linestyle, color = next(attr_iter)
         ax.plot(x, y, label=element, color=color, linestyle=linestyle, linewidth=2)
+        m = max(m, np.max(y))
 
     ax.legend(loc='best')
 
@@ -138,6 +138,7 @@ def main():
     #print('Scale', scale)
 
     ax.plot(x, messwerte[:, 1] * scale, alpha=0.3, color='black')
+    ax.plot(x, messwerte_smooth * scale, alpha=0.3, color='black')
 
     ax.grid(True)
     ax.margins(.05)
