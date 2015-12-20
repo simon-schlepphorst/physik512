@@ -512,6 +512,12 @@ def calibrate_ge(T):
     T['ge_slope'] = unitprint.siunitx(slope_val, slope_err)
     T['ge_offset'] = unitprint.siunitx(offset_val, offset_err)# }}}
 
+    def calibration(x):
+        return linear(x, slope_val, offset_val)
+
+    def inv_calibration(x):
+        return (x - offset_val) / slope_val
+
 
     # Breiten gegen Energie mit Eu Spektrum# {{{
 
@@ -590,6 +596,171 @@ def calibrate_ge(T):
 
     np.savetxt('_build/langzeit.tsv', np.column_stack([energy, events]))
     np.savetxt('_build/langzeit-orig.tsv', np.column_stack([energy, langzeit_daten[:, 1]]))
+
+
+    # Langzeitmessung nochmal in schön
+    ##################################
+
+    show=False
+
+    data = load_data_normalized('Langzeit_Probe')
+    untergrund = load_data_normalized('Langzeit_Untergrund')
+
+    # Daten durch Energieeichung ziehen
+
+    data[:, 0] = calibration(data[:, 0])
+    untergrund[:, 0] = calibration(untergrund[:, 0])
+
+    # Vergleich Probe zu Untergrund
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    fit_x, fit_y = untergrund[100:, 0], untergrund[100:, 1]
+    ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#377eb9', label='Untergrund')
+
+    x, y = data[100:, 0], data[100:, 1]
+    ax.plot(x, y, marker=None, alpha=0.6, color='#e41a1c', label='Daten')
+
+   #     for i, (first, last, expected_energy) in zip(itertools.count(1), fit_range):
+   #         points.append(fit_peak(name, data, first, last, expected_energy, save=True, side=side, num=i))
+   #         tmp_point = np.array(points[-1])
+
+   #         fit_x = np.linspace(np.min(x), np.max(x), 1000)
+   #         fit_y = gauss_peak(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
+
+   #         ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=2)
+
+    ax.set_ylim(-0.001, 0.021)
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Ereignisse / s')
+    ax.legend(loc='best')
+    fig.tight_layout()
+    fig.savefig('_build/plot_spektren_langzeit.pdf')
+
+    if show:
+        fig.show()
+        print('Waiting for input to continue ...')
+        input()
+    fig.clear
+    pl.close()
+
+    # Extrahiere Peaks
+
+    fit_range = [
+            (71, 79),
+            (84, 88),
+            (184, 188),
+            (237, 241),
+            (241, 244),
+            (294, 297),
+            (337, 340),
+            (350, 354),
+            (509, 513),
+            (582, 585),
+            (608, 612),
+            (660, 664),
+            (727, 729),
+            (768, 770),
+            (910, 913),
+            (963, 967),
+            (967, 972),
+            (1118, 1123),
+            (1236, 1241),
+            (1375, 1380),
+            ]
+
+    fit_range = inv_calibration(fit_range)
+
+    points = []
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    x, y = data[:, 0], data[:, 1]
+    ax.plot(x, y, marker=None, alpha=0.6, color='#377eb9')
+
+
+    for i, (first, last) in zip(itertools.count(1), fit_range):
+        points.append(fit_peak('langzeit', data, first, last, expected_energy, save=False, num=i))
+        tmp_point = np.array(points[-1])
+
+        fit_x = np.linspace(calibration(first) - 1, calibration(last) + 1, 1000)
+        fit_y = lorentz_peak(fit_x, tmp_point[-9], tmp_point[-7], tmp_point[-5], tmp_point[-3])
+
+        ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=1)
+
+    ax.set_ylim(-0.001, 0.021)
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Kanal')
+    ax.set_ylabel('Ereignisse / s')
+    fig.tight_layout()
+    fig.savefig('_build/plot_peaks_langzeit.pdf')
+    fig.clear
+    pl.close()
+
+
+
+
+def fit_peak(name, data, first, last, energy=0, show=False, save=False, side='', num=0):# {{{
+    '''
+    Passt einen Peak an
+    :show zeigt die einzelne Anpassung
+    :save speichert gesamtes Spektrum in Datei
+
+    :return Mittelpunkt, Fehler Mittelpunkt, Breite, Fehler Breite, Fläche, Fehler Fläche, Energie
+    '''
+
+    x, y = data[first:last, 0], data[first:last, 1]
+    popt, pconv = op.curve_fit(lorentz_peak, x, y, p0=[np.mean(x), 2, 5, 0])
+    perr = np.sqrt(pconv.diagonal())
+
+    if show:
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = lorentz_peak(fit_x, *popt)
+
+        ax.plot(x, y, marker=None, label=name)
+        ax.plot(fit_x, fit_y, marker=None)
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        ax.legend(loc='best')
+        fig.tight_layout()
+        fig.show()
+        print('Waiting for input ...')
+        input()
+        fig.clear()
+        pl.close()
+
+    if save:
+        fig = pl.figure(figsize=(6,4.25))
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[first:last, 0], data[first:last, 1]
+
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = lorentz_peak(fit_x, *popt)
+
+        ax.plot(x, y, marker=None, alpha=0.6, color='#377eb8')
+        ax.plot(fit_x, fit_y, marker=None, alpha=0.6, color='#e41a1c', linewidth=2)
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        fig.tight_layout()
+        fig.savefig('_build/plot_fit_peak_'+ side + '_' + '{}'.format(num) + '_' + name +'.pdf')
+        fig.clear
+        pl.close()
+
+    return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], popt[3], perr[3], energy# }}}
 
 def test_keys(T):
     '''
