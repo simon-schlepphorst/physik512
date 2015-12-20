@@ -490,6 +490,13 @@ def calibrate_ge(T):
 
     perr = np.sqrt(pconv.diagonal())
 
+    a = popt[0]
+    b = popt[1]
+    c = popt[2]
+
+    def power_calibration(x):
+        return power(x, a, b, c)
+
     T['ge_effizienz_a'] = unitprint.siunitx(popt[0], perr[0])
     T['ge_effizienz_b'] = unitprint.siunitx(popt[1], perr[1])
     T['ge_effizienz_c'] = unitprint.siunitx(popt[2], perr[2])
@@ -638,7 +645,8 @@ def calibrate_ge(T):
     untergrund[:, 0] = calibration(untergrund[:, 0])
 
     # Glätten der Kurve
-    events_smooth = scipy.ndimage.filters.gaussian_filter(langzeit_daten[200:, 1], 200)
+    data[:, 1] = data[:, 1] / power_calibration(data[:, 0])
+    untergrund[:, 1] = untergrund[:, 1] / power_calibration(untergrund[:, 0])
 
     # Vergleich Probe zu Untergrund
     fig = pl.figure()
@@ -649,9 +657,6 @@ def calibrate_ge(T):
 
     x, y = data[100:, 0], data[100:, 1]
     ax.plot(x, y, marker=None, alpha=0.6, color='#e41a1c', label='Daten')
-
-    fit_x_2, fit_y_2 = data[200:, 0], events_smooth[:]
-    ax.plot(fit_x_2, fit_y_2, marker=None, alpha=0.6, color='#4daf4a', label='Faltung')
 
 
    #     for i, (first, last, expected_energy) in zip(itertools.count(1), fit_range):
@@ -664,12 +669,10 @@ def calibrate_ge(T):
    #         ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=2)
 
 
-    data[200:, 1] -= events_smooth
-
-    ax.set_ylim(-0.001, 0.021)
+    #ax.set_ylim(-0.0001, 0.0051)
     ax.margins(0.05)
     ax.grid(True)
-    ax.set_xlabel('Kanal')
+    ax.set_xlabel('Energie / keV')
     ax.set_ylabel('Ereignisse / s')
     ax.legend(loc='best')
     fig.tight_layout()
@@ -726,10 +729,9 @@ def calibrate_ge(T):
 
         ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=1)
 
-    ax.set_ylim(-0.001, 0.021)
     ax.margins(0.05)
     ax.grid(True)
-    ax.set_xlabel('Kanal')
+    ax.set_xlabel('Energie / keV')
     ax.set_ylabel('Ereignisse / s')
     fig.tight_layout()
     fig.savefig('_build/plot_peaks_langzeit.pdf')
