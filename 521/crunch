@@ -38,6 +38,9 @@ Farbtabelle
 def lorentz_peak(x, mean, width, area, offset):
     return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2) + offset
 
+def lorentz_peak_2(x, mean, width, area):
+    return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2)
+
 def gauss_peak(x, mean, width, area):
     return area / (width * np.sqrt(2 * np.pi)) * np.exp( - ((x - mean) / width)**2 / 2)
 
@@ -691,19 +694,19 @@ def calibrate_ge(T):
 
     fit_range = [
             (237, 241),
-            (241, 244),
+            (241, 243),
             (294, 297),
             (337, 340),
             (350, 354),
-            (459, 466),
+            (459, 467),
             (509, 513),
             (582, 585),
             (608, 612),
             (660, 664),
-            (727, 729),
-            (766, 771),
+            (727, 728),
+            (767, 770),
             (791, 799),
-            (858, 864),
+            (859, 863),
             (910, 913),
             (963, 967),
             (967, 972),
@@ -724,11 +727,11 @@ def calibrate_ge(T):
 
 
     for i, (first, last) in zip(itertools.count(1), fit_range):
-        points.append(fit_peak(T, 'langzeit', data, first, last, expected_energy, save=True, num=i))
+        points.append(fit_peak(T, 'langzeit', data, first, last, save=True, num=i))
         tmp_point = np.array(points[-1])
 
-        fit_x = np.linspace(calibration(first) - 1, calibration(last) + 1, 1000)
-        fit_y = lorentz_peak(fit_x, tmp_point[-9], tmp_point[-7], tmp_point[-5], tmp_point[-3])
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = lorentz_peak_2(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
 
         ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=1)
 
@@ -755,9 +758,9 @@ def calibrate_ge(T):
     list_full_width_err = points[:, 3]
     list_area_val = points[:, 4]
     list_area_err = points[:, 5]
-    list_offset_val = points[:, 6]
-    list_offset_err = points[:, 7]
-    list_expected_energy = points[:, 8]
+    #list_offset_val = points[:, 6]
+    #list_offset_err = points[:, 7]
+    list_expected_energy = points[:, 6]
 
     T['langzeit_calibration_table'] = list(zip(
         unitprint.siunitx(list_mean_val, list_mean_err),
@@ -780,7 +783,7 @@ def fit_peak(T, name, data, first, last, energy=0, show=False, save=False, side=
     '''
 
     x, y = data[first:last, 0], data[first:last, 1]
-    popt, pconv = op.curve_fit(lorentz_peak, x, y, p0=[np.mean(x), 2, 5, 0])
+    popt, pconv = op.curve_fit(lorentz_peak_2, x, y, p0=[np.mean(x), 2, 5])
     perr = np.sqrt(pconv.diagonal())
 
     if show:
@@ -788,7 +791,7 @@ def fit_peak(T, name, data, first, last, energy=0, show=False, save=False, side=
         ax = fig.add_subplot(1, 1, 1)
 
         fit_x = np.linspace(np.min(x), np.max(x), 1000)
-        fit_y = lorentz_peak(fit_x, *popt)
+        fit_y = lorentz_peak_2(fit_x, *popt)
 
         ax.plot(x, y, marker=None, label=name)
         ax.plot(fit_x, fit_y, marker=None)
@@ -816,7 +819,7 @@ def fit_peak(T, name, data, first, last, energy=0, show=False, save=False, side=
         x, y = data[first:last, 0], data[first:last, 1]
 
         fit_x = np.linspace(np.min(x), np.max(x), 1000)
-        fit_y = lorentz_peak(fit_x, *popt)
+        fit_y = lorentz_peak_2(fit_x, *popt)
 
         ax.plot(x, y, marker=None, alpha=0.6, color='#377eb8')
         ax.plot(fit_x, fit_y, marker=None, alpha=0.6, color='#e41a1c', linewidth=2)
@@ -831,7 +834,7 @@ def fit_peak(T, name, data, first, last, energy=0, show=False, save=False, side=
         fig.clear
         pl.close()
 
-    return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], popt[3], perr[3], energy# }}}
+    return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy# }}}
 
 def test_keys(T):
     '''
