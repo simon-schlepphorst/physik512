@@ -37,6 +37,9 @@ def linear(x, slope, offset):
 def linear_err(x, x_err, slope_val, slope_err, offset_val, offset_err):
     return np.sqrt((x_err * slope_val)**2 + (x * slope_err)**2 + offset_err**2)
 
+def power(x, a, b, c):
+    return a * x**b + c
+
 def extract_livetime(metafile):# {{{
     with open(metafile) as f:
         for line in f:
@@ -469,11 +472,24 @@ def calibrate_ge(T):
     efficiency_val = list_intensity_val[first_eu:last_eu] / expected_rel_intensity
     efficiency_err = list_intensity_err[first_eu:last_eu] / expected_rel_intensity# }}}
 
+    x = list_expected_energy[first_eu:last_eu]
+
+    popt, pconv = op.curve_fit(power, x[1:], efficiency_val[1:], sigma=efficiency_err[1:], p0=[1e5, -2, 1])
+    fit_x = np.linspace(190, max(x), 1000)
+    fit_y = power(fit_x, *popt)
+
+    perr = np.sqrt(pconv.diagonal())
+
+    T['ge_effizienz_a'] = unitprint.siunitx(popt[0], perr[0])
+    T['ge_effizienz_b'] = unitprint.siunitx(popt[1], perr[1])
+    T['ge_effizienz_c'] = unitprint.siunitx(popt[2], perr[2])
+
     # Detektoreffizienz mit Eu Spektrum# {{{
 
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
     ax.errorbar(list_expected_energy[first_eu:last_eu], efficiency_val, efficiency_err, marker='+', linestyle='none')
+    ax.plot(fit_x, fit_y)
     ax.set_xlabel('Energie / keV')
     ax.set_ylabel('Effizienz')
     ax.margins(0.05)
