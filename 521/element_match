@@ -123,12 +123,31 @@ def main():
 
         candidates.append((score, element, y / self_integral))
 
+    fit_range = [
+        (237, 241),
+        (241, 244),
+        (294, 297),
+        (337, 340),
+        (350, 354),
+        (509, 513),
+        (582, 585),
+        (608, 612),
+        (660, 664),
+        (727, 729),
+        (910, 913),
+        (963, 967),
+        (967, 972),
+        (1118, 1123),
+        (1236, 1241),
+        (1375, 1380),
+    ]
+
+
     for score, element, y in itertools.islice(reversed(sorted(candidates)), options.num):
         linestyle, color = next(attr_iter)
         ax.plot(x, y, label=element, color=color, linestyle=linestyle, linewidth=2)
         m = max(m, np.max(y))
 
-    ax.legend(loc='best')
 
     m2 = np.max(messwerte[:, 1])
 
@@ -145,10 +164,20 @@ def main():
     fig.tight_layout()
 
     if options.show:
+        ax.legend(loc='best')
         fig.show()
         input()
     else:
+        ax.legend(loc='best', prop={'size': 8})
         fig.savefig('_build/element_match.pdf')
+
+    padding = 2
+
+    for bottom, top in fit_range:
+        print('Erzeuge Plot von {} bis {} keV …'.format(bottom, top))
+        ax.set_xlim(bottom - padding, top + padding)
+        fig.savefig('_build/element_match_{:04d}_{:04d}.pdf'.format(bottom, top))
+
 
     results_sorted = sorted([(matchness, element) for element, matchness in results.items()])
 
