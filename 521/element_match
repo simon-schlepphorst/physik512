@@ -123,7 +123,7 @@ def main():
 
         candidates.append((score, element, y / self_integral))
 
-    for score, element, y in itertools.islice(reversed(sorted(candidates)), 22):
+    for score, element, y in itertools.islice(reversed(sorted(candidates)), options.num):
         linestyle, color = next(attr_iter)
         ax.plot(x, y, label=element, color=color, linestyle=linestyle, linewidth=2)
         m = max(m, np.max(y))
@@ -168,6 +168,7 @@ def _parse_args():
     '''
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--show', action='store_true')
+    parser.add_argument('--num', type=int, default=22)
     options = parser.parse_args()
 
     return options
