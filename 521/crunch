@@ -425,11 +425,12 @@ def calibrate_ge(T):
 
     # Halbwertsbreiten der Peaks# {{{
 
-    list_intensity_val = list_area_val * list_mean_val
-    list_intensity_err = np.sqrt(
-        (list_area_err * list_mean_val)**2
-        + (list_area_val * list_mean_err)**2
-    )# }}}
+    list_intensity_val = list_area_val #* list_mean_val
+    list_intensity_err = list_area_err
+    #list_intensity_err = np.sqrt(
+    #    (list_area_err * list_mean_val)**2
+    #    + (list_area_val * list_mean_err)**2
+    #)# }}}
 
     # Scaliere auf den letzten Eu Peak# {{{
 
