@@ -560,8 +560,12 @@ mess.} & {Effizienz} \\
     \centering
     \includegraphics[width=\plotwidth]{ge_efficiency}
     \caption{%
-	    Energieabhängige Effizenz des Ge-Detektors
+	    Energieabhängige Effizenz des Ge-Detektors.
         %
+            Fit mit $a \cdot (E/\si{\kilo\electronvolt})^b + c$ mit
+            $a = \num{<< ge_effizienz_a >>}$,
+            $b = \num{<< ge_effizienz_b >>}$ und
+            $c = \num{<< ge_effizienz_c >>}$.
     }
     \label{fig:effizienz}
 \end{figure}
