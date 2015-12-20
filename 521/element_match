@@ -4,6 +4,7 @@
 # Copyright © 2015 Martin Ueding <dev@martin-ueding.de>
 
 import argparse
+import colorsys
 import itertools
 import pprint
 
@@ -142,10 +143,19 @@ def main():
         (1375, 1380),
     ]
 
+    max_score = max([x[0] for x in candidates])
+    min_score = min([x[0] for x in candidates])
 
     for score, element, y in itertools.islice(reversed(sorted(candidates)), options.num):
-        linestyle, color = next(attr_iter)
-        ax.plot(x, y, label=element, color=color, linestyle=linestyle, linewidth=2)
+        if options.score:
+            linestyle = 'solid'
+            alpha = 1
+            ratio = (score - min_score) / (max_score - min_score)
+            color = colorsys.hsv_to_rgb(0.5*ratio, 1.0, .8)
+        else:
+            linestyle, color = next(attr_iter)
+            alpha = 1
+        ax.plot(x, y, label=element, color=color, alpha=alpha, linestyle=linestyle, linewidth=2)
         m = max(m, np.max(y))
 
 
@@ -197,6 +207,7 @@ def _parse_args():
     '''
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--show', action='store_true')
+    parser.add_argument('--score', action='store_true')
     parser.add_argument('--num', type=int, default=22)
     options = parser.parse_args()
 
