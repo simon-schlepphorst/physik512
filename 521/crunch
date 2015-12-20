@@ -648,14 +648,16 @@ def calibrate_ge(T):
     data[:, 1] = data[:, 1] / power_calibration(data[:, 0])
     untergrund[:, 1] = untergrund[:, 1] / power_calibration(untergrund[:, 0])
 
+    lower_end = inv_calibration(50)
+
     # Vergleich Probe zu Untergrund
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
 
-    fit_x, fit_y = untergrund[100:, 0], untergrund[100:, 1]
+    fit_x, fit_y = untergrund[lower_end:, 0], untergrund[lower_end:, 1]
     ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#377eb9', label='Untergrund')
 
-    x, y = data[100:, 0], data[100:, 1]
+    x, y = data[lower_end:, 0], data[lower_end:, 1]
     ax.plot(x, y, marker=None, alpha=0.6, color='#e41a1c', label='Daten')
 
 
@@ -688,9 +690,6 @@ def calibrate_ge(T):
     # Extrahiere Peaks
 
     fit_range = [
-            (71, 79),
-            (84, 88),
-            (184, 188),
             (237, 241),
             (241, 244),
             (294, 297),
@@ -716,7 +715,7 @@ def calibrate_ge(T):
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
 
-    x, y = data[:, 0], data[:, 1]
+    x, y = data[lower_end:, 0], data[lower_end:, 1]
     ax.plot(x, y, marker=None, alpha=0.6, color='#377eb9')
 
 
@@ -735,6 +734,11 @@ def calibrate_ge(T):
     ax.set_ylabel('Ereignisse / s')
     fig.tight_layout()
     fig.savefig('_build/plot_peaks_langzeit.pdf')
+
+    if show:
+        fig.show()
+        print('Waiting for input to continue ...')
+        input()
     fig.clear
     pl.close()
 
