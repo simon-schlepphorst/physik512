@@ -1,0 +1,47 @@
+\documentclass[ngerman]{scrartcl}
+\usepackage{babel}
+\usepackage[charter]{mathdesign}
+\usepackage{tikz}
+\usetikzlibrary{graphs}
+\usetikzlibrary{graphdrawing}
+\usetikzlibrary{quotes}
+\usegdlibrary{trees,force}
+
+\pagestyle{empty}
+
+\begin{document}
+
+
+\begin{tikzpicture}[
+    ]
+
+    \graph[
+        tree layout,
+        nodes={rectangle, draw, rounded corners=2pt},
+        level sep=4ex,
+        edges behind nodes,
+        sibling distance=7em,
+    ]
+    {
+        na/$^{22}\mathrm{Na}$ -> {
+            sz1/Szintillator -> pm1/Photomultiplier -> {
+                verst1/Verstärker [> red] -> splitter1/Splitter -> {
+                    verz1/Verzögerung,
+                    sca1/SCA -> koinz/Koinzidenz -> gdg/GDG -> mca/MCA,
+                },
+                cfd1/CFD [> blue] -> verz11/Verzögerung -> tac/TAC -> mca,
+            },
+            sz2/Szintillator -> pm2/Photomultiplier -> {
+                cfd2/CFD [> blue] -> verz22/Verzögerung -> tac,
+                verst2/Verstärker [> red] -> splitter2/Splitter -> {
+                    sca2/SCA -> koinz,
+                    verz2/Verzögerung,
+                },
+            },
+        };
+    };
+\end{tikzpicture}
+
+\end{document}
+
+.. vim: spell spelllang=de
