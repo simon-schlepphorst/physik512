@@ -758,6 +758,10 @@ def fit_peak(T, name, data, first, last, energy=0, show=False, save=False, side=
         fig.clear()
         pl.close()
 
+    # Erzeuge Platz im Template für alle Energien.
+    if not 'plot_fit_peaks' in T:
+        T['plot_fit_peaks'] = {}
+
     if save:
         fig = pl.figure(figsize=(6,4.25))
         ax = fig.add_subplot(1, 1, 1)
@@ -772,11 +776,11 @@ def fit_peak(T, name, data, first, last, energy=0, show=False, save=False, side=
 
         ax.margins(0.05)
         ax.grid(True)
-        ax.set_xlabel('Kanal')
+        ax.set_xlabel('Energie / keV')
         ax.set_ylabel('Ereignisse / s')
         fig.tight_layout()
         fig.savefig('_build/plot_fit_peak_'+ side + '_' + '{}'.format(num) + '_' + name +'.pdf')
-        T['plot_fit_peak_'+ side + '_' + '{}'.format(num) + '_' + name] = unitprint.siunitx(popt[0], perr[0])
+        T['plot_fit_peaks'][num] = unitprint.siunitx(popt[0], perr[0])
         fig.clear
         pl.close()
 
