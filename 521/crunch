@@ -683,7 +683,7 @@ def calibrate_ge(T):
 
 
     for i, (first, last) in zip(itertools.count(1), fit_range):
-        points.append(fit_peak('langzeit', data, first, last, expected_energy, save=False, num=i))
+        points.append(fit_peak('langzeit', data, first, last, expected_energy, save=True, num=i))
         tmp_point = np.array(points[-1])
 
         fit_x = np.linspace(calibration(first) - 1, calibration(last) + 1, 1000)
