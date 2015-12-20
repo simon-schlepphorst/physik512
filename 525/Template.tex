@@ -118,8 +118,8 @@ an einer Dynode bzw.\ an der Anode des Photomultipliers ab.
 Der Vorteil der Dynode für die Energieauflösung liegt dadrin, dass noch keine
 Sättigung herrscht. Hierdurch ist die Proportionalität zwischen Signalhöhe und
 Energie nicht beeinträchtigt. Da das Signal allerdings nur sehr langsam
-ansteigt, man spricht vom Slow-Signal, ist die Zeitauflösung beeinträchtigt.
-Deswegen benutzt man hier das sogenannte Fast-Signal. Es wird an der Anode
+ansteigt, man spricht vom \emph{Slow}-Signal, ist die Zeitauflösung beeinträchtigt.
+Deswegen benutzt man hier das sogenannte \emph{Fast}-Signal. Es wird an der Anode
 abgegriffen, da dort Sättigung vorliegt, wodurch das Signal schnell ansteigt.
 Die Amplitude ist allerdings nicht mehr proportional zur Energie.
 Um die Zeitauflösung ermitteln zu können nutzt man eine
@@ -127,114 +127,145 @@ Slow-Fast-Koinzidenzschaltung. Man misst bekannte Linien und bestimmt aus den
 angepassten Funktionen die Halbwertsbreite.
 
 %TODO für Nukleare elektronik
-Für die Zeitkalibrirung nutzt man
-am besten ein Isotope, welches einen $\beta^+$-Zerfall besitzt. Dadurch kann
+Für die Zeitkalibrierung nutzt man
+am besten ein Isotop, welches einen $\beta^+$-Zerfall besitzt. Dadurch kann
 man gewährleisten, dass gleichzeitig zwei Photonen mit bekannter Wellenlänge
 von \SI{511}{\kilo\electronvolt} durch die Rekombination von Elektron und
 Positron entstehen.
 
 \subsection{Splitter}
-Im laufe des Versuches wird es nötig sein, dass das Signal aufgeteilt wird,
-ohne dabei verformt zu werden. Hierfür nutzt man ein Bauteil, welches Splitter
+
+% XXX Und wie funktioniert so ein Splitter?
+
+Im Laufe des Versuches wird es nötig sein, dass das Signal aufgeteilt wird,
+ohne dabei verformt zu werden. Hierfür nutzt man ein Bauteil, welches
+\emph{Splitter}
 genannt wird. 
 
 \subsection{Einkanalanalysator}
-Der Einkanalanalysator, auch Single Channel Analyser, kurz SCA, genannt ist ein
-Bauteil, welches ähnlich eines Diskrimiators eine untere, aber auch eine obere
+
+% FIXME Diskriminator noch nicht eingeführt.
+
+Der \emph{Einkanalanalysator}, auch Single Channel Analyser, kurz \emph{SCA}, genannt ist ein
+Bauteil, welches ähnlich eines Diskriminators eine untere, aber auch eine obere
 Grenze besitzt. Wenn ein Signal die untere Grenze übersteigt, aber die obere
 Grenze nicht erreicht, so sendet der SCA ein digitales Signal aus, sobald das
-Signal wider unter die untere Grenze singt.
+Signal wider unter die untere Grenze sinkt.
 
 \subsection{Vielkanalanalysator}
+
 Um ein nach Amplituden sortiertes Spektrum zu erhalten, nutzen wir ein MCA.
 Dies ist ein Bauteil, welches einkommende Signale nach Amplitude sortiert und
 dann den Kanal, welcher der Impulshöhe entspricht, hoch setzt. So erhalten wir ein
-Histogramm. Der MCA ist aus mhreren SCAs aufgebaut.
+Histogramm. Der MCA ist aus mehreren SCAs aufgebaut.
 
-\subsection{Contsant Fraction Diskrimiantor}
-Einen CFD ist ein Diskrimiantor und somit in der Lage ein analoges
-Eingangsignal in ein digitales Ausgangssignal umwandeln, wenn ein Signal einen
+\subsection{Constant Fraction Diskriminator}
+
+Ein CFD ist ein Diskriminator und somit in der Lage ein analoges
+Eingangsignal in ein digitales Ausgangssignal umzuwandeln, wenn ein Signal einen
 bestimmten Wert übersteigt.
 Der Constant Fraction Diskriminator ist allerdings auch in der Lage Signale
-verschiedener größe zu detektieren, sofern sie die selbe Form haben, da diese
+verschiedener Größe zu detektieren, sofern sie die selbe Form haben, da diese
 dann die gleiche Anstiegszeit haben. Das digitale Signal wird abgegeben, sobald
 das analoge Signal einen bestimmten Bruchteil seiner Amplitude erreicht.
 
 \subsection{Verstärker}
-Ein Verstärker hat wie der Name schon sagt die Aufgabe ein Signal zu
-Verstärken. Man nutzt meist einen Vor- und einen Hauptverstärker um zu
-gewährleisten das die Verstärkung linear ist. 
+
+Ein Verstärker hat, wie der Name schon sagt, die Aufgabe ein Signal zu
+verstärken. Man nutzt meist einen Vor- und einen Hauptverstärker um zu
+gewährleisten dass die Verstärkung linear ist. 
 
 \subsection{Delays}
-Delays sollen die elektrischen Signale verzögern. Da die länge eines Kabels
+
+Delays sollen die elektrischen Signale verzögern. Da die Länge eines Kabels
 proportional zu dessen Verzögerung ist, kann man ein Kabel mit entsprechender
 Länge nutzten um eine bestimmte Verzögerung zu erhalten.
 
 \subsection{Koinzidenzeinheit}
+
 Mit der Koinzidenzeinheit lässt sich überprüfen, ob zwei Signale zeitnah
 nacheinander auftreffen. Hierzu werden die Eingangssignale über ein logisches
-AND mit einander verknüpft und im Falle eines Überlapes ein Ausgangssignal
+\textsc{and} miteinander verknüpft und im Falle eines Überlapps ein Ausgangssignal
 ausgegeben. Dadurch wird aber direkt die Zeitauflösung auf die doppelte
 Impulslänge begrenzt.
 
 \subsection{Zeit-Amplituden-Wandler}
-Der Zeit-Amplituden-Wandeler (tims-to-amplitude-converter oder auch TAC) soll
-aus der der zeitlichen Differenz zweier Signale ein Signal erstellen, welches
-in der Amplitude proportional zu der Dauer ist. Das lässt sich bespielsweise da
-durch realisieren, dass durch Eintreffen des ersten Signals ein Kondensator
+
+Der Zeit-Amplituden-Wandler (time-to-amplitude-converter oder auch TAC) soll
+aus der zeitlichen Differenz zweier Signale ein Signal erstellen, welches
+in der Amplitude proportional zu der Dauer des Eingangssignals ist. Das lässt
+sich beispielsweise dadurch realisieren, dass durch Eintreffen des ersten
+Signals ein Kondensator mit einer Konstantstromquelle
 aufgeladen wird. Der Ladevorgang wird beendet sobald das zweite Signal
-eintrifft. Bei dem Entladen ist das resultierende Signal ist in der höhe
+eintrifft. Bei dem Entladen ist das resultierende Signal ist in der Höhe
 proportional zu der Zeitdifferenz.
 
 \section{Aufbau zur Zerfallszeitmessung}
+
 Um Zerfallszeiten zu messen, nutzen wir eine Fast-Slow-Koinzidenzschaltung, da
-wir sowohl eine gut Zeit- als auch Energieauflösung benötigen. Die Schaltung
-sieht dabei wie Folgt aus: 
+wir sowohl eine gute Zeit- als auch Energieauflösung benötigen. Die Schaltung
+sieht dabei wie folgt aus: 
 Zwei Detektoren sind so ausgerichtet, dass sie sich gegenüber stehen und die
-Probe im Selben Abstand zwischen ihnen steht. An die Detektoren wird je ein
-Photomultipliere angeschlossen. Die Slow-Ausgänge werden genutzt um die
+Probe im selben Abstand zwischen ihnen steht. An die Detektoren wird je ein
+Photomultiplier angeschlossen. Die Slow-Ausgänge werden genutzt um die
 Koinzidenz von Ereignissen zu überprüfen. Hierzu schneidet man mit dem SCA die
-Energibereiche aus, die verglichen werden sollen. Die beiden Signale aus den
+Energiebereiche aus, die verglichen werden sollen. Die beiden Signale aus den
 SCAs werden in eine Koinzidenzeinheit geführt und wenn diese ein Signal
-produziert, so wird das Signal aus der Fast-Schaltung genutzt, Es dient also
-als Trigger. Die Fast-Schaltung beginnt am Fast-Ausgang des Photomultiplieres.
+produziert, so wird das Signal aus der Fast-Schaltung genutzt; es dient also
+als Trigger. Die Fast-Schaltung beginnt am Fast-Ausgang des Photomultipliers.
 Von da aus gehen die Signale durch CFDs. Das Signal der einen Seite dient als
 Startsignal des TAC, das andere als Stopsignal. Von dort aus wird die so
-modelierte Amplitude von einen MCA in ein Histogram gespeichert, sofern im
+modellierte Amplitude von einen MCA in ein Histogram gespeichert, sofern im
 Slow-Kreis festgestellt wurde, dass es relevant ist.
-\fehlt Schaltskizze
+
+% TODO Figure in Text referenzieren.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics{../Aufbau-crop}
+    \caption{%
+        %
+    }
+    \label{fig:}
+\end{figure}
 
 \section{Zerfallsschema von $^{22}\text{Na}$ und $^{133}\text{Ba}$}
-Der $^{22}\text{Na}$ zerfällt hauptsächlich über einen $\beta^+$-Zerfall in ein
+
+Das $^{22}\text{Na}$ zerfällt hauptsächlich über einen $\beta^+$-Zerfall in ein
 angeregtes $^{22}\text{Ne}$, welches ein Photon mit einer Energie von
-\SI{1274,6}{\kilo\electronvolt} emittiert. Das Positron anhiliert  mit einem
+\SI{1274,6}{\kilo\electronvolt} emittiert. Das Positron annihiliert mit einem
 Elektron und sendet zeitgleich zwei Photonen mit jeweils \SI{511}{\kilo\electronvolt}
 aus. Diese fliegen genau in entgegengesetzte Richtung. Deshalb eignet
-sich dieser Zerfall hervorragend zur Zeit-Kalibrierung. 
+sich dieser Zerfall hervorragend zur Zeitkalibrierung. 
 
-Für $^{133}\text{Ba}$ ist der wahrscheinlichste Zerfall ein Zerfall über
+Für $^{133}\text{Ba}$ ist der wahrscheinlichste Zerfall einer über
 Elektroneneinfang, bei dem es in angeregtes $^{133}\text{Cs}$ zerfällt und erst
 ein Photon mit \SI{356}{\kilo\electronvolt} abstrahlt. Der entstandene
-Zustand ist der angeregte $\frac 52^+$ Zustand, dessen Lebensdauer wir
+Zustand ist der angeregte $5/2^+$ Zustand, dessen Lebensdauer wir
 bestimmen wollen, bevor er über Abstrahlung eines Photons mit \SI{81}{\kilo\electronvolt}
 zerfällt.
-\fehlt Zerfallsschemen
+
+% TODO Zerfallsschmata
 
 \chapter{Durchführung}
+
 %TODO
+
 Bei der Durchführung geht es darum den oben beschriebenen Schaltplan Schritt
-für Schritt auf zu bauen und die einzelnen Bauteile entsprechend zu
-Kalibrieren. Die folgenden Schritte werden sowohl führ die rechte wie auch die
-linke Seite des Aufbaus durchgefüht. Zu beginn nutzen wir das $^{22}\text{Na}$
-Präparat. 
+für Schritt aufzubauen und die einzelnen Bauteile entsprechend zu
+kalibrieren. Die folgenden Schritte werden sowohl für die rechte wie auch die
+linke Seite des Aufbaus durchgeführt. Zu Beginn nutzen wir das
+$^{22}\text{Na}$-Präparat. 
 
 Nachdem die Hochspannung an den Szintillationsspektrometer angelegt wurde, wird
-zunächst das Signal aus dem Slow-Ausgang oszilloskopiert.%TODO bild
+zunächst das Signal aus dem Slow-Ausgang oszilloskopiert.
+% TODO Bild
 Als nächstes nutzen wir den Splitter um das Signal aus dem Hauptverstärker
-reflektions frei aufzuteilen. Da das Signal dadurch allerdings schwächer wird,
+reflexionsfrei aufzuteilen. Da das Signal dadurch allerdings schwächer wird,
 bleibt der Splitter im gesamten weiteren Verlauf eingebaut. Die eine Hälfte des
-Signals geht durch einen Verzögerer in das Oszilloskop, Kanal 1, während das zweite Signal erst
-durch einen SCA läuft. %TODO 
+Signals geht durch einen Verzögerer in das Oszilloskop, Kanal~1, während das zweite Signal erst
+durch einen SCA läuft.
+% TODO 
 Auf dem Oszilloskop identifizieren wir die deutlichste Linie als die \SI{511}{\kilo\electronvolt}
 Linie und versuchen diese über die Verstärkung auf \SIrange{3}{4}{\volt}
 einzustellen. Als nächstes verzögern wir das Analogsignal, damit es von dem
