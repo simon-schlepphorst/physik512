@@ -646,9 +646,9 @@ in der Medizin eingesetzt.
 	\centering
 	\begin{tabular}{SSSS}
 		{E / \si{\kilo\electronvolt}} &
-		{FWHM} &
-		{Intensität} &
-		{Offset}\\
+		{FWHM / \si{\kilo\electronvolt}} &
+            {Intensität / \num{e4}} &
+            {Offset / \num{e5}}\\
 		\midrule
 		%< for row in langzeit_calibration_table: ->%
 		<< ' & '.join(row) >> \\
@@ -684,10 +684,10 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
 \section{Bodenprobe}
 %TODO
 
-%< for num, kev in plot_fit_peaks.items() >%
+%< for num, kev in plot_fit_peaks >%
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{plot_fit_peak__<< num >>_langzeit}
+    \includegraphics[width=.8\linewidth]{plot_fit_peak__<< num >>_langzeit}
     \caption{%
         \SI{<< kev >>}{\kilo\electronvolt}-Linie
         mit Lorentzanpassung
