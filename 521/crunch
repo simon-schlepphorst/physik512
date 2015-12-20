@@ -37,14 +37,14 @@ def linear(x, slope, offset):
 def linear_err(x, x_err, slope_val, slope_err, offset_val, offset_err):
     return np.sqrt((x_err * slope_val)**2 + (x * slope_err)**2 + offset_err**2)
 
-def extract_livetime(metafile):
+def extract_livetime(metafile):# {{{
     with open(metafile) as f:
         for line in f:
             m = _livetime_pattern.search(line)
             if m:
-                return float(m.group(1))
+                return float(m.group(1))# }}}
 
-def load_data_normalized(basename):
+def load_data_normalized(basename):# {{{
     '''
     Loads the data and normalizes it to give events per second.
     '''
@@ -57,9 +57,9 @@ def load_data_normalized(basename):
 
     data[:, 1] /= livetime
 
-    return data
+    return data# }}}
 
-def plot_pair(basename, underground_basename):
+def plot_pair(basename, underground_basename):# {{{
     data = load_data_normalized(basename)
     underground = load_data_normalized(underground_basename)
 
@@ -71,7 +71,7 @@ def plot_pair(basename, underground_basename):
     ax.set_xlabel('')
     ax.set_ylabel('')
     fig.tight_layout()
-    fig.savefig('_build/' + basename + '.pdf')
+    fig.savefig('_build/' + basename + '.pdf')# }}}
 
 def calibrate_sz(T):
     underground = load_data_normalized('Sz_Untergrund')
@@ -99,7 +99,7 @@ def calibrate_sz(T):
         (6510, 7400, 1332.501),
     ]
 
-    # Listen über alle Elemente
+    # Listen über alle Elemente# {{{
     list_mean_val = np.array([])
     list_mean_err = np.array([])
     list_width_val = np.array([])
@@ -108,10 +108,10 @@ def calibrate_sz(T):
     list_area_err = np.array([])
     list_offset_val = np.array([])
     list_offset_err = np.array([])
-    list_expected_energy = np.array([])
+    list_expected_energy = np.array([])# }}}
 
 
-    # Fitte Lorentzkurve an Hauptpeaks an
+    # Fitte Lorentzkurve an Hauptpeaks an# {{{
     for name, data, fit_ranges in [('EU', eu, fit_range_eu), ('CS', cs, fit_range_cs), ('CO', co, fit_range_co)]:
 
         #data_cutted = np.copy(data)
@@ -185,7 +185,7 @@ def calibrate_sz(T):
         fig.clear()
 
 
-        #Peak to Total für CS und CO
+        #Peak to Total für CS und CO# {{{
         peak_to_total = 0
         peak_to_total_err = 0
         #TODO Rückstreupeak beachten
@@ -222,9 +222,9 @@ def calibrate_sz(T):
 
             T['sz_co_ptt'] = unitprint.siunitx(peak_to_total, peak_to_total_err)
 
-        #print('Peak-to-Total', name, ':', peak_to_total, ' +- ', peak_to_total_err)
+        #print('Peak-to-Total', name, ':', peak_to_total, ' +- ', peak_to_total_err)# }}}# }}}
 
-    # Erstellen der Energieeichung
+    # Erstellen der Energieeichung# {{{
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
     x = list_mean_val
@@ -245,10 +245,10 @@ def calibrate_sz(T):
     fig.tight_layout()
     fig.savefig('_build/sz_channels.pdf')
     T['sz_slope'] = unitprint.siunitx(slope_val, slope_err)
-    T['sz_offset'] = unitprint.siunitx(offset_val, offset_err)
+    T['sz_offset'] = unitprint.siunitx(offset_val, offset_err)# }}}
 
 
-    # Halbwertsbreiten der Peaks
+    # Halbwertsbreiten der Peaks# {{{
     list_intensity_val = list_area_val * list_mean_val
     list_intensity_err = np.sqrt(
         (list_area_err * list_mean_val)**2
@@ -269,7 +269,7 @@ def calibrate_sz(T):
         unitprint.siunitx(list_expected_energy),
     ))
 
-    T['sz_fits_table'] = fit_data
+    T['sz_fits_table'] = fit_data# }}}
 
 
 def calibrate_ge(T):
@@ -294,7 +294,7 @@ def calibrate_ge(T):
     fig.savefig('_build/Ge_calib.pdf')
     fig.clear()
 
-    # Kanalbereich und bekannte Energien
+    # Kanalbereich und bekannte Energien# {{{
 
     fit_range_co = [
             (6550, 6650, 1173.237),
@@ -313,11 +313,11 @@ def calibrate_ge(T):
         (5380, 5466, 964.131),
         (6212, 6295, 1112.116),
         (7883, 7970, 1408.011),
-    ]
+    ]# }}}
 
     fig = pl.figure()
 
-    list_mean_val = np.array([])
+    list_mean_val = np.array([])# {{{
     list_mean_err = np.array([])
     list_width_val = np.array([])
     list_width_err = np.array([])
@@ -325,10 +325,10 @@ def calibrate_ge(T):
     list_area_err = np.array([])
     list_offset_val = np.array([])
     list_offset_err = np.array([])
-    list_expected_energy = np.array([])
+    list_expected_energy = np.array([])# }}}
 
 
-    count = 0
+    count = 0# {{{
     for name, data, fit_ranges in [('EU', eu, fit_range_eu), ('CS', cs, fit_range_cs), ('CO', co, fit_range_co)]:
         for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
             x, y = data[first:last, 0], data[first:last, 1]
@@ -418,20 +418,20 @@ def calibrate_ge(T):
 
             T['ge_co_ptt'] = unitprint.siunitx(peak_to_total, peak_to_total_err)
 
-            fig.clear()
+            fig.clear()# }}}
 
     #print(len(list_area_val))
     #print(first_eu, last_eu, first_cs, last_cs, first_co, last_co)
 
-    # Halbwertsbreiten der Peaks
+    # Halbwertsbreiten der Peaks# {{{
 
     list_intensity_val = list_area_val * list_mean_val
     list_intensity_err = np.sqrt(
         (list_area_err * list_mean_val)**2
         + (list_area_val * list_mean_err)**2
-    )
+    )# }}}
 
-    # Scaliere auf den letzten Eu Peak
+    # Scaliere auf den letzten Eu Peak# {{{
 
     rescale = list_intensity_val[last_eu - 1] / 1000
 
@@ -449,10 +449,10 @@ def calibrate_ge(T):
 
     T['ge_eu_fits_table'] = fit_data[first_eu:last_eu]
     T['ge_cs_fits_table'] = fit_data[first_cs - 1:last_cs]
-    T['ge_co_fits_table'] = fit_data[first_co - 1:last_co]
+    T['ge_co_fits_table'] = fit_data[first_co - 1:last_co]# }}}
 
 
-    # Eu Intensitäten
+    # Eu Intensitäten# {{{
 
     expected_rel_intensity = np.array([
         1362.0,
@@ -466,9 +466,9 @@ def calibrate_ge(T):
 
 
     efficiency_val = list_intensity_val[first_eu:last_eu] / expected_rel_intensity
-    efficiency_err = list_intensity_err[first_eu:last_eu] / expected_rel_intensity
+    efficiency_err = list_intensity_err[first_eu:last_eu] / expected_rel_intensity# }}}
 
-    # Detektoreffizienz mit Eu Spektrum
+    # Detektoreffizienz mit Eu Spektrum# {{{
 
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
@@ -485,9 +485,9 @@ def calibrate_ge(T):
         unitprint.siunitx(expected_rel_intensity),
         unitprint.siunitx(list_intensity_val, list_intensity_err),
         unitprint.siunitx(efficiency_val, efficiency_err),
-    ))
+    ))# }}}
 
-    # Plot zur Energiekalibrierung
+    # Plot zur Energiekalibrierung# {{{
 
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
@@ -509,10 +509,10 @@ def calibrate_ge(T):
     fig.tight_layout()
     fig.savefig('_build/ge_channels.pdf')
     T['ge_slope'] = unitprint.siunitx(slope_val, slope_err)
-    T['ge_offset'] = unitprint.siunitx(offset_val, offset_err)
+    T['ge_offset'] = unitprint.siunitx(offset_val, offset_err)# }}}
 
 
-    # Breiten gegen Energie mit Eu Spektrum
+    # Breiten gegen Energie mit Eu Spektrum# {{{
 
     x = linear(list_mean_val[first_eu:last_eu], slope_val, offset_val)
     y = (list_width_val[first_eu:last_eu] * slope_val)**2
@@ -543,7 +543,7 @@ def calibrate_ge(T):
     fig.savefig('_build/halbwertsbreite_ge.pdf')
 
     T['ge_const'] = unitprint.siunitx(const_val, const_err)
-    T['ge_electronic_width'] = unitprint.siunitx(electronic_width_val, electronic_width_err)
+    T['ge_electronic_width'] = unitprint.siunitx(electronic_width_val, electronic_width_err)# }}}
 
     # Langzeitmessung
 

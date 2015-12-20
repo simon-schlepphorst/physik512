@@ -68,11 +68,11 @@
 \maketitle
 
 \begin{abstract}
-In diesen Versuch geht es darum, die Eigenschaften von einem
-Szintillationsdetektor und einem Ge-Halbleiterdetektor bei der
-$\gamma$-Spektroskopie zu vergleichen.
-Dabei sind die Energieauflösung und die Nachweiswahrscheinlichkeit die
-zu untersuchenden Eigenschaften.
+    In diesen Versuch geht es darum, die Eigenschaften von einem
+    Szintillationsdetektor und einem Ge-Halbleiterdetektor bei der
+    $\gamma$-Spektroskopie zu vergleichen.
+    Dabei sind die Energieauflösung und die Nachweiswahrscheinlichkeit die
+    zu untersuchenden Eigenschaften.
 \end{abstract}
 
 
@@ -81,7 +81,7 @@ zu untersuchenden Eigenschaften.
 \chapter{Theorie}
 
 \section{Wechselwirkung von $\gamma$-Strahlung mit Materie}
-Die $\gamma$-Strahlung entsteht, wenn nach einem vorher gegangen Zerfall der
+Die $\gamma$-Strahlung entsteht wenn nach einem vorhergegangen Zerfall der
 Tochterkern nicht in seinen Grundzustand, sondern in einen angeregten Zustand
 zerfällt.
 Dieser angeregte Zustand zerfällt nach einiger Zeit durch Abstrahlung des
@@ -92,13 +92,13 @@ Die Art dieser Wechselwirkung hängt von der Ordnungszahl der bestrahlten Atome
 und der Energie der $\gamma$-Strahlung ab.
 
 \subsection{Photoeffekt}
-Der Photoeffekt beschreibt den Vorgang, bei dem ein Photon ein Elektron aus
+Der Photoeffekt beschreibt den Vorgang, bei welchem ein Photon ein Elektron aus
 dem Atom auslöst.
 Hierbei gibt das Photon seine komplette Energie ab.
 Die kinetische Energie des ausgelösten Elektrons hängt nur über die
 Bindungsenergie ($E_\text{Bind.}$) mit dem der Energie des Photons ($h\nu$),
 also dessen Frequenz ($\nu$) zusammen.
-Dieser Prozess kann nur in der Nähe eines Atomkerns stattfinden, weil dieser
+Dieser Prozess kann nur in der Nähe eines Atomkerns stattfinden weil dieser
 den Rückstoß aufnimmt.
 So bleibt bei diesen Vorgang Energie und Impuls erhalten. 
 \[ 
@@ -113,14 +113,16 @@ Deshalb tritt dieser Effekt besonders häufig bei Elementen mit hoher Ordnungsza
 auf.
 
 \subsection{Paarerzeugung}
+
 Ein weiterer Effekt, der bei Energien $E_\gamma \ge 2m_\text ec^2$ auftreten
 kann, ist die Elektron-Positron-Paarbildung.
 Dieser Effekt ist allerdings erst weit oberhalb dieser Schwelle relevant.
 Für den Wirkungsquerschnitt gilt $\sigma \propto Z^2$.
 
 \subsection{Comptonstreuung}
+
 Wenn Photonen an einem Elektron streuen, dann spricht man vom Comptoneffekt. 
-Hierbei gibt das Photon einen Teil seiner Energie an das Elektron ab und ändert da durch
+Hierbei gibt das Photon einen Teil seiner Energie an das Elektron ab und ändert dabei
 seine Frequenz.
 Die abgegebene Energie hängt dabei vom Streuwinkel ab.
 Für die Restenergie des Photons gilt:
@@ -136,10 +138,11 @@ Diese Energieänderung berechnet sich durch:
 Der Wirkungsquerschnitt entspricht $\sigma_\text C \propto \frac{Z}{E_\gamma}$.
 
 \subsection{Keine Wechselwirkung}
-Ein nicht unerheblicher Teil der $\gamma$-Strahlung kann auch ohne Wechselwirkung
+Ein nicht unerheblicher Teil der $\gamma$-Strahlung kann auch Wechselwirkung
 Materie durchdringen.
 
 \section{Szintillationsdetektor}
+
 Mit einem Szintillationsdetektor lassen sich Intensität und Energie von
 ionisierender Strahlung messen.
 Er besteht aus einem Szintillator und einem Photomultiplier.
@@ -150,24 +153,27 @@ durchlässig für das von ihm emittierte Licht ist.
 Innerhalb des vor Lichteinfall geschützten Szintillators entstehen durch
 ionisierende Strahlung Lichtblitze. 
 Wie viele dieser Blitze auftreten ist von der Energie der Strahlung abhängig.
-Aufgrund des Photoeffektes, werden an der Photokathode des Photomultipliers
+Aufgrund des Photoeffektes werden an der Photokathode des Photomultipliers
 Elektronen ausgelöst.
-Durch den weitern Aufbau des Photomultiplieres kommt es zu einem Lawineneffekt,
+Durch den weiteren Aufbau des Photomultiplieres kommt es zu einem Lawineneffekt,
 welcher die Elektronen vervielfacht und somit ein Signal verstärkt.
 Die Amplitude des so entstanden Strompulses ist somit auch proportional zu der
 Energie der Eingangsstrahlung.
 
-Wenn man eine gute Energieauflösung möchte, sollte man allerdings eher einem
+Wenn man eine gute Energieauflösung möchte, sollte man allerdings eher einen
 Halbleiterdetektor nutzen.
 
+% TODO Und warum sollte man das?
+
 \section{Halbleiterdetektor}
+
 Die Basis des Halbleiterdetektors bildet die Verarmungszone, die zwischen einem
 $p$- und einem $n$-dotierten Halbleiter entsteht.
 
 Betrachtet man das Bändermodel von Halbleitern, so kann man sich die Dotierung
 des Halbleiters als weiteres dünnes Band knapp unter dem Leitungsband
 ($n$-dotiert) oder knapp über dem Valenzband ($p$-dotiert) vorstellen.
-Man erhält die Dotierung eines Kristalls, in dem man fremde Atome in den
+Man erhält die Dotierung eines Kristalls, indem man fremde Atome in den
 Kristall einbindet.
 Wenn man eine positive Dotierung möchte, so fügt man in den Kristall Atome mit
 einer niedrigeren Anzahl Valenzelektronen ein, für die negative Dotierung nutzt
@@ -179,12 +185,13 @@ $p$-dotierten Bereich übergehen.
 Hierdurch bildet sich durch die zurückbleibenden Ionenrümpfe ein elektrisches Feld aus, welches
 der weitern Verbreiterung der Verarmungszone entgegen wirkt.
 Es entspricht somit einer Diode.
-Wenn man diese nun in Sperrichtung betreibt, kann man die Verarmungszone weiter
+Wenn man diese nun in Sperrrichtung betreibt, kann man die Verarmungszone weiter
 verbreitern.
 Das ist erwünscht, da nur in diesen Bereich des Detektors Ereignisse
 gemessen werden können.
 
 \subsection{Multi-Channel-Analyzer}
+
 Um ein nach Amplituden sortiertes Spektrum zu erhalten, nutzen wir ein MCA.
 Dies ist ein Bauteil, welches einkommende Signale nach Amplitude sortiert und
 dann den Kanal, der der Impulshöhe entspricht, hoch setzt. So erhalten wir ein
@@ -197,7 +204,8 @@ Histogramm.
 %In dem entstehenden Spektrum, erkennt man ein Compton-Kontinuum, welches die 
 %Comptonstreuung bis zu einem Winkel von \SI{180}{\degree} enthält. Da bei diesem
 %Wert der maximale Energieübertrag stattfindet, erhält man eine scharfe Kante, 
-%die Compton Kante. Wird nicht nur ein Teil sondern die gesamte Energie abgegeben, wie es bei 
+%die Compton Kante. Wird nicht nur ein Teil sondern die gesamte Energie
+%abgegeben, wie es beim
 %Photoeffekt der Fall ist, entsteht der energetisch höher gelegene Ausschlag. Man 
 %nennt ihn Photo-Peak.
 
@@ -207,7 +215,7 @@ Histogramm.
 
 Der Aufbau dieses Experiments sieht wie folgt aus:
 
-Der jeweilige Detektor in an einen Signalverstärker angeschlossen, welcher
+Der jeweilige Detektor ist an einen Signalverstärker angeschlossen, welcher
 wiederum an einen Vielkanalanalysator angeschlossen ist.
 
 Für die Durchführung müssen zunächst die Betriebsparameter, wie die
@@ -215,8 +223,8 @@ Verstärkung des Signalverstärkers eingestellt werden.
 Dazu werden die Proben jeweils einzeln vor die Detektoren gestellt und das
 Ausgangssignal des Signalverstärkers am Oszilloskop betrachtet.
 Die Verstärkung ist so eingestellt, dass die für die Energiekalibrierung
-wichtige \SI{1408}{\kilo\electronvolt} Linie des $^{152}\text{Eu}$
-innerhalb des Messbereiches liegt.
+wichtige \SI{1408}{\kilo\electronvolt}-Linie des $^{152}\text{Eu}$
+innerhalb des Messbereichs liegt.
 %TODO Foto vom Aufbau
 
 Nun messen wir mit beiden Detektoren sowohl die drei Proben, $^{60}\text{Co}$,
@@ -236,6 +244,7 @@ Nach Anpassung der Zeit müssen wir die
 Untergrundmessung von der Messung der Spektren abziehen.
 Von den gefilterten Spektren untersuchen wir im folgenden die durch
 $\gamma$-Zerfall entstandenen Ausschläge. Abbildung~\ref{fig:energiekalibrierung}
+% FIXME Satzende?
 
 \begin{figure}
     \centering
@@ -250,11 +259,12 @@ $\gamma$-Zerfall entstandenen Ausschläge. Abbildung~\ref{fig:energiekalibrierun
 Da die Spektren mit einem Vielkanalanalysator aufgenommen werden, muss eine
 Energiekalibrierung vorgenommen werden. Hierbei wird den Nummern der 8192
 Kanäle die Energie zugeordnet der sie entsprechen.
-Das lässt sich erreichen, indem wir durch anpassen von Verteilungsfunktionen an die
-Ausschläge bekannter $\gamma$-Übergänge deren Schwerpunkt in Kananlnummer
+Das lässt sich erreichen indem wir durch Anpassen von Verteilungsfunktionen an die
+Ausschläge bekannter $\gamma$-Übergänge deren Schwerpunkt in Kanalnummer
 erhalten. An die Daten aus dem NaJ(Ti)-Detektor haben wir Gaußkurven und an die
 aus dem Ge-Detektor Lorentzkurven angepasst, da diese näher an den Daten liegen.
-Somit wurde den Kanalenummern eine Energie zugeordnet. Abbildung~\ref{fig:Ge-peaks}
+Somit wurde den Kanalnummern eine Energie zugeordnet. Abbildung~\ref{fig:Ge-peaks}
+% FIXME Satzende?
 
 \begin{tabular}{SSSSSS}
     {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
@@ -265,8 +275,8 @@ Somit wurde den Kanalenummern eine Energie zugeordnet. Abbildung~\ref{fig:Ge-pea
     %< endfor >%
 \end{tabular}
 
-Für den NaJ(Ti)-Detektor nutzen wir die beiden best getrennten Linien des
-$^{152}\text{Eu}$, die Linie des $^{137}\text{Cs}$ und die Linien des
+Für den NaJ(Ti)-Detektor nutzen wir die beiden am besten getrennten Linien des
+$^{152}\text{Eu}$: die Linie des $^{137}\text{Cs}$ und die Linien des
 $^{60}\text{Co}$.
 
 \begin{tabular}{SSSSSS}
@@ -288,7 +298,7 @@ $^{60}\text{Co}$.
 
 Da die Energieauflösung des Ge-Detektors deutlich besser ist als die des 
 NaJ(Ti)-Detektors lassen sich deutlich mehr Linien des $^{152}\text{Eu}$
-erkennen und trennen, sodass wir davon sieben verwerten konnten.
+erkennen und trennen sodass wir davon sieben verwerten konnten.
 
 \begin{figure}
     \centering
@@ -302,7 +312,7 @@ erkennen und trennen, sodass wir davon sieben verwerten konnten.
 
 \end{figure}
 
-Das Energie zu Kanal Verhältnis haben wir grafisch in
+Das Energie-zu-Kanal Verhältnis haben wir grafisch in
 Abbildung~\ref{fig:ge_kanal} für den
 Ge-Detektor und in Abbildung~\ref{fig:sz_kanal} für den NaJ(Ti)-Detektor aufgetragen.
 Die angepassten Geraden haben folgende Werte:
@@ -348,7 +358,7 @@ lässt sich die intrinsische Halbwertsbreite $\Delta E_d$ bestimmen.
 \]
 Dieser Zusammenhang wurde in Abbildung~\ref{fig:halbwertsbreite} untersucht und die Konstante
 ermittelt.
-Mit dem Wert, den wir für die intrinsische Halbwertsbreite gefunden, haben lässt
+Mit dem Wert, den wir für die intrinsische Halbwertsbreite gefunden haben, lässt
 sich wie folgt der elektronische Anteil der Halbwertsbreite bestimmen.
 \[
 	\Delta E(E_\gamma)=\sqrt{\Delta E_d(E_\gamma))^2+(\Delta E_e)^2}
@@ -381,7 +391,7 @@ Ge-Detektor
 \]
 
 
-Die Absolute Peakeffizienz wird aus dem Verhältnis der Ereignisse im Photopeak
+Die absolute Peakeffizienz wird aus dem Verhältnis der Ereignisse im Photopeak
 und aller ausgestrahlten $\gamma$-Quanten der Probe gebildet. Dazu benutzen wir
 die bekannten Werte der $^{137}\text{Cs}$ Probe (\SI{0.925}{\mega\becquerel},
 April 1985). Daraus erhalten wir eine aktuelle Aktivität von:
@@ -573,7 +583,16 @@ Intensitäten der $\gamma$-Zerfälle aus einer Datenbank
 \parencite{IAEA-gamma-ray-database} entnommen.
 Aus dieser Datenbank haben wir Spektren generiert und diese mit unserem gemessen
 Spektrum verglichen.
-Ein Kriterium war, wie sehr unsere Daten die generierten Spektren
+% FIXME Und wie wurden die Spektren generiert? Es wurden die Energien und
+% Wirkungsquerschnitte genommen. Die Höhe der Linie wurde als proportional zum
+% Wirkungsquerschnitt angenommen. Eine feste Breite, die zu den restlichen
+% Linien des Detektors passte, wurde ausgesucht. Mit diesen Parametern
+% (Mittelwert, Höhe und Breite) wurde für jede Linie eine Lorentzkurve
+% generiert und auf das bisherige Spektrum für dieses Isotop addiert. Am Ende
+% gab es so ein Spektrum für jedes Element mit unterschiedlichen Höhen für die
+% verschiedenen Zerfallskanäle. Die Spektren wurden dann noch am Stück so
+% normiert, dass sie gut zur Messung passen und vergleichbar sind.
+Ein Kriterium ist, wie sehr unsere Daten die generierten Spektren
 ausfüllen. Wenn alle Linien eines Isotops sowohl in der Lage als auch den
 Höhenverhältnissen
 mit den entsprechenden Linien des gemessenen Spektrums überein stimmen, so haben
@@ -585,13 +604,11 @@ festzustellen, ob das resultierende Spektrum sich so erklären lässt.
 Das Resultat ist in Abbildung~\ref{fig:element_match} zu sehen.
 Dabei lassen sich die meisten Isotope natürlichen Zerfallsreihen zuordnen.
 
-\begin{center}
-\begin{tabular}{lc}
-	Thorium-Reihe: & $^{212}\text{Pb}$ \quad  $^{212}\text{Bi}$ \quad $^{208}\text{Tl}$
-	\\ \\
-	Radon-Reihe: & $^{214}\text{Pb}$ \quad  $^{214}\text{Bi}$
-\end{tabular}
-\end{center}
+\begin{align*}
+    \text{Thorium-Reihe:} & ^{212}\text{Pb} \quad \leadsto ^{212}\text{Bi}
+    \leadsto ^{208}\text{Tl} \\
+    \text{Radon-Reihe:} & ^{214}\text{Pb} \leadsto  ^{214}\text{Bi}
+\end{align*}
 
 $^{68}\text{Ga}$ und $^{64}\text{Cu}$ kommen nicht natürlich vor, werden aber
 in der Medizin eingesetzt.
@@ -601,9 +618,9 @@ in der Medizin eingesetzt.
 
 In diesen Versuch haben wir gut sehen können, dass die Energie- und Zeitauflösung der
 beiden Detektoren sehr unterschiedlich ist. Wir haben auch sehen können, dass
-die Energiekalbrierung gut funktioniert. 
-Dadurch lassen sich gut die die Isotope der Bodenprobe bestimmen. Das nicht
-alle Linie zugeordnet werden konnten liegt vermutlich daran, dass die
+die Energiekalibrierung gut funktioniert. 
+Dadurch lassen sich gut die Isotope der Bodenprobe bestimmen. Das nicht
+alle Linien zugeordnet werden konnten liegt vermutlich daran, dass die
 verwendete Datenbank nicht vollständig ist. Die identifizierten Isotope passen
 sehr gut zu dem was man erwarten würde. Besonders die deutliche Linie des
 nicht natürlich vorkommenden $^{137}\text{Cs}$-Isotops, die sich auf das Unglück

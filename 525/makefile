@@ -4,21 +4,26 @@
 number = 525
 
 all_eps := $(wildcard Daten/*.GZ)
-all_pdf := $(all_eps:Daten/%.GZ=_build/%.pdf)
+all_pdf := $(all_eps:Daten/%.GZ=_build/%.png)
 
-_build/%.ps : Daten/%.GZ
+all: $(all_pdf)
+
+.PRECIOUS: %.png %.pdf
+
+_build:
 	mkdir -p _build
+
+_build/%.ps: Daten/%.GZ _build
 	gzip -d -c $< > $@
 
 %-temp.pdf : %.ps
 	ps2pdf $< $@
 
-%-temp2.pdf : %-temp.pdf
-	#for pdfjam:
-	#pdf270 -o $@-temp2.pdf $@-temp.pdf
-	#
-	#for pdftk:
-	pdftk $< cat 1east output $@
+%-000.png: %-temp.pdf
+	pdfimages -png $< $(@:-000.png=)
+
+%.png: %-000.png
+	convert $< -rotate 90 -negate $@
 
 %.pdf : %-temp2.pdf
 	pdfcrop $< $@
