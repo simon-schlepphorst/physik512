@@ -646,9 +646,9 @@ in der Medizin eingesetzt.
 	\centering
 	\begin{tabular}{SSSS}
 		{E / \si{\kilo\electronvolt}} &
-		{FWHM} &
-		{Intensität} &
-		{Offset}\\
+		{FWHM / \si{\kilo\electronvolt}} &
+            {Intensität / \num{e4}} &
+            {Offset / \num{e5}}\\
 		\midrule
 		%< for row in langzeit_calibration_table: ->%
 		<< ' & '.join(row) >> \\

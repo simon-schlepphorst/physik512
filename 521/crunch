@@ -716,8 +716,8 @@ def calibrate_ge(T):
     T['langzeit_calibration_table'] = list(zip(
         unitprint.siunitx(list_mean_val, list_mean_err),
         unitprint.siunitx(list_full_width_val, list_full_width_err),
-        unitprint.siunitx(list_area_val, list_area_err),
-        unitprint.siunitx(list_offset_val, list_offset_err),
+        unitprint.siunitx(list_area_val * 1e4, list_area_err * 1e4),
+        unitprint.siunitx(list_offset_val * 1e5, list_offset_err * 1e5),
         ))# }}}
 
 
