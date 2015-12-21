@@ -561,11 +561,10 @@ Oszilloskop und verzögern die Signale so, dass sie möglichst gut überlagern
 \section{Fast-Koinzidenz einstellen}
 %Fast-Kreis
 Als nächstes stellen wir den Fast-Kreis ein. Als erstes oszilloskopieren wir
-das Fast-Signal. Dann stellen wir die Schwelle von dem CFD ein.
-Bei dem erstellen der Fast-Koinzidenz ist wichtig zu entscheiden, welches
-Signal als Start- und welches als Stop-Signal für den TAC benutzt werden soll.
-Im Zweifelsfall kann man hier einen Verzögerer nutzen. Dabei sollte man darauf
-achten, dass die Verzögerungseinheiten möglichst klein gewählt werden.
+das Fast-Signal, wie in Abbildung~\ref{fig:fast_signal-li} zu sehen. Dabei
+haben wir es trotz mehrerer Versuche nicht geschafft die kurzen Pulse mit der
+sehr langsamen Speicherfunktion es Oszilloskops einzufangen. Dies ist uns aber
+leider erst bei der Auswertung aufgefallen.
 
 % zeitlicher abgleich von Fast- und slow signal
 %TODO zeiteichung
@@ -643,7 +642,22 @@ Durch das Einstellen des CFD haben wir links die Kanäle
 die Kanäle
 \numrange{<< re_Na_lower_cfd_channel >>}{<< re_Na_upper_cfd_channel >>} ausgewählt.
 
+Bei dem erstellen der Fast-Koinzidenz ist wichtig zu entscheiden, welches
+Signal als Start- und welches als Stop-Signal für den TAC benutzt werden soll.
+Da der linke Detektor die \SI{31}{\kilo\electronvolt} Röntgenlinie des
+$^{133}\text{Ba}$ besser auflöst haben wir uns entschieden diesen für das
+Stop-Signal zu verwenden. Denn die dafür benötigte
+\SI{81}{\kilo\electronvolt}-Linie sollte dann auf jeden Fall gut zu verwenden
+sein.
 
+\section{Zeiteichung des TAC}
+
+Nun stellen wir sicher, dass die Signale des Stop-Signals nach dem Start-Signal
+im TAC eintreffen. Um später einen großen Bereich mit dem TAC abdecken zu
+können, wählen wir diesen Abstand möglichst gering. Da der TAC nur einen
+Bereich von \SI{200}{\nano\second} abdeckt überprüfen wir noch die Auswirkung
+von der Verzögerung $\Delta t$ auf den Abstand der Signale, wie in
+Abbildung~\ref{fig:fast_signal_tac_koinzidenz} zu sehen ist.
 \begin{figure}
 	\centering
 	\begin{subfigure}{0.49 \textwidth}
@@ -656,7 +670,7 @@ die Kanäle
 	\begin{subfigure}{0.49 \textwidth}
 		\includegraphics[width=\textwidth]{TEK00034}
 		\caption{%
-			$\Delta t = \SI{70}{\nano\second}$
+			$\Delta t = \SI{80}{\nano\second}$
 		}
 		\label{fig:fast_signal_tac_koinzidenz-t5-16}
 	\end{subfigure}
@@ -675,8 +689,12 @@ die Kanäle
 	\label{fig:slow_fast_koinzidenz}
 \end{figure}
 
-\section{Zeiteichung des TAC}
-\fehlt%TODO Prompt Kurven
+Nachdem nun alle Vorbereitungen soweit abgeschlossen sind können wir nach einem
+Üerprüfen der Slow-Fast Koinzidenz (vlg. Abbildung~\ref{slow_fast_koinzidenz})
+zur Zeiteichung übergehen. Dazu schließen wir statt dem Oszilloskop den MCA an
+und nehmen Prompt-Kurven auf, wobei wir, nachdem wir genug Ereignisse gesammelt
+haben, die Verzögerung $\Delta t$ in \SI{16}{\nano\second} Schritten erhöhen.
+Das Ergebnis ist in Abbildung~\ref{fig:zeiteichung_peaks_plot} zu sehen.
 
 \clearpage
 \section{Messung der Lebensdauer}
