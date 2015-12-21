@@ -243,7 +243,7 @@ Für die Langzeitmessung mit dem Ge-Detektor wird eine Bleiabschirmung
 aufgebaut, mit der über Nacht der Untergrund gemessen wird, bevor die Bodenprobe
 innerhalb der Abschirmung positioniert wird und erneut über Nacht gemessen wird.
 
-\chapter{Auswertung}
+\chapter{Kalibrierungen}
 
 \section{Vorbereitungen}
 
@@ -266,8 +266,8 @@ Abbildung~\ref{fig:energiekalibrierung} zu sehen ist.
     \label{fig:energiekalibrierung}
 \end{figure}
 
-\subsection{Spektren}
-\subsubsection{Szintillationsspektrometer}
+\section{Spektren}
+\subsection{Szintillationsspektrometer}
 
 \begin{figure}[h]
 	\centering
@@ -292,7 +292,7 @@ Abbildung~\ref{fig:energiekalibrierung} zu sehen ist.
 \end{figure}
 
 
-\subsubsection{Ge-Detektor}
+\subsection{Ge-Detektor}
 
 \begin{figure}[h]
 	\centering
@@ -319,7 +319,7 @@ Abbildung~\ref{fig:energiekalibrierung} zu sehen ist.
 
 
 
-\subsection{Energiekalibrierung}
+\section{Energiekalibrierung}
 
 Weil die Spektren mit einem Vielkanalanalysator aufgenommen werden, muss eine
 Energiekalibrierung vorgenommen werden. Hierbei wird den Nummern der 8192
@@ -387,18 +387,19 @@ Ge-Detektor
     \SI{<< ge_offset >>}{\kilo\electronvolt} \,.
 \]
 
-\subsection{Halbwertsbreiten}
+\section{Halbwertsbreiten}
 Da wir bereits Lorentz- und Gaußkurven angepasst haben um den Schwerpunkt zu
 bestimmen, kennen wir auch die Halbwertsbreiten $\Gamma$.
+
 \begin{align*}
 	f_\text{Gauß}\del x &= \frac1{\sigma \sqrt{2\pi}}
 	\eup^{-\frac12\del{\frac{x
 	- \langle x\rangle}{\sigma}}^2}
-        &&\text{mit FWHM} = \num{2.35} \, \sigma\\
+	&&\text{mit FWHM} = 2.35\sigma\\
 	\\
 	f_\text{Lorentz}\del x &= \frac1\pi \frac\sigma{\del{x - \langle x
 	\rangle}^2 + \sigma^2}
-	&&\text{mit FWHM} = \sigma
+	&&\text{mit FWHM} = \sigma\\
 \end{align*}
 
 %TODO kommentar zur detektor abhängigkeit.
@@ -406,7 +407,7 @@ An der Breite der Linien zeigt sich, um wie viel besser die Energieauflösung de
 Ge-Detektors ist. Deshalb lassen sich mit dem Ge-Detektor mehr Linien
 deutlich trennen.
 
-\subsection{Inttrinsische Halbwertbreite des Ge-Detektors}
+\section{Inttrinsische Halbwertbreite des Ge-Detektors}
 Aus den Halbwertsbreiten der Linien, die mit dem Ge-Detektor aufgenommen
 wurden,
 lässt sich die intrinsische Halbwertsbreite $\Delta E_d$ bestimmen.
@@ -427,7 +428,7 @@ Wir erhalten:
     \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
 \]
 
-\subsection{Nachweißgüte der Detektoren}
+\section{Nachweißgüte der Detektoren}
 
 Nun soll das Verhältnis der Ereignisse im Photopeak gegenüber allen Ereignissen
 im Detektor gebildet werden (Peak-to-Total-Verhältnis). Dies wird mit dem
@@ -518,9 +519,9 @@ mess.} & {Effizienz} \\
 
 
 \clearpage
-\section{Langzeitmessung}
+\chapter{Auswertung der Langzeitmessung}
 
-\subsection{Vorbereitung des Spektrums}
+\section{Vorbereitung des Spektrums}
 
 Bei dem Vergleich von Daten und Untergrund aus der Langzeitmessung fällt sehr
 schnell auf, dass der Untergrund deutlich höher liegt, als die Daten. Deshalb
@@ -561,7 +562,7 @@ Tabelle~\ref{tab:langzeit-anpassungen-tabelle} zu finden.
 	\label{fig:langzeit_probe_peaks}
 \end{figure}
 
-\subsection{Identifizieren der Isotope}\label{identifizieren-isotope}
+\section{Identifizieren der Isotope}\label{identifizieren-isotope}
 
 
 
