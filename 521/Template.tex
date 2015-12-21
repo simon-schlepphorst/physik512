@@ -534,14 +534,14 @@ zuzuordnen.
 
 \section{Vorbereitung des Spektrums}
 
-Bei dem Vergleich von Daten und Untergrund aus der Langzeitmessung fällt sehr
+Bei dem Vergleich von Daten und Untergrund aus der Langzeitmessung fiel sehr
 schnell auf, dass der Untergrund deutlich höher liegt, als die Daten. Deshalb
 ist es nicht möglich den Untergrund von den Daten abzuziehen um ein sauberes
 Spektrum zu erhalten.
 
 Stattdessen teilen wir alle Messwerte durch die vorher bestimme
-Detektorgenauigkeit und können so den exponentiellen Abfall im Untergrund
-herausfiltern. Da die Detektorgenauigkeit aber nur oberhalb von
+Detektoreffizienz und können so den exponentiellen Abfall im Untergrund
+herausfiltern. Da die Detektoreffizienz aber nur oberhalb von
 \SI{200}{\kilo\electronvolt} damit genähert werden kann, beschränken wir uns in
 der folgenden Auswertung ebenfalls auf diesen Bereich. Die so bereinigten
 Spektren sind in Abbildung~\ref{fig:langzeit_probe_untergrund} zu sehen.
@@ -575,7 +575,27 @@ Tabelle~\ref{tab:langzeit-anpassungen-tabelle} zu finden.
 
 \section{Identifizieren der Isotope}\label{identifizieren-isotope}
 
+Um uns die Auswahl der in Frage kommenden Isotope zu vereinfachen haben wir
+die Datenbank der International Atomic Energy Agency
+\parencite{IAEA-gamma-ray-database} benutzt. Mit dieser Datenbank lassen sich
+die Spektren der einzelnen Isotope generieren. Dies wird mit Lorentzkurven für
+jede einzelne Linie 
+realisiert, deren Höhe proportional zum Wirkungsquerschnitt ist und deren
+Halbwertsbreite zu den in der Kalibrierung ermittelten Halbwertsbreiten
+passt.
+Da wir in unseren Daten aber immer noch einen Untergrund haben, der den
+automatischen Abgleich erschwert, wurde zusätzlich noch  eine Faltung über
+einen Gausskern von den Daten abgezogen. Da das Spektrum der Daten nun nur noch
+aus Spitzen besteht, können wir ein Überlappintegral aus Daten und generierten
+Spektren erstellen, dieses durch das Integral über die generierten Spektren
+teilen und erhalten ein Maß für den Überlapp. Nun haben wir die Isotope aus
+der Datenbank nach genau diesem Maß sortiert. 
+Das Resultat ist in Abbildung~\ref{fig:element_match} zu sehen.
 
+Durch die recht prominente \SI{511}{\kilo\electronvolt}-Linie erscheinen auch
+einige Isotope sehr weit oben in unserer Liste, die sonst absolut nicht zu
+unseren Daten passen. Deshalb können wir auch nicht direkt, z.B. die ersten
+zehn, Isotope aus der Liste auswählen und als in der Probe vorhanden erklären.
 
 \begin{figure}[h]
 	\centering
@@ -595,6 +615,10 @@ Tabelle~\ref{tab:langzeit-anpassungen-tabelle} zu finden.
 	\label{tab:langzeit-anpassungen-tabelle}
 \end{figure}
 
+Für jede der abgelesenen Linien haben wir
+einen Detailausschnitt angefertigt (vgl. Anhang~\ref{anhang-bodenprobe}).
+Dort kann man sehen wie gut das Isotop auf das gesamte Spektrum passt, und
+welches Isotop dies ist.
 
 \begin{figure}
     \centering
@@ -605,11 +629,7 @@ Tabelle~\ref{tab:langzeit-anpassungen-tabelle} zu finden.
     }
     \label{fig:element_match}
 \end{figure}
-Hierfür haben wir die Informationen über die Energie, sowie die relativen
-Intensitäten der $\gamma$-Zerfälle aus einer Datenbank
-\parencite{IAEA-gamma-ray-database} entnommen.
-Aus dieser Datenbank haben wir Spektren generiert und diese mit unserem gemessen
-Spektrum verglichen.
+
 % FIXME Und wie wurden die Spektren generiert? Es wurden die Energien und
 % Wirkungsquerschnitte genommen. Die Höhe der Linie wurde als proportional zum
 % Wirkungsquerschnitt angenommen. Eine feste Breite, die zu den restlichen
@@ -624,20 +644,17 @@ Spektrum verglichen.
 %aus, dass der Wirkungsquerschnitt proportional zur Linienhöhe ist. Als Breite
 %nehmen wir eine Breite an, die zu den Breiten der Eichungslinien passt.
 %Hierraus lassen sich nun Lorentzkurven generieren. 
-Ein Kriterium ist, wie sehr unsere Daten die generierten Spektren
-ausfüllen. Wenn alle Linien eines Isotops sowohl in der Lage als auch den
-Höhenverhältnissen
-mit den entsprechenden Linien des gemessenen Spektrums überein stimmen, so haben
-wir dieses Isotop in die engere Auswahl genommen. Wenn nur ein Teil der Linien
-übereinstimmt, aber andere Linie nicht in dem gemessen Spektrum vorkommen, so
-haben wir dieses Isotop verworfen.
-Als nächstes haben wir aus allen möglichen Isotopen ein Spektrum erstellt, um
-festzustellen, ob das resultierende Spektrum sich so erklären lässt.
-Das Resultat ist in Abbildung~\ref{fig:element_match} zu sehen.
-Dabei lassen sich die meisten Isotope natürlichen Zerfallsreihen zuordnen.
 
+Dies führte auch direkt zu einem ersten Problem. Wir konnten mit dieser Methode
+zwar vielen Linien unserer Daten ein Isotop zuordnen, zu einigen war jedoch
+schlicht kein generiertes Spektrum vorhanden, das passte. 
 
-Nicht allen Isotopen der natürlichen Zerfallsreihen, zu sehen
+Da alles danach aussah, dass die gewählte Datenbank unvollständig ist, haben
+wir uns nach geeigneten Ergänzungen umgesehen. Da wir in der Bodenprobe keine
+exotischen Isotope erwarten, haben wir uns zuerst den natürlichen
+Zerfallsreihen zugewandt.
+
+Aber nicht allen Isotopen der natürlichen Zerfallsreihen, zu sehen
 in Abbildung~\ref{fig:thorium} und \ref{fig:uran}, können wir Linien 
 zuordnen. 
 Außerdem tritt die Uran-Actinium-Reihe nicht erkennbar auf.
@@ -648,7 +665,7 @@ nicht im abgebildeten Energiebereich. Allerdings hat die Betrachtung der
 natürlichen Zerfallsreihen geholfen die Linien zu erklären, die nicht in der
 ursprünglich benutzten Datenbank auftauchten. Nachdem wir die Linie des
 $^{228}\text{Ac}$ von \textcite{ac} der Datenbank hinzugefügt hatten, ließen sich alle Linien
-erklären. 
+erklären (vlg. Abbildung~\ref{tab:langzeit-anpassungen-tabelle}).
 
 
 \begin{figure}
@@ -677,9 +694,6 @@ erklären.
     }
     \label{fig:}
 \end{figure}
-
-$^{68}\text{Ga}$ und $^{64}\text{Cu}$ kommen nicht natürlich vor, werden aber
-in der Medizin eingesetzt.
 
 
 
