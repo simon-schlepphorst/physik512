@@ -806,7 +806,7 @@ def fit_peak(T, name, data, first, last, energy=0, show=False, save=False, side=
         T['plot_fit_peaks'] = []
 
     if save:
-        fig = pl.figure(figsize=(6,4.25))
+        fig = pl.figure(figsize=(7, 4))
         ax = fig.add_subplot(1, 1, 1)
 
         x, y = data[first:last, 0], data[first:last, 1]
@@ -823,7 +823,7 @@ def fit_peak(T, name, data, first, last, energy=0, show=False, save=False, side=
         ax.set_ylabel('Ereignisse / s')
         fig.tight_layout()
         fig.savefig('_build/plot_fit_peak_'+ side + '_' + '{}'.format(num) + '_' + name +'.pdf')
-        T['plot_fit_peaks'].append((num, unitprint.siunitx(popt[0], perr[0])))
+        T['plot_fit_peaks'].append((num, '{:04d}'.format(int(first)), '{:04d}'.format(int(last)), unitprint.siunitx(popt[0], perr[0])))
         fig.clear
         pl.close()
 
@@ -867,7 +867,8 @@ def main():
 
     ###########################################
 
-    subprocess.check_call(['./element_match'])
+    subprocess.check_call(['./element_match', '--num', '15'])
+    subprocess.check_call(['./element_match', '--num', '15', '--score'])
 
     ###########################################
 

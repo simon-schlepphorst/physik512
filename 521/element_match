@@ -32,6 +32,8 @@ colors = [
 linestyles = [
     'solid',
     'dashed',
+    'dotted',
+    'dash_dot',
 ]
 
 pp = pprint.PrettyPrinter()
@@ -98,6 +100,8 @@ def main():
             '88-Ra-224',
     ]
 
+    exclude = []
+
     candidates = []
 
     for element in elements:
@@ -125,26 +129,28 @@ def main():
         candidates.append((score, element, y / self_integral))
 
     fit_range = [
-        (237, 241),
-        (241, 244),
-        (294, 297),
-        (337, 340),
-        (350, 354),
-        (509, 513),
-        (582, 585),
-        (608, 612),
-        (660, 664),
-        (727, 729),
-        (910, 913),
-        (963, 967),
-        (967, 972),
-        (1118, 1123),
-        (1236, 1241),
-        (1375, 1380),
-    ]
+            (237, 241),
+            (241, 244),
+            (294, 297),
+            (337, 340),
+            (350, 354),
+            (509, 513),
+            (582, 585),
+            (608, 612),
+            (660, 664),
+            (727, 729),
+            (910, 913),
+            (963, 967),
+            (967, 972),
+            (1118, 1123),
+            (1236, 1241),
+            (1375, 1380),
+            ]
 
     max_score = max([x[0] for x in candidates])
     min_score = min([x[0] for x in candidates])
+
+    linestyle_iter = itertools.cycle(linestyles)
 
     for score, element, y in itertools.islice(reversed(sorted(candidates)), options.num):
         if options.score:
@@ -178,15 +184,20 @@ def main():
         fig.show()
         input()
     else:
-        ax.legend(loc='best', prop={'size': 8})
-        fig.savefig('_build/element_match.pdf')
+        ax.legend(loc='best', prop={'size': 9})
+        fig.savefig('_build/element_match_{}.pdf'.format('score' if options.score else 'contrast'))
 
     padding = 2
 
+    fig.set_size_inches(7, 4)
+
+    i = 1
     for bottom, top in fit_range:
         print('Erzeuge Plot von {} bis {} keV …'.format(bottom, top))
         ax.set_xlim(bottom - padding, top + padding)
-        fig.savefig('_build/element_match_{:04d}_{:04d}.pdf'.format(bottom, top))
+        fig.tight_layout()
+        fig.savefig('_build/element_match_{}_{}.pdf'.format(i, 'score' if options.score else 'contrast'))
+        i += 1
 
 
     results_sorted = sorted([(matchness, element) for element, matchness in results.items()])
