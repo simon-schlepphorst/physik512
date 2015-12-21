@@ -4,12 +4,15 @@
 # Copyright © 2015 Martin Ueding <dev@martin-ueding.de>
 
 import argparse
+import colorsys
 import itertools
+import pprint
 
-import numpy as np
 import matplotlib.pyplot as pl
+import numpy as np
 import pandas as pd
 import scipy.integrate
+import scipy.ndimage.filters
 
 
 colors = [
@@ -29,7 +32,11 @@ colors = [
 linestyles = [
     'solid',
     'dashed',
+    'dotted',
+    'dash_dot',
 ]
+
+pp = pprint.PrettyPrinter()
 
 def lorentz_peak(x, mean, width, area, offset):
     return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2) + offset
@@ -50,6 +57,9 @@ def main():
 
     messwerte = messwerte[messwerte[:, 0] > 200]
 
+    messwerte_smooth = scipy.ndimage.filters.gaussian_filter(messwerte[:, 1], 100)
+    ohne_untergrund = messwerte[:, 1] - messwerte_smooth
+
     #print(messwerte.shape)
 
     peaks = get_peaks()
@@ -68,7 +78,7 @@ def main():
 
     m = 0
 
-    attr_iter = itertools.product(linestyles, colors)
+    attr_iter = itertools.cycle(itertools.product(linestyles, colors))
 
     exclude = [
             '11-Na-22',
@@ -90,6 +100,10 @@ def main():
             '88-Ra-224',
     ]
 
+    exclude = []
+
+    candidates = []
+
     for element in elements:
         if element in exclude:
             continue
@@ -105,22 +119,55 @@ def main():
 
 
         self_integral = scipy.integrate.simps(y, x)
-        overlap = y * messwerte[:, 1]
+        overlap = y * ohne_untergrund
         overlap_integral = scipy.integrate.simps(overlap, x)
 
-        matchness = overlap_integral / self_integral
+        score = overlap_integral / self_integral
 
-        if matchness >= +0:
+        results[element] = score
+
+        candidates.append((score, element, y / self_integral))
+
+    fit_range = [
+            (237, 241),
+            (241, 243),
+            (294, 297),
+            (337, 340),
+            (350, 354),
+            (459, 467),
+            (509, 513),
+            (582, 585),
+            (608, 612),
+            (660, 664),
+            (727, 728),
+            (767, 770),
+            (791, 799),
+            (859, 863),
+            (910, 913),
+            (963, 967),
+            (967, 972),
+            (1118, 1123),
+            (1236, 1241),
+            (1375, 1380),
+            ]
+
+    max_score = max([x[0] for x in candidates])
+    min_score = min([x[0] for x in candidates])
+
+    linestyle_iter = itertools.cycle(linestyles)
+
+    for score, element, y in itertools.islice(reversed(sorted(candidates)), options.num):
+        if options.score:
+            linestyle = 'solid'
+            alpha = 1
+            ratio = (score - min_score) / (max_score - min_score)
+            color = colorsys.hsv_to_rgb(0.5*ratio, 1.0, .8)
+        else:
             linestyle, color = next(attr_iter)
-            ax.plot(x, y / self_integral, label=nuclide, color=color, linestyle=linestyle, linewidth=4)
-
-        results[element] = matchness
-
+            alpha = 1
+        ax.plot(x, y, label=element, color=color, alpha=alpha, linestyle=linestyle, linewidth=2)
         m = max(m, np.max(y))
 
-
-
-    ax.legend(loc='best')
 
     m2 = np.max(messwerte[:, 1])
 
@@ -130,19 +177,34 @@ def main():
     #print('Scale', scale)
 
     ax.plot(x, messwerte[:, 1] * scale, alpha=0.3, color='black')
+    ax.plot(x, messwerte_smooth * scale, alpha=0.3, color='black')
 
     ax.grid(True)
     ax.margins(.05)
+    ax.set_xlabel('Energie / keV')
+    ax.set_ylabel('Ereignisse / willkürlich')
     fig.tight_layout()
 
-    # Interaktiver Plot --->
+    if options.show:
+        ax.legend(loc='best')
+        fig.show()
+        input()
+    else:
+        ax.legend(loc='best', prop={'size': 9})
+        fig.savefig('_build/element_match_{}.pdf'.format('score' if options.score else 'contrast'))
 
-    #fig.show()
-    #input()
+    padding = 2
 
-    # <---
+    fig.set_size_inches(7, 4)
 
-    fig.savefig('_build/element_match.pdf')
+    i = 1
+    for bottom, top in fit_range:
+        print('Erzeuge Plot von {} bis {} keV …'.format(bottom, top))
+        ax.set_xlim(bottom - padding, top + padding)
+        fig.tight_layout()
+        fig.savefig('_build/element_match_{}_{}.pdf'.format(i, 'score' if options.score else 'contrast'))
+        i += 1
+
 
     results_sorted = sorted([(matchness, element) for element, matchness in results.items()])
 
@@ -153,29 +215,6 @@ def main():
 
 
 
-    #for peak in peaks[:2]:
-    #    print(peak)
-
-    #    selection = (lines['E(gamma)'] < (peak + pad)) & (lines['E(gamma)'] > (peak - pad))
-    #    selected = lines[selection]
-
-    #    sorted_ = selected.sort_values(by='P', ascending=False)
-
-    #    print(sorted_)
-
-    #    break
-
-    #    for id, iso, z, energy, i1, i2, i3 in selected.itertuples():
-    #        print(iso, energy)
-
-    #        selection2 = lines['Nuclide'] == iso
-    #        selected2 = lines[selection2]
-
-    #        print(selected2)
-
-    #    print()
-
-
 def _parse_args():
     '''
     Parses the command line arguments.
@@ -184,6 +223,9 @@ def _parse_args():
     :rtype: Namespace
     '''
     parser = argparse.ArgumentParser(description='')
+    parser.add_argument('--show', action='store_true')
+    parser.add_argument('--score', action='store_true')
+    parser.add_argument('--num', type=int, default=22)
     options = parser.parse_args()
 
     return options
