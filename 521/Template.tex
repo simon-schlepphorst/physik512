@@ -3,7 +3,8 @@
 \usepackage{../../header}
 
 \usepackage{placeins}
-%\usepackage[maxfloats=50]{morefloats}
+\usepackage[maxfloats=50]{morefloats}
+\usepackage{subcaption}
 
 \usepackage{csquotes}
 
@@ -565,8 +566,12 @@ mess.} & {Effizienz} \\
     \centering
     \includegraphics[width=\plotwidth]{ge_efficiency}
     \caption{%
-	    Energieabhängige Effizenz des Ge-Detektors
+	    Energieabhängige Effizenz des Ge-Detektors.
         %
+            Fit mit $a \cdot (E/\si{\kilo\electronvolt})^b + c$ mit
+            $a = \num{<< ge_effizienz_a >>}$,
+            $b = \num{<< ge_effizienz_b >>}$ und
+            $c = \num{<< ge_effizienz_c >>}$.
     }
     \label{fig:effizienz}
 \end{figure}
@@ -575,7 +580,7 @@ mess.} & {Effizienz} \\
 
 \begin{figure}
     \centering
-    \includegraphics[width=\plotwidth]{element_match}
+    \includegraphics[width=\plotwidth]{element_match_contrast}
     \caption{%
 	    Spektren der Bodenprobe und dazu passender Isotope
         %
@@ -628,6 +633,49 @@ $^{68}\text{Ga}$ und $^{64}\text{Cu}$ kommen nicht natürlich vor, werden aber
 in der Medizin eingesetzt.
 
 
+\section{Bodenprobe}
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\plotwidth]{plot_spektren_langzeit}
+	\caption{%
+		Vergleich von Proben- und Untergrundspektrum
+	}
+	\label{fig:langzeit_probe_untergrund}
+\end{figure}
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\plotwidth]{plot_peaks_langzeit}
+	\caption{%
+		Peaks im Probenspektrum
+	}
+	\label{fig:langzeit_probe_peaks}
+\end{figure}
+
+
+
+\begin{figure}[h]
+	\centering
+	\begin{tabular}{SSSl}
+		{E / \si{\kilo\electronvolt}} &
+		{FWHM / \si{\kilo\electronvolt}} &
+            {Intensität / \num{e4}} &
+            {Element}\\
+		\midrule
+		%< for row in langzeit_calibration_table: ->%
+		<< ' & '.join(row) >> \\
+		%< endfor ->%
+	\end{tabular}
+	\caption{%
+		Anpassungsparameter für die Energiekalibrierung
+	}
+	\label{tab:energiekalibrierung}
+\end{figure}
+
+
 \chapter{Ergebnis}
 
 In diesen Versuch haben wir gut sehen können, dass die Energie- und Zeitauflösung der
@@ -647,7 +695,32 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
 
 \begin{appendix}
 
+\chapter{Anhang}
+\section{Bodenprobe}
 %TODO
+
+%< for num, first, last, kev in plot_fit_peaks >%
+\begin{figure}
+    \centering
+    \begin{subfigure}{\linewidth}
+        \includegraphics[width=.8\linewidth]{plot_fit_peak__<< num >>_langzeit}
+        \caption{Rohdaten}
+    \end{subfigure}
+    \begin{subfigure}{\linewidth}
+        \includegraphics[width=.8\linewidth]{element_match_<< num >>_score}
+        \caption{Kandidaten nach Übereinstimmung}
+    \end{subfigure}
+    \begin{subfigure}{\linewidth}
+        \includegraphics[width=.8\linewidth]{element_match_<< num >>_contrast}
+        \caption{Kandidaten zum Zuordnen}
+    \end{subfigure}
+    \caption{%
+        \SI{<< kev >>}{\kilo\electronvolt}-Linie
+        mit Lorentzanpassung
+    }
+    \label{fig:}
+\end{figure}
+%< endfor >%
 
 \end{appendix}
 

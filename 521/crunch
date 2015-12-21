@@ -25,8 +25,21 @@ import unitprint
 
 _livetime_pattern = re.compile(r'LIVETIME: (\d+\.?\d*)')
 
+'''
+Farbtabelle
+'''
+
+# '#e41a1c'
+# '#377eb9'
+# '#4daf4a'
+# '#984ea4'
+# '#ff7f01'
+
 def lorentz_peak(x, mean, width, area, offset):
     return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2) + offset
+
+def lorentz_peak_2(x, mean, width, area):
+    return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2)
 
 def gauss_peak(x, mean, width, area):
     return area / (width * np.sqrt(2 * np.pi)) * np.exp( - ((x - mean) / width)**2 / 2)
@@ -36,6 +49,9 @@ def linear(x, slope, offset):
 
 def linear_err(x, x_err, slope_val, slope_err, offset_val, offset_err):
     return np.sqrt((x_err * slope_val)**2 + (x * slope_err)**2 + offset_err**2)
+
+def power(x, a, b, c):
+    return a * x**b + c
 
 def extract_livetime(metafile):# {{{
     with open(metafile) as f:
@@ -425,11 +441,12 @@ def calibrate_ge(T):
 
     # Halbwertsbreiten der Peaks# {{{
 
-    list_intensity_val = list_area_val * list_mean_val
-    list_intensity_err = np.sqrt(
-        (list_area_err * list_mean_val)**2
-        + (list_area_val * list_mean_err)**2
-    )# }}}
+    list_intensity_val = list_area_val #* list_mean_val
+    list_intensity_err = list_area_err
+    #list_intensity_err = np.sqrt(
+    #    (list_area_err * list_mean_val)**2
+    #    + (list_area_val * list_mean_err)**2
+    #)# }}}
 
     # Scaliere auf den letzten Eu Peak# {{{
 
@@ -468,11 +485,31 @@ def calibrate_ge(T):
     efficiency_val = list_intensity_val[first_eu:last_eu] / expected_rel_intensity
     efficiency_err = list_intensity_err[first_eu:last_eu] / expected_rel_intensity# }}}
 
+    x = list_expected_energy[first_eu:last_eu]
+
+    popt, pconv = op.curve_fit(power, x[1:], efficiency_val[1:], sigma=efficiency_err[1:], p0=[1e5, -2, 1])
+    fit_x = np.linspace(190, max(x), 1000)
+    fit_y = power(fit_x, *popt)
+
+    perr = np.sqrt(pconv.diagonal())
+
+    a = popt[0]
+    b = popt[1]
+    c = popt[2]
+
+    def power_calibration(x):
+        return power(x, a, b, c)
+
+    T['ge_effizienz_a'] = unitprint.siunitx(popt[0], perr[0])
+    T['ge_effizienz_b'] = unitprint.siunitx(popt[1], perr[1])
+    T['ge_effizienz_c'] = unitprint.siunitx(popt[2], perr[2])
+
     # Detektoreffizienz mit Eu Spektrum# {{{
 
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
     ax.errorbar(list_expected_energy[first_eu:last_eu], efficiency_val, efficiency_err, marker='+', linestyle='none')
+    ax.plot(fit_x, fit_y)
     ax.set_xlabel('Energie / keV')
     ax.set_ylabel('Effizienz')
     ax.margins(0.05)
@@ -510,6 +547,12 @@ def calibrate_ge(T):
     fig.savefig('_build/ge_channels.pdf')
     T['ge_slope'] = unitprint.siunitx(slope_val, slope_err)
     T['ge_offset'] = unitprint.siunitx(offset_val, offset_err)# }}}
+
+    def calibration(x):
+        return linear(x, slope_val, offset_val)
+
+    def inv_calibration(x):
+        return (x - offset_val) / slope_val
 
 
     # Breiten gegen Energie mit Eu Spektrum# {{{
@@ -590,6 +633,232 @@ def calibrate_ge(T):
     np.savetxt('_build/langzeit.tsv', np.column_stack([energy, events]))
     np.savetxt('_build/langzeit-orig.tsv', np.column_stack([energy, langzeit_daten[:, 1]]))
 
+
+    # Langzeitmessung nochmal in schön
+    ##################################
+
+    show=False
+
+    data = load_data_normalized('Langzeit_Probe')
+    untergrund = load_data_normalized('Langzeit_Untergrund')
+
+    # Daten durch Energieeichung ziehen
+
+    data[:, 0] = calibration(data[:, 0])
+    untergrund[:, 0] = calibration(untergrund[:, 0])
+
+    # Glätten der Kurve
+    data[:, 1] = data[:, 1] / power_calibration(data[:, 0])
+    untergrund[:, 1] = untergrund[:, 1] / power_calibration(untergrund[:, 0])
+
+    lower_end = inv_calibration(50)
+
+    # Vergleich Probe zu Untergrund
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    fit_x, fit_y = untergrund[lower_end:, 0], untergrund[lower_end:, 1]
+    ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#377eb9', label='Untergrund')
+
+    x, y = data[lower_end:, 0], data[lower_end:, 1]
+    ax.plot(x, y, marker=None, alpha=0.6, color='#e41a1c', label='Daten')
+
+
+   #     for i, (first, last, expected_energy) in zip(itertools.count(1), fit_range):
+   #         points.append(fit_peak(name, data, first, last, expected_energy, save=True, side=side, num=i))
+   #         tmp_point = np.array(points[-1])
+
+   #         fit_x = np.linspace(np.min(x), np.max(x), 1000)
+   #         fit_y = gauss_peak(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
+
+   #         ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=2)
+
+
+    #ax.set_ylim(-0.0001, 0.0051)
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Energie / keV')
+    ax.set_ylabel('Ereignisse / s')
+    ax.legend(loc='best')
+    fig.tight_layout()
+    fig.savefig('_build/plot_spektren_langzeit.pdf')
+
+    if show:
+        fig.show()
+        print('Waiting for input to continue ...')
+        input()
+    fig.clear
+    pl.close()
+
+    # Extrahiere Peaks
+
+    fit_range = [
+            (237, 241),
+            (241, 243),
+            (294, 297),
+            (337, 340),
+            (350, 354),
+            (459, 467),
+            (509, 513),
+            (582, 585),
+            (608, 612),
+            (660, 664),
+            (727, 728),
+            (767, 770),
+            (791, 799),
+            (859, 863),
+            (910, 913),
+            (963, 967),
+            (967, 972),
+            (1118, 1123),
+            (1236, 1241),
+            (1375, 1380),
+            ]
+
+    fit_names =[
+            'Pb-212',
+            'Pb-214',
+            'Pb-214',
+            'Ac-228',
+            'Pb-214',
+            'Ac-228',
+            'Positron',
+            'Ti-208',
+            'Bi-214',
+            'Cs-137',
+            'Bi-212',
+            'Bi-214',
+            'Ac-228',
+            'Ti-208',
+            'Ac-228',
+            'Ac-228',
+            'Ac-228',
+            'Bi-214',
+            'Bi-214',
+            'Bi-214',
+            ]
+
+    fit_range = inv_calibration(fit_range)
+
+    points = []
+
+    fig = pl.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    x, y = data[lower_end:, 0], data[lower_end:, 1]
+    ax.plot(x, y, marker=None, alpha=0.6, color='#377eb9')
+
+
+    for i, (first, last) in zip(itertools.count(1), fit_range):
+        points.append(fit_peak(T, 'langzeit', data, first, last, save=True, num=i))
+        tmp_point = np.array(points[-1])
+
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = lorentz_peak_2(fit_x, tmp_point[-7], tmp_point[-5], tmp_point[-3])
+
+        ax.plot(fit_x, fit_y, marker = None, alpha=0.6, color='#e41a1c', linewidth=1)
+
+    ax.margins(0.05)
+    ax.grid(True)
+    ax.set_xlabel('Energie / keV')
+    ax.set_ylabel('Ereignisse / s')
+    fig.tight_layout()
+    fig.savefig('_build/plot_peaks_langzeit.pdf')
+
+    if show:
+        fig.show()
+        print('Waiting for input to continue ...')
+        input()
+    fig.clear
+    pl.close()
+
+    # Speichern der Parameter # {{{
+    points = np.array(points)
+
+    list_mean_val = points[:, 0]
+    list_mean_err = points[:, 1]
+    list_full_width_val = points[:, 2]
+    list_full_width_err = points[:, 3]
+    list_area_val = points[:, 4]
+    list_area_err = points[:, 5]
+    #list_offset_val = points[:, 6]
+    #list_offset_err = points[:, 7]
+    list_expected_energy = points[:, 6]
+
+    T['langzeit_calibration_table'] = list(zip(
+        unitprint.siunitx(list_mean_val, list_mean_err),
+        unitprint.siunitx(list_full_width_val, list_full_width_err),
+        unitprint.siunitx(list_area_val * 1e4, list_area_err * 1e4),
+        fit_names,
+        ))# }}}
+
+
+    np.savetxt('_build/langzeit.tsv', data)
+
+
+def fit_peak(T, name, data, first, last, energy=0, show=False, save=False, side='', num=0):# {{{
+    '''
+    Passt einen Peak an
+    :show zeigt die einzelne Anpassung
+    :save speichert gesamtes Spektrum in Datei
+
+    :return Mittelpunkt, Fehler Mittelpunkt, Breite, Fehler Breite, Fläche, Fehler Fläche, Energie
+    '''
+
+    x, y = data[first:last, 0], data[first:last, 1]
+    popt, pconv = op.curve_fit(lorentz_peak_2, x, y, p0=[np.mean(x), 2, 5])
+    perr = np.sqrt(pconv.diagonal())
+
+    if show:
+        fig = pl.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = lorentz_peak_2(fit_x, *popt)
+
+        ax.plot(x, y, marker=None, label=name)
+        ax.plot(fit_x, fit_y, marker=None)
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Kanal')
+        ax.set_ylabel('Ereignisse / s')
+        ax.legend(loc='best')
+        fig.tight_layout()
+        fig.show()
+        print('Waiting for input ...')
+        input()
+        fig.clear()
+        pl.close()
+
+    # Erzeuge Platz im Template für alle Energien.
+    if not 'plot_fit_peaks' in T:
+        T['plot_fit_peaks'] = []
+
+    if save:
+        fig = pl.figure(figsize=(7, 4))
+        ax = fig.add_subplot(1, 1, 1)
+
+        x, y = data[first:last, 0], data[first:last, 1]
+
+        fit_x = np.linspace(np.min(x), np.max(x), 1000)
+        fit_y = lorentz_peak_2(fit_x, *popt)
+
+        ax.plot(x, y, marker=None, alpha=0.6, color='#377eb8')
+        ax.plot(fit_x, fit_y, marker=None, alpha=0.6, color='#e41a1c', linewidth=2)
+
+        ax.margins(0.05)
+        ax.grid(True)
+        ax.set_xlabel('Energie / keV')
+        ax.set_ylabel('Ereignisse / s')
+        fig.tight_layout()
+        fig.savefig('_build/plot_fit_peak_'+ side + '_' + '{}'.format(num) + '_' + name +'.pdf')
+        T['plot_fit_peaks'].append((num, '{:04d}'.format(int(first)), '{:04d}'.format(int(last)), unitprint.siunitx(popt[0], perr[0])))
+        fig.clear
+        pl.close()
+
+    return popt[0], perr[0], popt[1], perr[1], popt[2], perr[2], energy# }}}
+
 def test_keys(T):
     '''
     Testet das dict auf Schlüssel mit Bindestrichen.
@@ -628,7 +897,8 @@ def main():
 
     ###########################################
 
-    subprocess.check_call(['./element_match'])
+    subprocess.check_call(['./element_match', '--num', '15'])
+    subprocess.check_call(['./element_match', '--num', '15', '--score'])
 
     ###########################################
 
