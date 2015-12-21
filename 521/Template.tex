@@ -250,21 +250,21 @@ innerhalb der Abschirmung positioniert wird und erneut über Nacht gemessen wird
 Bevor wir anfangen können die Spektren zu untersuchen, müssen zunächst die
 Aufnahmezeiten angepasst werden, da wir die Realzeit auf \SI{600}{\second} gesetzt
 haben und diese durch Totzeiten des Detektors von der Aufnahmezeit abweicht.
-Nach Anpassung der Zeit müssen wir die Untergrundmessung von der Messung der Spektren 
-abziehen. Von den gefilterten Spektren untersuchen wir im folgenden die durch
-$\gamma$-Zerfall entstandenen Ausschläge, wie in
-Abbildung~\ref{fig:energiekalibrierung} zu sehen ist.
+Deshalb Teilen wir alle Spektren durch die jeweilige Lebenszeit der Messung.
+Anschließend ziehen wir noch den Untergrund von den Spektren 
+ab. Von den gefilterten Spektren untersuchen wir im folgenden die durch
+$\gamma$-Zerfall entstandenen Ausschläge (vlg. z.B. Abbildung~\ref{fig:Sz_CS}).
 % FIXME Satzende?
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\plotwidth]{Ge_calib}
-    \caption{%
-	    $^{152}\text{Eu}$-Spektrum im Ge-Detektor
-        %
-    }
-    \label{fig:energiekalibrierung}
-\end{figure}
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=\plotwidth]{Ge_calib}
+%    \caption{%
+%	    $^{152}\text{Eu}$-Spektrum im Ge-Detektor
+%        %
+%    }
+%    \label{fig:energiekalibrierung}
+%\end{figure}
 
 \section{Spektren}
 \subsection{Szintillationsspektrometer}
@@ -275,7 +275,7 @@ Abbildung~\ref{fig:energiekalibrierung} zu sehen ist.
 	\caption{%
             Szintillationsspektrometer mit $^{137}\text{Cs}$-Quelle
 	}
-	\label{fig:}
+	\label{fig:Sz_CS}
 \end{figure}
 \begin{figure}[htbp]
 	\centering
@@ -283,7 +283,7 @@ Abbildung~\ref{fig:energiekalibrierung} zu sehen ist.
 	\caption{%
             Szintillationsspektrometer mit $^{60}\text{Co}$-Quelle
 	}
-	\label{fig:}
+	\label{fig:Sz_CO}
 \end{figure}
 \begin{figure}[htbp]
 	\centering
@@ -291,10 +291,10 @@ Abbildung~\ref{fig:energiekalibrierung} zu sehen ist.
 	\caption{%
             Szintillationsspektrometer mit $^{152}\text{Eu}$-Quelle
 	}
-	\label{fig:}
+	\label{fig:Sz_EU}
 \end{figure}
 
-
+\clearpage
 \subsection{Ge-Detektor}
 
 \begin{figure}[htbp]
@@ -303,7 +303,7 @@ Abbildung~\ref{fig:energiekalibrierung} zu sehen ist.
 	\caption{%
             Ge-Detektor mit $^{137}\text{Cs}$-Quelle
 	}
-	\label{fig:}
+	\label{fig:Ge_CS}
 \end{figure}
 \begin{figure}[htbp]
 	\centering
@@ -311,7 +311,7 @@ Abbildung~\ref{fig:energiekalibrierung} zu sehen ist.
 	\caption{%
             Ge-Detektor mit $^{60}\text{Co}$-Quelle
 	}
-	\label{fig:}
+	\label{fig:Ge_CO}
 \end{figure}
 \begin{figure}[htbp]
 	\centering
@@ -319,9 +319,8 @@ Abbildung~\ref{fig:energiekalibrierung} zu sehen ist.
 	\caption{%
             Ge-Detektor mit $^{152}\text{Eu}$-Quelle
 	}
-	\label{fig:}
+	\label{fig:Ge_EU}
 \end{figure}
-
 
 
 
@@ -335,12 +334,14 @@ Verteilungsfunktionen anpassen. Über den Schwerpunkt erhalten wir die Kanalnumm
 der vorgegebenen Energie . 
 An die Daten aus dem NaJ(Ti)-Detektor haben wir Gaußkurven und an die
 aus dem Ge-Detektor Lorentzkurven angepasst, da diese näher an den Daten liegen.
-Somit wurde den Kanalnummern eine Energie zugeordnet. Das ist in
-Abbildung~\ref{fig:Ge-peaks} zu sehen.
+Somit wurde den Kanalnummern eine Energie zugeordnet.
+Die Abbildungen dazu sind in Anhang~\ref{anhang-energie} zu finden. Im
+Fließtext werden lediglich die Ergebnisse in Tabellenform dargestellt.
+
 % FIXME Satzende?
 
 \begin{tabular}{SSSSSS}
-    {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
+    {Nummer} & {Kanal} & {FWHM} & {Fläche} & {rel.\ Intens.} &
     {$E_\gamma$ / \si{\kilo\electronvolt}} \\
     \midrule
     %< for row in sz_fits_table >%
@@ -349,21 +350,19 @@ Abbildung~\ref{fig:Ge-peaks} zu sehen.
 \end{tabular}
 
 Für den NaJ(Ti)-Detektor nutzen wir die beiden am besten getrennten Linien des
-$^{152}\text{Eu}$: die Linie des $^{137}\text{Cs}$ und die Linien des
-$^{60}\text{Co}$.
+$^{152}\text{Eu}$ (\numrange{1}{2}) die Linie des $^{137}\text{Cs}$ (\num{3}) und die Linien des
+$^{60}\text{Co}$ (\numrange{3}{4}).
 
 \begin{tabular}{SSSSSS}
-    {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
+    {Nummer} & {Kanal} & {FWHM} & {Fläche} & {rel.\ Intens.} &
     {$E_\gamma$ / \si{\kilo\electronvolt}} \\
     \midrule
     %< for row in ge_eu_fits_table >%
     << ' & '.join(row) >> \\
     %< endfor >%
-    \midrule
     %< for row in ge_cs_fits_table >%
     << ' & '.join(row) >> \\
     %< endfor >%
-    \midrule
     %< for row in ge_co_fits_table >%
     << ' & '.join(row) >> \\
     %< endfor >%
@@ -371,7 +370,9 @@ $^{60}\text{Co}$.
 
 Da die Energieauflösung des Ge-Detektors deutlich besser ist als die des 
 NaJ(Ti)-Detektors lassen sich deutlich mehr Linien des $^{152}\text{Eu}$
-erkennen und trennen sodass wir davon sieben verwerten konnten.
+erkennen und trennen sodass wir davon sieben verwerten konnten. Von
+$^{137}\text{Cs}$ (\num{8}) und $^{60}\text{Co}$ (\numrange{9}{10}) nehmen wir
+die gleichen Linien wie vorher.
 
 Das Energie-zu-Kanal Verhältnis haben wir grafisch in
 Abbildung~\ref{fig:ge_kanal} für den
@@ -395,44 +396,23 @@ Ge-Detektor
 
 \section{Halbwertsbreiten}
 Da wir bereits Lorentz- und Gaußkurven angepasst haben um den Schwerpunkt zu
-bestimmen, kennen wir auch die Halbwertsbreiten $\Gamma$.
+bestimmen, kennen wir auch die Halbwertsbreiten.
 
 \begin{align*}
 	f_\text{Gauß}\del x &= \frac1{\sigma \sqrt{2\pi}}
 	\eup^{-\frac12\del{\frac{x
 	- \langle x\rangle}{\sigma}}^2}
-	&&\text{mit FWHM} = 2.35\sigma\\
+	&&\text{FWHM} = 2.35\sigma\\
 	\\
 	f_\text{Lorentz}\del x &= \frac1\pi \frac\sigma{\del{x - \langle x
 	\rangle}^2 + \sigma^2}
-	&&\text{mit FWHM} = \sigma\\
+	&&\text{FWHM} = \sigma\\
 \end{align*}
 
 %TODO kommentar zur detektor abhängigkeit.
 An der Breite der Linien zeigt sich, um wie viel besser die Energieauflösung des
 Ge-Detektors ist. Deshalb lassen sich mit dem Ge-Detektor mehr Linien
 deutlich trennen.
-
-\section{Intrinsische Halbwertbreite des Ge-Detektors}
-Aus den Halbwertsbreiten der Linien, die mit dem Ge-Detektor aufgenommen
-wurden,
-lässt sich die intrinsische Halbwertsbreite $\Delta E_d$ bestimmen.
-\[
-	\Delta E_d(E_\gamma)=\text{Const}\cdot\sqrt{E_\gamma}
-\]
-Dieser Zusammenhang wurde in Abbildung~\ref{fig:halbwertsbreite} untersucht und die Konstante
-ermittelt.
-Mit dem Wert, den wir für die intrinsische Halbwertsbreite gefunden haben, lässt
-sich wie folgt der elektronische Anteil der Halbwertsbreite bestimmen.
-\[
-	\Delta E(E_\gamma)=\sqrt{\Delta E_d(E_\gamma))^2+(\Delta E_e)^2}
-\]
-Wir erhalten:
-\[
-    \text{Const} = \num{<< ge_const >>}\,\sqrt{\si{\kilo\electronvolt}}
-    ,\qquad
-    \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
-\]
 
 \section{Nachweißgüte der Detektoren}
 
@@ -476,6 +456,28 @@ Ge-Detektor
     \text{Absolute Peakeffizienz (Cs)} = \num{<< sz_cs_abs >>}
 \]
 
+\section{Intrinsische Halbwertbreite des Ge-Detektors}
+Aus den Halbwertsbreiten der Linien, die mit dem Ge-Detektor aufgenommen
+wurden,
+lässt sich die intrinsische Halbwertsbreite $\Delta E_d$ bestimmen.
+\[
+	\Delta E_d(E_\gamma)=\text{Const}\cdot\sqrt{E_\gamma}
+\]
+Dieser Zusammenhang wurde in Abbildung~\ref{fig:halbwertsbreite} untersucht und die Konstante
+ermittelt.
+Mit dem Wert, den wir für die intrinsische Halbwertsbreite gefunden haben, lässt
+sich wie folgt der elektronische Anteil der Halbwertsbreite bestimmen.
+\[
+	\Delta E(E_\gamma)=\sqrt{\Delta E_d(E_\gamma))^2+(\Delta E_e)^2}
+\]
+Wir erhalten:
+\[
+    \text{Const} = \num{<< ge_const >>}\,\sqrt{\si{\kilo\electronvolt}}
+    ,\qquad
+    \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
+\]
+
+\section{Effizienz des Ge-Detektors}
 
 Um die relative Effizienz des Ge-Detektors zu bestimmen ermitteln wir die
 relative Intensität aus der Fläche und der Energie der verschiedenen
@@ -511,14 +513,17 @@ mess.} & {Effizienz} \\
     \caption{%
 	    Energieabhängige Effizenz des Ge-Detektors.
         %
-            Fit mit $a \cdot (E/\si{\kilo\electronvolt})^b + c$ mit
-            $a = \num{<< ge_effizienz_a >>}$,
-            $b = \num{<< ge_effizienz_b >>}$ und
-            $c = \num{<< ge_effizienz_c >>}$.
     }
     \label{fig:effizienz}
 \end{figure}
 
+Da bei der Detektoreffizienz eine Potenzfunktion zu erwarten ist, versuchen wir
+eine solche an die Daten anzupassen. Wenn man den ersten Datenpunkt auslässt,
+eine konstante Effizienz bei niedirgen Energien erwartend, erhält man eine sehr
+gute Anpassung $a \cdot (E/\si{\kilo\electronvolt})^b + c$ mit
+$a = \num{<< ge_effizienz_a >>}$,
+$b = \num{<< ge_effizienz_b >>}$ und
+$c = \num{<< ge_effizienz_c >>}$.
 
 
 
@@ -716,10 +721,10 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
 
 
 \chapter{Vorbereitungen}
-\section{Energiekalibrierung}
+\section{Energiekalibrierung}\label{anhang-energie}
 
 \subsection{Szintillationsspektrometer}
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\plotwidth]{Sz-CO-peaks}
     \caption{%
@@ -730,7 +735,7 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
     \label{fig:}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\plotwidth]{Sz-CS-peaks}
     \caption{%
@@ -741,7 +746,7 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
     \label{fig:}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\plotwidth]{Sz-EU-peaks}
     \caption{%
@@ -752,7 +757,7 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
     \label{fig:}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\plotwidth]{sz_channels}
     \caption{%
@@ -762,9 +767,10 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
     \label{fig:sz_kanal}
 \end{figure}
 
+\clearpage
 \subsection{Ge-Detektor}
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\plotwidth]{Ge_calib-peaks}
     \caption{%
@@ -774,7 +780,7 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
     \label{fig:Ge-peaks}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\plotwidth]{ge_channels}
     \caption{%
