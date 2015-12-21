@@ -196,7 +196,7 @@ Sättigung herrscht. Hierdurch ist die Proportionalität zwischen Signalhöhe un
 Energie nicht beeinträchtigt. Da das Signal allerdings nur sehr langsam
 ansteigt, man spricht vom \emph{Slow}-Signal, ist die Zeitauflösung beeinträchtigt.
 Deswegen benutzt man hier das sogenannte \emph{Fast}-Signal. Es wird an der Anode
-abgegriffen, da dort Sättigung vorliegt, wodurch das Signal schnell ansteigt.
+abgegriffen, weil dort Sättigung vorliegt. Hier durch steigt das Signal schnell an.
 Die Amplitude ist allerdings nicht mehr proportional zur Energie.
 Um die Zeitauflösung ermitteln zu können nutzt man eine
 Slow-Fast-Koinzidenzschaltung. Man misst bekannte Linien und bestimmt aus den
@@ -205,8 +205,8 @@ angepassten Funktionen die Halbwertsbreite.
 %TODO für Nukleare elektronik
 Für die Zeitkalibrierung nutzt man
 am besten ein Isotop, welches einen $\beta^+$-Zerfall besitzt. Dadurch kann
-man gewährleisten, dass gleichzeitig zwei Photonen mit bekannter Wellenlänge
-von \SI{511}{\kilo\electronvolt} durch die Rekombination von Elektron und
+man gewährleisten, dass gleichzeitig zwei Photonen, mit der bekannten Wellenlänge
+von \SI{511}{\kilo\electronvolt}, durch die Rekombination von Elektron und
 Positron entstehen.
 
 \subsection{Splitter}
@@ -217,6 +217,17 @@ Im Laufe des Versuches wird es nötig sein, dass das Signal aufgeteilt wird,
 ohne dabei verformt zu werden. Hierfür nutzt man ein Bauteil, welches
 \emph{Splitter}
 genannt wird. 
+
+\subsection{Constant Fraction Diskriminator}
+
+Ein CFD ist ein Diskriminator und somit in der Lage ein analoges
+Eingangsignal in ein digitales Ausgangssignal umzuwandeln, wenn ein Signal einen
+bestimmten Wert übersteigt.
+Der Constant Fraction Diskriminator ist allerdings auch in der Lage Signale
+verschiedener Größe zu detektieren, sofern sie die selbe Form haben, da diese
+dann die gleiche Anstiegszeit haben. Das digitale Signal wird abgegeben, sobald
+das analoge Signal einen bestimmten Bruchteil seiner Amplitude erreicht.
+
 
 \subsection{Einkanalanalysator}
 
@@ -235,15 +246,15 @@ Dies ist ein Bauteil, welches einkommende Signale nach Amplitude sortiert und
 dann den Kanal, welcher der Impulshöhe entspricht, hoch setzt. So erhalten wir ein
 Histogramm. Der MCA ist aus mehreren SCAs aufgebaut.
 
-\subsection{Constant Fraction Diskriminator}
+%\subsection{Constant Fraction Diskriminator}
 
-Ein CFD ist ein Diskriminator und somit in der Lage ein analoges
-Eingangsignal in ein digitales Ausgangssignal umzuwandeln, wenn ein Signal einen
-bestimmten Wert übersteigt.
-Der Constant Fraction Diskriminator ist allerdings auch in der Lage Signale
-verschiedener Größe zu detektieren, sofern sie die selbe Form haben, da diese
-dann die gleiche Anstiegszeit haben. Das digitale Signal wird abgegeben, sobald
-das analoge Signal einen bestimmten Bruchteil seiner Amplitude erreicht.
+%Ein CFD ist ein Diskriminator und somit in der Lage ein analoges
+%Eingangsignal in ein digitales Ausgangssignal umzuwandeln, wenn ein Signal einen
+%bestimmten Wert übersteigt.
+%Der Constant Fraction Diskriminator ist allerdings auch in der Lage Signale
+%verschiedener Größe zu detektieren, sofern sie die selbe Form haben, da diese
+%dann die gleiche Anstiegszeit haben. Das digitale Signal wird abgegeben, sobald
+%das analoge Signal einen bestimmten Bruchteil seiner Amplitude erreicht.
 
 \subsection{Verstärker}
 
