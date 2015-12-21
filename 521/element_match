@@ -181,6 +181,9 @@ def main():
 
     ax.grid(True)
     ax.margins(.05)
+    ax.set_xlabel('Energie / keV')
+    ax.set_ylabel('Ereignisse / willkürlich')
+    ax.get_xaxis().get_major_formatter().set_useOffset(False)
     fig.tight_layout()
 
     if options.show:
