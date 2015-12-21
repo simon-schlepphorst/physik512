@@ -86,6 +86,7 @@ def plot_pair(basename, underground_basename):# {{{
     ax.margins(0.05)
     ax.set_xlabel('Ereignisse / s')
     ax.set_ylabel('Kanal')
+    ax.legend(loc='best')
     fig.tight_layout()
     fig.savefig('_build/' + basename + '.pdf')# }}}
 
