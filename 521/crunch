@@ -715,6 +715,29 @@ def calibrate_ge(T):
             (1375, 1380),
             ]
 
+    fit_names =[
+            'Pb-212',
+            'Pb-214',
+            'Pb-214',
+            '',
+            'Pb-214',
+            '',
+            '',
+            'Ti-208',
+            'Bi-214',
+            'Cs-137',
+            'Bi-212',
+            'Bi-214',
+            'Bi-214',
+            'Ti-208',
+            '',
+            '',
+            '',
+            'Bi-214',
+            'Bi-214',
+            'Bi-214',
+            ]
+
     fit_range = inv_calibration(fit_range)
 
     points = []
@@ -766,7 +789,7 @@ def calibrate_ge(T):
         unitprint.siunitx(list_mean_val, list_mean_err),
         unitprint.siunitx(list_full_width_val, list_full_width_err),
         unitprint.siunitx(list_area_val * 1e4, list_area_err * 1e4),
-        unitprint.siunitx(list_offset_val * 1e5, list_offset_err * 1e5),
+        fit_names,
         ))# }}}
 
 
