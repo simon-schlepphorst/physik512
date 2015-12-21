@@ -79,7 +79,7 @@ def plot_pair(basename, underground_basename):# {{{
     data = load_data_normalized(basename)
     underground = load_data_normalized(underground_basename)
 
-    fig = pl.figure()
+    fig = pl.figure(figsize=(8,5))
     ax = fig.add_subplot(1, 1, 1)
     ax.plot(data[:, 0], data[:, 1], marker=None, label='Probe')
     ax.plot(underground[:, 0], underground[:, 1], marker=None, label='Untergrund')
