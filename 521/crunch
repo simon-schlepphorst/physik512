@@ -42,7 +42,7 @@ def lorentz_peak_2(x, mean, width, area):
     return area / np.pi * width/2 / ((x - mean)**2 + (width/2)**2)
 
 def gauss_peak(x, mean, width, area):
-    return area / (width * np.sqrt(2 * np.pi)) * np.exp( - ((x - mean) / width)**2 / 2)
+    return area / (width * np.sqrt(2 * np.pi)) * np.exp( - ((x - mean) /  width)**2 / 2)
 
 def linear(x, slope, offset):
     return x * slope + offset
@@ -180,6 +180,10 @@ def calibrate_sz(T):
             width_val, width_err = parameters[1]
             area_val, area_err = parameters[2]
             #offset_val, offset_err = parameters[3]
+
+            # Konvertiere Standardabweichung der Gaußkurve in FWHM.
+            width_val *= 2 * np.sqrt(2 * np.log(2))
+            width_err *= 2 * np.sqrt(2 * np.log(2))
 
             #print(name, i, 'Integral\t', scipy.integrate.simps(gauss_peak(data[:, 0], *popt), data[:, 0]))
             #print(name, i, 'area\t', area_val, '+-', area_err)
