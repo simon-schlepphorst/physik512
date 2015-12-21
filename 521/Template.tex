@@ -692,18 +692,9 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
 %< for num, first, last, kev in plot_fit_peaks >%
 \begin{figure}
     \centering
-    \begin{subfigure}{\linewidth}
-        \includegraphics[width=.8\linewidth]{plot_fit_peak__<< num >>_langzeit}
-        \caption{Rohdaten}
-    \end{subfigure}
-    \begin{subfigure}{\linewidth}
-        \includegraphics[width=.8\linewidth]{element_match_<< num >>_score}
-        \caption{Kandidaten nach Übereinstimmung}
-    \end{subfigure}
-    \begin{subfigure}{\linewidth}
-        \includegraphics[width=.8\linewidth]{element_match_<< num >>_contrast}
-        \caption{Kandidaten zum Zuordnen}
-    \end{subfigure}
+    \includegraphics[width=.8\linewidth]{plot_fit_peak__<< num >>_langzeit}
+    \includegraphics[width=.8\linewidth]{element_match_<< num >>_score}
+    \includegraphics[width=.8\linewidth]{element_match_<< num >>_contrast}
     \caption{%
         \SI{<< kev >>}{\kilo\electronvolt}-Linie
         mit Lorentzanpassung
