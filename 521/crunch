@@ -84,8 +84,9 @@ def plot_pair(basename, underground_basename):# {{{
     ax.plot(data[:, 0], data[:, 1], marker=None, label='Probe')
     ax.plot(underground[:, 0], underground[:, 1], marker=None, label='Untergrund')
     ax.margins(0.05)
-    ax.set_xlabel('')
-    ax.set_ylabel('')
+    ax.set_xlabel('Ereignisse / s')
+    ax.set_ylabel('Kanal')
+    ax.legend(loc='best')
     fig.tight_layout()
     fig.savefig('_build/' + basename + '.pdf')# }}}
 
