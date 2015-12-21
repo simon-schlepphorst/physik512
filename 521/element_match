@@ -208,8 +208,8 @@ def main():
 
     # Zeige Matchness an
 
-    for matchness, element in results_sorted:
-       print('{:5s} {:+.10f}'.format(element, matchness))
+    #for matchness, element in results_sorted:
+    #   print('{:5s} {:+.10f}'.format(element, matchness))
 
 
 
