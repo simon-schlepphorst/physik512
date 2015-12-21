@@ -4,6 +4,7 @@
 
 \usepackage{placeins}
 \usepackage[maxfloats=50]{morefloats}
+\usepackage{subcaption}
 
 \usepackage{csquotes}
 
@@ -688,10 +689,21 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
 \section{Bodenprobe}
 %TODO
 
-%< for num, kev in plot_fit_peaks >%
+%< for num, first, last, kev in plot_fit_peaks >%
 \begin{figure}
     \centering
-    \includegraphics[width=.8\linewidth]{plot_fit_peak__<< num >>_langzeit}
+    \begin{subfigure}{\linewidth}
+        \includegraphics[width=.8\linewidth]{plot_fit_peak__<< num >>_langzeit}
+        \caption{Rohdaten}
+    \end{subfigure}
+    \begin{subfigure}{\linewidth}
+        \includegraphics[width=.8\linewidth]{element_match_<< num >>_score}
+        \caption{Kandidaten nach Übereinstimmung}
+    \end{subfigure}
+    \begin{subfigure}{\linewidth}
+        \includegraphics[width=.8\linewidth]{element_match_<< num >>_contrast}
+        \caption{Kandidaten zum Zuordnen}
+    \end{subfigure}
     \caption{%
         \SI{<< kev >>}{\kilo\electronvolt}-Linie
         mit Lorentzanpassung
