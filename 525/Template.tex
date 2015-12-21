@@ -895,7 +895,7 @@ rechten Detekor.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{TEK00046}
+	\includegraphics[width=\plotwidth]{TEK00046}
 	\caption{%
 		Slow-Fast Koinzidenz
 	}
@@ -911,7 +911,7 @@ Abbildung~\ref{fig:langzeit_plot} zu sehen.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{plot_langzeit}
+	\includegraphics[width=\plotwidth]{plot_langzeit_raw}
 	\caption{%
 		Lebenszeitkurve
 	}
@@ -1160,7 +1160,7 @@ anschließend über diese mitteln erhalten wir eine Zeitauflösung von
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{plot_time_calibration}
+	\includegraphics[width=\plotwidth]{plot_time_calibration}
 	\caption{%
 		Um \SI{16}{\nano\second} versetzte \SI{511}{\kilo\electronvolt}
 		Linien aus $^{22}\text{Na}$ zur Zeiteichung
@@ -1187,7 +1187,7 @@ anschließend über diese mitteln erhalten wir eine Zeitauflösung von
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{plot_time_calibrate_fit}
+	\includegraphics[width=\plotwidth]{plot_time_calibrate_fit}
 	\caption{%
 		Zeiteichung
 	}
@@ -1198,23 +1198,36 @@ anschließend über diese mitteln erhalten wir eine Zeitauflösung von
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{../graphics/fit_ranges}
+	\includegraphics[width=\plotwidth]{plot_langzeit}
 	\caption{%
+		Lebenszeitkurve
+	}
+	\label{fig:langzeit_plot_daten}
+\end{figure}
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\plotwidth]{../graphics/fit_ranges}
+	\caption{%
+		Ermittelte Lebenszeit, je nachdem welcher Endbereich der Daten
+		als Anpassungsgrundlage genommen wurde
 	}
 	\label{fig:langzeit_fit_ranges}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{../graphics/hist}
+	\includegraphics[width=\plotwidth]{../graphics/hist}
 	\caption{%
+		Häufigkeit der ermittelten Lebenszeiten
 	}
 	\label{fig:langzeit_hist}
 \end{figure}
 
 \[
-	\tau = \SI{11.0711512013 +- 1.59843215374}{\nano\second}\\
-	\text{Abweichung} = 1.24007292963 \sigma
+	\tau = \SI{11.07 +- 1.59}{\nano\second}\\
+	\text{Abweichung} = 1.24 \sigma
 \]
 
 
