@@ -669,8 +669,21 @@ $^{68}\text{Ga}$ und $^{64}\text{Cu}$ kommen nicht natürlich vor, werden aber
 in der Medizin eingesetzt.
 
 
-\section{Bodenprobe}
+\section{Langzeitmessung}
 
+\subsection{Vorbereitung des Spektrums}
+
+Bei dem Vergleich von Daten und Untergrund aus der Langzeitmessung fällt sehr
+schnell auf, dass der Untergrund deutlich höher liegt, als die Daten. Deshalb
+ist es nicht möglich den Untergrund von den Daten abzuziehen um ein sauberes
+Spektrum zu erhalten.
+
+Stattdessen teilen wir alle Messwerte durch die vorher bestimme
+Detektorgenauigkeit und können so den exponentiellen Abfall im Untergrund
+herausfiltern. Da die Detektorgenauigkeit aber nur oberhalb von
+\SI{200}{\kilo\electronvolt} damit genähert werden kann, beschränken wir uns in
+der folgenden Auswertung ebenfalls auf diesen Bereich. Die so bereinigten
+Spektren sind in Abbildung~\ref{fig:langzeit_probe_untergrund} zu sehen.
 
 \begin{figure}
 	\centering
@@ -681,15 +694,25 @@ in der Medizin eingesetzt.
 	\label{fig:langzeit_probe_untergrund}
 \end{figure}
 
+Die in diesem Spektrum von Hand identifizierten Linien haben wir dann einzeln
+mit Lorentzkurven angepasst. Dies ist etwas unübersichtlich in
+Abbildung~\ref{fig:langzeit_probe_peaks} dargestellt. Im Detail kann man die
+einzelnen Anpassungen in Anhang~\ref{anhang-bodenprobe} betrachten. Dort sind
+auch die Details der in Kapiten~\ref{identifizieren-isotope} beschriebenden
+Auswertungsmethode zu sehen.
+Die Ergebnisse sind dann in übersichtlicher Form in
+Tabelle~\ref{tab:langzeit-anpassungen-tabelle} zu finden.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\plotwidth]{plot_peaks_langzeit}
 	\caption{%
-		Peaks im Probenspektrum
+		Spektrum der Bodenprobe mit Lorentzkurven
 	}
 	\label{fig:langzeit_probe_peaks}
 \end{figure}
+
+\subsection{Identifizieren der Isotope}\label{identifizieren-isotope}
 
 
 
@@ -706,9 +729,9 @@ in der Medizin eingesetzt.
 		%< endfor ->%
 	\end{tabular}
 	\caption{%
-		Anpassungsparameter für die Energiekalibrierung
+		Linien im Spektrum der Bodenprobe mit identifizierten Elementen
 	}
-	\label{tab:energiekalibrierung}
+	\label{tab:langzeit-anpassungen-tabelle}
 \end{figure}
 
 
@@ -732,7 +755,12 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
 \begin{appendix}
 
 \chapter{Anhang}
-\section{Bodenprobe}
+\section{Bodenprobe}\label{anhang-bodenprobe}
+Auf den folgenden Abbildungen sieht man oben eine an die Daten angepasste
+Lorentzkurve in dem dafür genutzten Datenbereich. In der Mitte wurden die
+Spektren aus der Datenbank mit den bestpassenden Spektren überlagert und unten
+diese Überlagerung nach Elementen aufgeschlüsselt.
+
 %TODO
 
 %< for num, first, last, kev in plot_fit_peaks >%
@@ -743,7 +771,6 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
     \includegraphics[width=.8\linewidth]{element_match_<< num >>_contrast}
     \caption{%
         \SI{<< kev >>}{\kilo\electronvolt}-Linie
-        mit Lorentzanpassung
     }
     \label{fig:}
 \end{figure}
