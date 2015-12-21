@@ -853,6 +853,7 @@ def fit_peak(T, name, data, first, last, energy=0, show=False, save=False, side=
         ax.grid(True)
         ax.set_xlabel('Energie / keV')
         ax.set_ylabel('Ereignisse / $10^3$ s')
+        ax.get_xaxis().get_major_formatter().set_useOffset(False)
         fig.tight_layout()
         fig.savefig('_build/plot_fit_peak_'+ side + '_' + '{}'.format(num) + '_' + name +'.pdf')
         T['plot_fit_peaks'].append((num, '{:04d}'.format(int(first)), '{:04d}'.format(int(last)), unitprint.siunitx(popt[0], perr[0])))
