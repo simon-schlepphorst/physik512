@@ -1211,7 +1211,7 @@ anschließend über diese mitteln erhalten wir eine Zeitauflösung von
 	\centering
 	\includegraphics[width=\plotwidth]{plot_langzeit}
 	\caption{%
-		Lebenszeitkurve
+		Lebenszeitkurve mit Anpassung
 	}
 	\label{fig:langzeit_plot_daten}
 \end{figure}
@@ -1236,11 +1236,27 @@ anschließend über diese mitteln erhalten wir eine Zeitauflösung von
 	\label{fig:langzeit_hist}
 \end{figure}
 
+Zuerst haben wir die Zeiteichung auf die Lebenszeitkurve angewand und
+Abbildung~\ref{fig:langzeit_plot_daten} erhalten. Allerdings weisen unsere
+Daten eine Schwebung auf, die das direkte Anpassen einer Funktion der folgenden
+Form erschweren:
+\begin{align}
+	N\del{t} = N_0 \exp\del{\frac{1}{\tau}}
+\end{align}
+Deshalb haben wir untersucht, welche Lebenzeiten wir erhalten, wenn wir den
+Bereich der Anpassung auf unterschiedlich lange Enden der Kurve beschränken.
+Daraus erhalten wir Abbildung~\ref{fig:langzeit_fit_ranges}. Wenn wir nun die
+Häufigkeiten der erhaltenen Lebenszeiten in ein Histogram eintragen (vgl.
+Abbildung~\ref{fig:langzeit_hist}) können wir aus dieser Verteilung den
+Mittelpunkt und die Abweichung bestimmen und erhalten für die Lebenszeit:
 \begin{align*}
 	\tau = \SI{11.07}{\nano\second} &&\Delta \tau =
 	\SI{1.59}{\nano\second}
-	&&\text{Abweichung} = 1.24 \sigma
 \end{align*}
+
+Zum Literaturwert von $\tau = \SI{9.1}{\nano\second}$ ergibt das eine
+Abweichung von $1.24 \sigma$. Das ist zwar kein sehr gutes Ergebnis, liegt aber
+immer noch im erlaubten Rahmen.
 
 
 \chapter{Ergebnis}
