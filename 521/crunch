@@ -81,11 +81,11 @@ def plot_pair(basename, underground_basename):# {{{
 
     fig = pl.figure()
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(data[:, 0], data[:, 1], marker=None, label='Probe')
-    ax.plot(underground[:, 0], underground[:, 1], marker=None, label='Untergrund')
+    ax.plot(data[:, 0], data[:, 1], marker=None, label='Probe', alpha=0.6, color='#e41a1c')
+    ax.plot(underground[:, 0], underground[:, 1], marker=None, label='Untergrund', alpha=0.6, color='#377eb9')
     ax.margins(0.05)
-    ax.set_xlabel('Ereignisse / s')
-    ax.set_ylabel('Kanal')
+    ax.set_ylabel('Ereignisse / s')
+    ax.set_xlabel('Kanal')
     ax.legend(loc='best')
     fig.tight_layout()
     fig.savefig('_build/' + basename + '.pdf')# }}}
@@ -138,7 +138,7 @@ def calibrate_sz(T):
         #events_smooth = scipy.ndimage.filters.gaussian_filter(data_cutted[:, 1], 200)
         #events = data[:, 1] - events_smooth
 
-        fig = pl.figure()
+        fig = pl.figure(figsize=(8,4))
 
         #ax = fig.add_subplot(1, 1, 1)
         #ax.plot(data[:, 0], data[:, 1])
@@ -165,8 +165,8 @@ def calibrate_sz(T):
             fit_y = gauss_peak(fit_x, *popt)
 
             ax = fig.add_subplot(1, len(fit_ranges), i)
-            ax.plot(x, y, marker=None)
-            ax.plot(fit_x, fit_y, marker=None)
+            ax.plot(x, y, marker=None, alpha=0.6, color='#377eb9')
+            ax.plot(fit_x, fit_y, marker=None, alpha=0.6, color='#e41a1c', linewidth=2)
             ax.margins(0.05)
             for label in ax.get_xticklabels():
                 #label.set_fontsize(9)
@@ -336,7 +336,7 @@ def calibrate_ge(T):
         (7883, 7970, 1408.011),
     ]# }}}
 
-    fig = pl.figure()
+    #fig = pl.figure()
 
     list_mean_val = np.array([])# {{{
     list_mean_err = np.array([])
@@ -351,15 +351,22 @@ def calibrate_ge(T):
 
     count = 0# {{{
     for name, data, fit_ranges in [('EU', eu, fit_range_eu), ('CS', cs, fit_range_cs), ('CO', co, fit_range_co)]:
+        if name == 'EU':
+            fig = pl.figure()
+        else:
+            fig = pl.figure(figsize=(8,4))
         for i, (first, last, expected_energy) in zip(itertools.count(1), fit_ranges):
             x, y = data[first:last, 0], data[first:last, 1]
             popt, pconv = op.curve_fit(lorentz_peak, x, y, p0=[np.mean(x), 10, 100, 0])
             fit_x = np.linspace(np.min(x), np.max(x), 1000)
             fit_y = lorentz_peak(fit_x, *popt)
 
-            ax = fig.add_subplot(3, (len(fit_ranges) + 2)//3, i)
-            ax.plot(x, y, marker=None)
-            ax.plot(fit_x, fit_y, marker=None)
+            if name == 'EU':
+                ax = fig.add_subplot(3, (len(fit_ranges) + 2)//3, i)
+            else:
+                ax = fig.add_subplot(1, len(fit_ranges), i)
+            ax.plot(x, y, marker=None, alpha=0.6, color='#377eb9')
+            ax.plot(fit_x, fit_y, marker=None, alpha=0.6, color='#e41a1c', linewidth=2)
             ax.margins(0.05)
             for label in ax.get_xticklabels():
                 #label.set_fontsize(9)
@@ -395,10 +402,6 @@ def calibrate_ge(T):
             first_eu = 0
             last_eu = count
 
-            fig.tight_layout()
-            fig.savefig('_build/Ge_calib-peaks.pdf')
-            fig.clear()
-
         elif name == 'CS':
             first_cs = last_eu + 1
             last_cs = count
@@ -422,8 +425,6 @@ def calibrate_ge(T):
 
             T['ge_cs_abs'] = unitprint.siunitx(peak_to_abs, peak_to_abs_err)
 
-            fig.clear()
-
         elif name == 'CO':
             first_co = last_cs + 1
             last_co = count
@@ -439,7 +440,10 @@ def calibrate_ge(T):
 
             T['ge_co_ptt'] = unitprint.siunitx(peak_to_total, peak_to_total_err)
 
-            fig.clear()# }}}
+        fig.tight_layout()
+        fig.savefig('_build/' + name + '_calib-peaks.pdf')
+
+        fig.clear()# }}}
 
     #print(len(list_area_val))
     #print(first_eu, last_eu, first_cs, last_cs, first_co, last_co)

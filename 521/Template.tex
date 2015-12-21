@@ -2,11 +2,12 @@
 
 \usepackage{../../header}
 
-\usepackage{placeins}
+\usepackage[section]{placeins}
 \usepackage[maxfloats=50]{morefloats}
 \usepackage{subcaption}
 
 \usepackage{csquotes}
+
 
 \usepackage{tikz}
 \usetikzlibrary{chains}
@@ -96,9 +97,9 @@ und der Energie der $\gamma$-Strahlung ab.
 Der Photoeffekt beschreibt den Vorgang, bei dem ein Photon ein Elektron aus
 dem Atom auslöst.
 Hierbei gibt das Photon seine komplette Energie ab.
-Die kinetische Energie des ausgelösten Elektrons hängt nur über die
-Bindungsenergie ($E_\text{Bind.}$) mit dem der Energie des Photons ($h\nu$),
-also dessen Frequenz ($\nu$) zusammen.
+Die kinetische Energie des ausgelösten Elektrons hängt nur mit der
+Bindungsenergie ($E_\text{Bind.}$) und der Energie des Photons ($h\nu$),
+also dessen Frequenz ($\nu$), zusammen.
 \[ 
     E = h\nu - E_\text{Bind.}
 \]
@@ -113,8 +114,8 @@ auf.
 \subsection{Paarerzeugung}
 
 Ein anderer Effekt, der bei Energien $E_\gamma \ge 2m_\text ec^2$ auftreten
-kann, ist die Elektron-Positron-Paarbildung. Wenn ein Photon außreichend
-Energie hat, so kann es ein Elektron-Positron-Paar bilden. Die Energie die das
+kann, ist die Elektron-Positron-Paarbildung. Wenn ein Photon ausreichend
+Energie hat, so kann es ein Elektron-Positron-Paar bilden. Die Energie, die das
 Photon über die Ruhemassen der beiden Teilchen hinaus hatte, bekommen diese in
 Form von kinetischer Energie. Diese Energie können sie über Stöße abgeben.
 Sobald das Positron keine kinetische Energie mehr hat, kann es mit einem
@@ -153,7 +154,7 @@ Mit einem Szintillationsdetektor lassen sich Intensität und Energie von
 ionisierender Strahlung messen.
 Er besteht aus einem Szintillator und einem Photomultiplier.
 Der Szintillator ist ein dotierter Einkristall, der von energiereicher
-Strahlung zum fluoreszieren angeregt werden kann und hinreichend
+Strahlung zum Fluoreszieren angeregt werden kann und hinreichend
 durchlässig für das von ihm emittierte Licht ist.
 
 Innerhalb des vor Lichteinfall geschützten Szintillators entstehen durch
@@ -242,89 +243,88 @@ Für die Langzeitmessung mit dem Ge-Detektor wird eine Bleiabschirmung
 aufgebaut, mit der über Nacht der Untergrund gemessen wird, bevor die Bodenprobe
 innerhalb der Abschirmung positioniert wird und erneut über Nacht gemessen wird.
 
-\chapter{Auswertung}
+\chapter{Kalibrierungen}
 
 \section{Vorbereitungen}
 
 Bevor wir anfangen können die Spektren zu untersuchen, müssen zunächst die
 Aufnahmezeiten angepasst werden, da wir die Realzeit auf \SI{600}{\second} gesetzt
 haben und diese durch Totzeiten des Detektors von der Aufnahmezeit abweicht.
-Nach Anpassung der Zeit müssen wir die Untergrundmessung von der Messung der Spektren 
-abziehen. Von den gefilterten Spektren untersuchen wir im folgenden die durch
-$\gamma$-Zerfall entstandenen Ausschläge, wie in
-Abbildung~\ref{fig:energiekalibrierung} zu sehen ist.
+Deshalb Teilen wir alle Spektren durch die jeweilige Lebenszeit der Messung.
+Anschließend ziehen wir noch den Untergrund von den Spektren 
+ab. Von den gefilterten Spektren untersuchen wir im folgenden die durch
+$\gamma$-Zerfall entstandenen Ausschläge (vlg. z.B. Abbildung~\ref{fig:Sz_CS}).
 % FIXME Satzende?
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\plotwidth]{Ge_calib}
-    \caption{%
-	    $^{152}\text{Eu}$-Spektrum im Ge-Detektor
-        %
-    }
-    \label{fig:energiekalibrierung}
-\end{figure}
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=\plotwidth]{Ge_calib}
+%    \caption{%
+%	    $^{152}\text{Eu}$-Spektrum im Ge-Detektor
+%        %
+%    }
+%    \label{fig:energiekalibrierung}
+%\end{figure}
 
-\subsection{Spektren}
-\subsubsection{Szintillationsspektrometer}
+\section{Spektren}
+\subsection{Szintillationsspektrometer}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\plotwidth]{Sz_CS}
 	\caption{%
             Szintillationsspektrometer mit $^{137}\text{Cs}$-Quelle
 	}
-	\label{fig:}
+	\label{fig:Sz_CS}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\plotwidth]{Sz_CO}
 	\caption{%
             Szintillationsspektrometer mit $^{60}\text{Co}$-Quelle
 	}
-	\label{fig:}
+	\label{fig:Sz_CO}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\plotwidth]{Sz_EU}
 	\caption{%
             Szintillationsspektrometer mit $^{152}\text{Eu}$-Quelle
 	}
-	\label{fig:}
+	\label{fig:Sz_EU}
 \end{figure}
 
+\clearpage
+\subsection{Ge-Detektor}
 
-\subsubsection{Ge-Detektor}
-
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\plotwidth]{Ge_CS}
 	\caption{%
             Ge-Detektor mit $^{137}\text{Cs}$-Quelle
 	}
-	\label{fig:}
+	\label{fig:Ge_CS}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\plotwidth]{Ge_CO}
 	\caption{%
             Ge-Detektor mit $^{60}\text{Co}$-Quelle
 	}
-	\label{fig:}
+	\label{fig:Ge_CO}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\plotwidth]{Ge_EU}
 	\caption{%
             Ge-Detektor mit $^{152}\text{Eu}$-Quelle
 	}
-	\label{fig:}
+	\label{fig:Ge_EU}
 \end{figure}
 
 
 
-
-\subsection{Energiekalibrierung}
+\section{Energiekalibrierung}
 
 Weil die Spektren mit einem Vielkanalanalysator aufgenommen werden, muss eine
 Energiekalibrierung vorgenommen werden. Hierbei wird den Nummern der 8192
@@ -334,12 +334,14 @@ Verteilungsfunktionen anpassen. Über den Schwerpunkt erhalten wir die Kanalnumm
 der vorgegebenen Energie . 
 An die Daten aus dem NaJ(Ti)-Detektor haben wir Gaußkurven und an die
 aus dem Ge-Detektor Lorentzkurven angepasst, da diese näher an den Daten liegen.
-Somit wurde den Kanalnummern eine Energie zugeordnet. Das ist in
-Abbildung~\ref{fig:Ge-peaks} zu sehen.
+Somit wurde den Kanalnummern eine Energie zugeordnet.
+Die Abbildungen dazu sind in Anhang~\ref{anhang-energie} zu finden. Im
+Fließtext werden lediglich die Ergebnisse in Tabellenform dargestellt.
+
 % FIXME Satzende?
 
 \begin{tabular}{SSSSSS}
-    {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
+    {Nummer} & {Kanal} & {FWHM} & {Fläche} & {rel.\ Intens.} &
     {$E_\gamma$ / \si{\kilo\electronvolt}} \\
     \midrule
     %< for row in sz_fits_table >%
@@ -348,21 +350,19 @@ Abbildung~\ref{fig:Ge-peaks} zu sehen.
 \end{tabular}
 
 Für den NaJ(Ti)-Detektor nutzen wir die beiden am besten getrennten Linien des
-$^{152}\text{Eu}$: die Linie des $^{137}\text{Cs}$ und die Linien des
-$^{60}\text{Co}$.
+$^{152}\text{Eu}$ (\numrange{1}{2}) die Linie des $^{137}\text{Cs}$ (\num{3}) und die Linien des
+$^{60}\text{Co}$ (\numrange{3}{4}).
 
 \begin{tabular}{SSSSSS}
-    {Nummer} & {Kanal} & {Breite $\Gamma$} & {Fläche} & {rel.\ Intens.} &
+    {Nummer} & {Kanal} & {FWHM} & {Fläche} & {rel.\ Intens.} &
     {$E_\gamma$ / \si{\kilo\electronvolt}} \\
     \midrule
     %< for row in ge_eu_fits_table >%
     << ' & '.join(row) >> \\
     %< endfor >%
-    \midrule
     %< for row in ge_cs_fits_table >%
     << ' & '.join(row) >> \\
     %< endfor >%
-    \midrule
     %< for row in ge_co_fits_table >%
     << ' & '.join(row) >> \\
     %< endfor >%
@@ -370,7 +370,9 @@ $^{60}\text{Co}$.
 
 Da die Energieauflösung des Ge-Detektors deutlich besser ist als die des 
 NaJ(Ti)-Detektors lassen sich deutlich mehr Linien des $^{152}\text{Eu}$
-erkennen und trennen sodass wir davon sieben verwerten konnten.
+erkennen und trennen sodass wir davon sieben verwerten konnten. Von
+$^{137}\text{Cs}$ (\num{8}) und $^{60}\text{Co}$ (\numrange{9}{10}) nehmen wir
+die gleichen Linien wie vorher.
 
 Das Energie-zu-Kanal Verhältnis haben wir grafisch in
 Abbildung~\ref{fig:ge_kanal} für den
@@ -392,19 +394,19 @@ Ge-Detektor
     \SI{<< ge_offset >>}{\kilo\electronvolt} \,.
 \]
 
-\subsection{Halbwertsbreiten}
+\section{Halbwertsbreiten}
 Da wir bereits Lorentz- und Gaußkurven angepasst haben um den Schwerpunkt zu
-bestimmen, kennen wir auch die Halbwertsbreiten $\Gamma$.
+bestimmen, kennen wir auch die Halbwertsbreiten.
 
 \begin{align*}
 	f_\text{Gauß}\del x &= \frac1{\sigma \sqrt{2\pi}}
 	\eup^{-\frac12\del{\frac{x
 	- \langle x\rangle}{\sigma}}^2}
-	&&\text{mit FWHM} = 2.35\sigma\\
+	&&\text{FWHM} = 2.35\sigma\\
 	\\
 	f_\text{Lorentz}\del x &= \frac1\pi \frac\sigma{\del{x - \langle x
 	\rangle}^2 + \sigma^2}
-	&&\text{mit FWHM} = \sigma\\
+	&&\text{FWHM} = \sigma\\
 \end{align*}
 
 %TODO kommentar zur detektor abhängigkeit.
@@ -412,28 +414,7 @@ An der Breite der Linien zeigt sich, um wie viel besser die Energieauflösung de
 Ge-Detektors ist. Deshalb lassen sich mit dem Ge-Detektor mehr Linien
 deutlich trennen.
 
-\subsection{Inttrinsische Halbwertbreite des Ge-Detektors}
-Aus den Halbwertsbreiten der Linien, die mit dem Ge-Detektor aufgenommen
-wurden,
-lässt sich die intrinsische Halbwertsbreite $\Delta E_d$ bestimmen.
-\[
-	\Delta E_d(E_\gamma)=\text{Const}\cdot\sqrt{E_\gamma}
-\]
-Dieser Zusammenhang wurde in Abbildung~\ref{fig:halbwertsbreite} untersucht und die Konstante
-ermittelt.
-Mit dem Wert, den wir für die intrinsische Halbwertsbreite gefunden haben, lässt
-sich wie folgt der elektronische Anteil der Halbwertsbreite bestimmen.
-\[
-	\Delta E(E_\gamma)=\sqrt{\Delta E_d(E_\gamma))^2+(\Delta E_e)^2}
-\]
-Wir erhalten:
-\[
-    \text{Const} = \num{<< ge_const >>}\,\sqrt{\si{\kilo\electronvolt}}
-    ,\qquad
-    \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
-\]
-
-\subsection{Nachweißgüte der Detektoren}
+\section{Nachweißgüte der Detektoren}
 
 Nun soll das Verhältnis der Ereignisse im Photopeak gegenüber allen Ereignissen
 im Detektor gebildet werden (Peak-to-Total-Verhältnis). Dies wird mit dem
@@ -475,6 +456,28 @@ Ge-Detektor
     \text{Absolute Peakeffizienz (Cs)} = \num{<< sz_cs_abs >>}
 \]
 
+\section{Intrinsische Halbwertbreite des Ge-Detektors}
+Aus den Halbwertsbreiten der Linien, die mit dem Ge-Detektor aufgenommen
+wurden,
+lässt sich die intrinsische Halbwertsbreite $\Delta E_d$ bestimmen.
+\[
+	\Delta E_d(E_\gamma)=\text{Const}\cdot\sqrt{E_\gamma}
+\]
+Dieser Zusammenhang wurde in Abbildung~\ref{fig:halbwertsbreite} untersucht und die Konstante
+ermittelt.
+Mit dem Wert, den wir für die intrinsische Halbwertsbreite gefunden haben, lässt
+sich wie folgt der elektronische Anteil der Halbwertsbreite bestimmen.
+\[
+	\Delta E(E_\gamma)=\sqrt{\Delta E_d(E_\gamma))^2+(\Delta E_e)^2}
+\]
+Wir erhalten:
+\[
+    \text{Const} = \num{<< ge_const >>}\,\sqrt{\si{\kilo\electronvolt}}
+    ,\qquad
+    \Delta E_\mathrm e = \SI{<< ge_electronic_width >>}{\kilo\electronvolt}
+\]
+
+\section{Effizienz des Ge-Detektors}
 
 Um die relative Effizienz des Ge-Detektors zu bestimmen ermitteln wir die
 relative Intensität aus der Fläche und der Energie der verschiedenen
@@ -510,32 +513,40 @@ mess.} & {Effizienz} \\
     \caption{%
 	    Energieabhängige Effizenz des Ge-Detektors.
         %
-            Fit mit $a \cdot (E/\si{\kilo\electronvolt})^b + c$ mit
-            $a = \num{<< ge_effizienz_a >>}$,
-            $b = \num{<< ge_effizienz_b >>}$ und
-            $c = \num{<< ge_effizienz_c >>}$.
     }
     \label{fig:effizienz}
 \end{figure}
 
+Da bei der Detektoreffizienz eine Potenzfunktion zu erwarten ist, versuchen wir
+eine solche an die Daten anzupassen. Wenn man den ersten Datenpunkt auslässt,
+eine konstante Effizienz bei niedirgen Energien erwartend, erhält man eine sehr
+gute Anpassung $a \cdot (E/\si{\kilo\electronvolt})^b + c$ mit
+$a = \num{<< ge_effizienz_a >>}$,
+$b = \num{<< ge_effizienz_b >>}$ und
+$c = \num{<< ge_effizienz_c >>}$.
 
 
 
 
 
 \clearpage
-\section{Langzeitmessung}
+\chapter{Auswertung der Langzeitmessung}
 
-\subsection{Vorbereitung des Spektrums}
+Nachdem nun die Energiekalibrierung vorgenommen und die relative
+Effizienz bestimmt wurde, können wir die daraus gewonnenen Informationen nutzen
+um den Linien aus der Langzeitmessung der Bodenprobe die Zerfallsisotope
+zuzuordnen.
 
-Bei dem Vergleich von Daten und Untergrund aus der Langzeitmessung fällt sehr
+\section{Vorbereitung des Spektrums}
+
+Bei dem Vergleich von Daten und Untergrund aus der Langzeitmessung fiel sehr
 schnell auf, dass der Untergrund deutlich höher liegt, als die Daten. Deshalb
 ist es nicht möglich den Untergrund von den Daten abzuziehen um ein sauberes
 Spektrum zu erhalten.
 
 Stattdessen teilen wir alle Messwerte durch die vorher bestimme
-Detektorgenauigkeit und können so den exponentiellen Abfall im Untergrund
-herausfiltern. Da die Detektorgenauigkeit aber nur oberhalb von
+Detektoreffizienz und können so den exponentiellen Abfall im Untergrund
+herausfiltern. Da die Detektoreffizienz aber nur oberhalb von
 \SI{200}{\kilo\electronvolt} damit genähert werden kann, beschränken wir uns in
 der folgenden Auswertung ebenfalls auf diesen Bereich. Die so bereinigten
 Spektren sind in Abbildung~\ref{fig:langzeit_probe_untergrund} zu sehen.
@@ -567,9 +578,29 @@ Tabelle~\ref{tab:langzeit-anpassungen-tabelle} zu finden.
 	\label{fig:langzeit_probe_peaks}
 \end{figure}
 
-\subsection{Identifizieren der Isotope}\label{identifizieren-isotope}
+\section{Identifizieren der Isotope}\label{identifizieren-isotope}
 
+Um uns die Auswahl der in Frage kommenden Isotope zu vereinfachen haben wir
+die Datenbank der International Atomic Energy Agency
+\parencite{IAEA-gamma-ray-database} benutzt. Mit dieser Datenbank lassen sich
+die Spektren der einzelnen Isotope generieren. Dies wird mit Lorentzkurven für
+jede einzelne Linie 
+realisiert, deren Höhe proportional zum Wirkungsquerschnitt ist und deren
+Halbwertsbreite zu den in der Kalibrierung ermittelten Halbwertsbreiten
+passt.
+Da wir in unseren Daten aber immer noch einen Untergrund haben, der den
+automatischen Abgleich erschwert, wurde zusätzlich noch  eine Faltung über
+einen Gausskern von den Daten abgezogen. Da das Spektrum der Daten nun nur noch
+aus Spitzen besteht, können wir ein Überlappintegral aus Daten und generierten
+Spektren erstellen, dieses durch das Integral über die generierten Spektren
+teilen und erhalten ein Maß für den Überlapp. Nun haben wir die Isotope aus
+der Datenbank nach genau diesem Maß sortiert. 
+Das Resultat ist in Abbildung~\ref{fig:element_match} zu sehen.
 
+Durch die recht prominente \SI{511}{\kilo\electronvolt}-Linie erscheinen auch
+einige Isotope sehr weit oben in unserer Liste, die sonst absolut nicht zu
+unseren Daten passen. Deshalb können wir auch nicht direkt, z.B. die ersten
+zehn, Isotope aus der Liste auswählen und als in der Probe vorhanden erklären.
 
 \begin{figure}[h]
 	\centering
@@ -589,6 +620,10 @@ Tabelle~\ref{tab:langzeit-anpassungen-tabelle} zu finden.
 	\label{tab:langzeit-anpassungen-tabelle}
 \end{figure}
 
+Für jede der abgelesenen Linien haben wir
+einen Detailausschnitt angefertigt (vgl. Anhang~\ref{anhang-bodenprobe}).
+Dort kann man sehen wie gut das Isotop auf das gesamte Spektrum passt, und
+welches Isotop dies ist.
 
 \begin{figure}
     \centering
@@ -600,15 +635,6 @@ Tabelle~\ref{tab:langzeit-anpassungen-tabelle} zu finden.
     \label{fig:element_match}
 \end{figure}
 
-Nachdem nun die Energiekalibrierung vorgenommen und die relative
-Effizienz bestimmt wurde, können wir die daraus gewonnenen Informationen nutzen
-um den Linien aus der Langzeitmessung der Bodenprobe die Zerfallsisotope
-zuzuordnen.
-Hierfür haben wir die Informationen über die Energie, sowie die relativen
-Intensitäten der $\gamma$-Zerfälle aus einer Datenbank
-\parencite{IAEA-gamma-ray-database} entnommen.
-Aus dieser Datenbank haben wir Spektren generiert und diese mit unserem gemessen
-Spektrum verglichen.
 % FIXME Und wie wurden die Spektren generiert? Es wurden die Energien und
 % Wirkungsquerschnitte genommen. Die Höhe der Linie wurde als proportional zum
 % Wirkungsquerschnitt angenommen. Eine feste Breite, die zu den restlichen
@@ -623,20 +649,17 @@ Spektrum verglichen.
 %aus, dass der Wirkungsquerschnitt proportional zur Linienhöhe ist. Als Breite
 %nehmen wir eine Breite an, die zu den Breiten der Eichungslinien passt.
 %Hierraus lassen sich nun Lorentzkurven generieren. 
-Ein Kriterium ist, wie sehr unsere Daten die generierten Spektren
-ausfüllen. Wenn alle Linien eines Isotops sowohl in der Lage als auch den
-Höhenverhältnissen
-mit den entsprechenden Linien des gemessenen Spektrums überein stimmen, so haben
-wir dieses Isotop in die engere Auswahl genommen. Wenn nur ein Teil der Linien
-übereinstimmt, aber andere Linie nicht in dem gemessen Spektrum vorkommen, so
-haben wir dieses Isotop verworfen.
-Als nächstes haben wir aus allen möglichen Isotopen ein Spektrum erstellt, um
-festzustellen, ob das resultierende Spektrum sich so erklären lässt.
-Das Resultat ist in Abbildung~\ref{fig:element_match} zu sehen.
-Dabei lassen sich die meisten Isotope natürlichen Zerfallsreihen zuordnen.
 
+Dies führte auch direkt zu einem ersten Problem. Wir konnten mit dieser Methode
+zwar vielen Linien unserer Daten ein Isotop zuordnen, zu einigen war jedoch
+schlicht kein generiertes Spektrum vorhanden, das passte. 
 
-Nicht allen Isotopen der natürlichen Zerfallsreihen, zu sehen
+Da alles danach aussah, dass die gewählte Datenbank unvollständig ist, haben
+wir uns nach geeigneten Ergänzungen umgesehen. Da wir in der Bodenprobe keine
+exotischen Isotope erwarten, haben wir uns zuerst den natürlichen
+Zerfallsreihen zugewandt.
+
+Aber nicht allen Isotopen der natürlichen Zerfallsreihen, zu sehen
 in Abbildung~\ref{fig:thorium} und \ref{fig:uran}, können wir Linien 
 zuordnen. 
 Außerdem tritt die Uran-Actinium-Reihe nicht erkennbar auf.
@@ -647,7 +670,7 @@ nicht im abgebildeten Energiebereich. Allerdings hat die Betrachtung der
 natürlichen Zerfallsreihen geholfen die Linien zu erklären, die nicht in der
 ursprünglich benutzten Datenbank auftauchten. Nachdem wir die Linie des
 $^{228}\text{Ac}$ von \textcite{ac} der Datenbank hinzugefügt hatten, ließen sich alle Linien
-erklären. 
+erklären (vlg. Abbildung~\ref{tab:langzeit-anpassungen-tabelle}).
 
 
 \begin{figure}
@@ -677,9 +700,6 @@ erklären.
     \label{fig:}
 \end{figure}
 
-$^{68}\text{Ga}$ und $^{64}\text{Cu}$ kommen nicht natürlich vor, werden aber
-in der Medizin eingesetzt.
-
 
 
 \chapter{Ergebnis}
@@ -701,10 +721,10 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
 
 
 \chapter{Vorbereitungen}
-\section{Energiekalibrierung}
+\section{Energiekalibrierung}\label{anhang-energie}
 
 \subsection{Szintillationsspektrometer}
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\plotwidth]{Sz-CO-peaks}
     \caption{%
@@ -715,7 +735,7 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
     \label{fig:}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\plotwidth]{Sz-CS-peaks}
     \caption{%
@@ -726,7 +746,7 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
     \label{fig:}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\plotwidth]{Sz-EU-peaks}
     \caption{%
@@ -737,7 +757,7 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
     \label{fig:}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\plotwidth]{sz_channels}
     \caption{%
@@ -747,11 +767,34 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
     \label{fig:sz_kanal}
 \end{figure}
 
+\clearpage
 \subsection{Ge-Detektor}
-
-\begin{figure}
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=\plotwidth]{Ge_calib-peaks}
+    \includegraphics[width=\plotwidth]{CO_calib-peaks}
+    \caption{%
+	    Spitzen des $^{60}\text{Co}$-Spektrums aus dem Ge-Detektor
+	    mit angepassten Gauß-Kurven
+        %
+    }
+    \label{fig:}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\plotwidth]{CS_calib-peaks}
+    \caption{%
+	    Spitzen des $^{137}\text{Cs}$-Spektrums aus dem Ge-Detektor
+	    mit angepassten Gauß-Kurven
+        %
+    }
+    \label{fig:}
+\end{figure}
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\plotwidth]{EU_calib-peaks}
     \caption{%
 	    Spitzen des $^{152}\text{Eu}$-Spektrums aus dem Ge-Detektor  mit
 	    angepassten Lorentz-Kurven
@@ -759,7 +802,7 @@ einer Halbwertszeit von 30 Jahren auch gut möglich ist.
     \label{fig:Ge-peaks}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\plotwidth]{ge_channels}
     \caption{%
