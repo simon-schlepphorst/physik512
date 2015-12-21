@@ -19,10 +19,10 @@ _build/%.ps: Daten/%.GZ _build
 %-temp.pdf : %.ps
 	ps2pdf $< $@
 
-%-000.png: %-temp.pdf
-	pdfimages -png $< $(@:-000.png=)
+%-000.ppm: %-temp.pdf
+	pdfimages $< $(@:-000.ppm=)
 
-%.png: %-000.png
+%.png: %-000.ppm
 	convert $< -rotate 90 -negate $@
 
 %.pdf : %-temp2.pdf

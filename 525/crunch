@@ -31,11 +31,11 @@ def gauss_peak(x, mean, width, area):
 def linear(x, slope, offset):
     return x * slope + offset
 
-def decay(x, a, b):
+def decay(x, a, b, c):
     '''
     Exponentieller Abfall
     '''
-    return np.exp(- x / a) * b
+    return np.exp(- (x - b) / a) * c
 
 def extract_livetime(metafile):# {{{
     with open(metafile) as f:
@@ -521,15 +521,18 @@ def job_time_calibration(T):# {{{
     points = []
 
     fit_range = [
-            (1770, 1950),
+            #(2100, 6000),
+            #(1770, 1950),
             (2100, 2410),
-            (2470, 2610),
-            (2610, 2900),
-            (2990, 3500),
+            #(2470, 2610),
+            (2660, 2850),
+            #(2990, 3500),
+            (3300, 3500),
+            (3900, 4400),
             ]
 
     for i, (first, last) in zip(itertools.count(1), fit_range):
-        popt, pconv = op.curve_fit(decay, x[first:last], y[first:last], p0=[10, 0.4])
+        popt, pconv = op.curve_fit(decay, x[first:last], y[first:last], p0=[10, 40, 0.4])
         perr = np.sqrt(pconv.diagonal())
 
         fit_x = np.linspace(calibration(first), calibration(last), 1000)
