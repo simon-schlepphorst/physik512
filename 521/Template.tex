@@ -82,32 +82,27 @@
 \chapter{Theorie}
 
 \section{Wechselwirkung von $\gamma$-Strahlung mit Materie}
-
 Die $\gamma$-Strahlung entsteht wenn nach einem vorhergegangen Zerfall der
 Tochterkern nicht in seinen Grundzustand, sondern in einen angeregten Zustand
 zerfällt.
 Dieser angeregte Zustand zerfällt nach einiger Zeit durch Abstrahlung des
-$\gamma$-Quants in den Grundzustand. Diese Photonen sind sehr energiereich,
+$\gamma$-Quants in den Grundzustand. Die Photonen sind sehr energiereich,
 weshalb sie genug Energie haben, um auf verschiedene Weisen mit der Materie zu
-Wechselwirken.
-Die Art diese Wechselwirkung hängt von der Ordnungszahl der bestrahlten Atome
+wechselwirken.
+Die Art der Wechselwirkung hängt dabei von der Ordnungszahl der bestrahlten Atome
 und der Energie der $\gamma$-Strahlung ab.
 
 \subsection{Photoeffekt}
-
-Der Photoeffekt beschreibt den Vorgang, bei welchem ein Photon ein Elektron aus
+Der Photoeffekt beschreibt den Vorgang, bei dem ein Photon ein Elektron aus
 dem Atom auslöst.
 Hierbei gibt das Photon seine komplette Energie ab.
 Die kinetische Energie des ausgelösten Elektrons hängt nur über die
 Bindungsenergie ($E_\text{Bind.}$) mit dem der Energie des Photons ($h\nu$),
 also dessen Frequenz ($\nu$) zusammen.
-Dieser Prozess kann nur in der Nähe eines Atomkerns stattfinden weil dieser
-den Rückstoß aufnimmt.
-So bleibt bei diesen Vorgang Energie und Impuls erhalten. 
 \[ 
     E = h\nu - E_\text{Bind.}
 \]
-Wenn man sich den Wirkungsquerschnitt $\sigma$ für diesen Prozess anschaut,
+Wenn man sich den Wirkungsquerschnitt $\sigma$ für den Prozess anschaut,
 dann stellt man eine große Abhängigkeit von der Ordnungszahl $Z$ fest.
 \[
     \sigma \propto Z^5 E_\gamma^{\frac 72}
@@ -117,17 +112,25 @@ auf.
 
 \subsection{Paarerzeugung}
 
-Ein weiterer Effekt, der bei Energien $E_\gamma \ge 2m_\text ec^2$ auftreten
-kann, ist die Elektron-Positron-Paarbildung.
-Dieser Effekt ist allerdings erst weit oberhalb dieser Schwelle relevant.
+Ein anderer Effekt, der bei Energien $E_\gamma \ge 2m_\text ec^2$ auftreten
+kann, ist die Elektron-Positron-Paarbildung. Wenn ein Photon außreichend
+Energie hat, so kann es ein Elektron-Positron-Paar bilden. Die Energie die das
+Photon über die Ruhemassen der beiden Teilchen hinaus hatte, bekommen diese in
+Form von kinetischer Energie. Diese Energie können sie über Stöße abgeben.
+Sobald das Positron keine kinetische Energie mehr hat, kann es mit einem
+Elektron unter Abstrahlung von zwei Photonen mit \SI{511}{\kilo\electronvolt}
+und entgegengesetzter Bewegungsrichtung annihilieren. Dieser Prozess kann nur in der Nähe eines Atomkerns stattfinden weil dieser
+den Rückstoß aufnehmen muss.
+Dadurch bleibt bei diesen Vorgang Energie und Impuls erhalten.
+
+Ausschlag gebend ist der Effekt allerdings erst weit oberhalb dieser Schwelle.
 Für den Wirkungsquerschnitt gilt $\sigma \propto Z^2$.
 
 \subsection{Comptonstreuung}
-
-Wenn Photonen an einem Elektron streuen, dann spricht man vom Comptoneffekt. 
+Wenn Photonen an einem Elektron streuen, spricht man vom Comptoneffekt. 
 Hierbei gibt das Photon einen Teil seiner Energie an das Elektron ab und ändert dabei
-seine Frequenz.
-Die abgegebene Energie hängt dabei vom Streuwinkel ab.
+die eigene Frequenz.
+Die abgegebene Energie hängt vom Streuwinkel ab.
 Für die Restenergie des Photons gilt:
 \[
     E_\nu'(\phi) = \frac{E_\nu}{1+\frac{E_\nu}{m_\text ec^2}(1+\cos(\phi))}
@@ -141,8 +144,7 @@ Diese Energieänderung berechnet sich durch:
 Der Wirkungsquerschnitt entspricht $\sigma_\text C \propto \frac{Z}{E_\gamma}$.
 
 \subsection{Keine Wechselwirkung}
-
-Ein nicht unerheblicher Teil der $\gamma$-Strahlung kann auch Wechselwirkung
+Ein nicht unerheblicher Teil der $\gamma$-Strahlung kann auch ohne Wechselwirkung
 Materie durchdringen.
 
 \section{Szintillationsdetektor}
@@ -151,34 +153,35 @@ Mit einem Szintillationsdetektor lassen sich Intensität und Energie von
 ionisierender Strahlung messen.
 Er besteht aus einem Szintillator und einem Photomultiplier.
 Der Szintillator ist ein dotierter Einkristall, der von energiereicher
-Strahlung zum Fluoreszieren angeregt werden kann und hinreichend
+Strahlung zum fluoreszieren angeregt werden kann und hinreichend
 durchlässig für das von ihm emittierte Licht ist.
 
 Innerhalb des vor Lichteinfall geschützten Szintillators entstehen durch
 ionisierende Strahlung Lichtblitze. 
 Wie viele dieser Blitze auftreten ist von der Energie der Strahlung abhängig.
-Aufgrund des Photoeffektes werden an der Photokathode des Photomultipliers
+Durch den Photoeffekt werden an der Photokathode des Photomultipliers
 Elektronen ausgelöst.
-% FIXME Was soll der folgende Satz?
-Durch den Aufbau weitern des Photomultiplieres kommt es zu einem Lawineneffekt,
-welcher die Elektronen vervielfacht und somit eine Detektion erleichtert.
-Die Amplitude des so entstanden Strompulses ist somit auch proportional zu der
+Es kommt innerhalb des Photomultiplieres zu einem Lawineneffekt,
+der die Elektronen vervielfacht und somit ein Signal verstärkt.
+Die Amplitude des entstanden Strompulses ist somit auch proportional zu der
 Energie der Eingangsstrahlung.
 
-Wenn man eine gute Energieauflösung möchte, sollte man allerdings eher einen
-Halbleiterdetektor nutzen.
+Wenn man eine gute Energieauflösung möchte, ist diese Detektorart nicht
+besonders geeignet. Hier empfiehlt es sich einen Halbleiterdetektor zu
+verwenden. Dieser ist dafür deutlich besser geeignet ist, wie im weiteren Verlauf noch
+deutlich wird.
 
 % TODO Und warum sollte man das?
 
 \section{Halbleiterdetektor}
 
 Die Basis des Halbleiterdetektors bildet die Verarmungszone, die zwischen einem
-$p$- und einem $n$-dotieren Halbleiter entsteht.
+$p$- und einem $n$-dotierten Halbleiter entsteht.
 
-Betrachtet man das Bändermodel vom Halbleitern, so kann man sich die Dotierung
+Betrachtet man das Bändermodel von Halbleitern, so kann man sich die Dotierung
 des Halbleiters als weiteres dünnes Band knapp unter dem Leitungsband
 ($n$-dotiert) oder knapp über dem Valenzband ($p$-dotiert) vorstellen.
-Dabei erhält man die Dotierung eines Kristalls indem man fremde Atome in den
+Man erhält die Dotierung eines Kristalls, indem man fremde Atome in den
 Kristall einbindet.
 Wenn man eine positive Dotierung möchte, so fügt man in den Kristall Atome mit
 einer niedrigeren Anzahl Valenzelektronen ein, für die negative Dotierung nutzt
@@ -194,36 +197,35 @@ Wenn man diese nun in Sperrrichtung betreibt, kann man die Verarmungszone weiter
 verbreitern.
 Das ist erwünscht, da nur in diesen Bereich des Detektors Ereignisse
 gemessen werden können.
+Wenn ein $\gamma$-Quant innerhalb der Verarmungszone  ein Elektronen-Loch-Paar
+erzeugt, werden diese zu den Seiten hin abgesaugt und ergeben das Signal.
 
 \subsection{Multi-Channel-Analyzer}
 
 Um ein nach Amplituden sortiertes Spektrum zu erhalten, nutzen wir ein MCA.
-Dies ist ein Bauteil, welches einkommende Signale nach Amplitude sortiert und
-dann den Kanal, welcher der Impulshöhe entspricht, hoch setzt. So erhalten wir ein
+Es ist ein Bauteil, dass einkommende Signale nach Amplitude sortiert und
+dann den entsprechenden Kanal hoch zählt. So erhalten wir ein
 Histogramm.
 
 %TODO Bild Spektrum
-%\includegraphics[width=0.5\linewidth]{../graphics/Compton-spektrum.pdf}
-%\parencite{comptoneffekt}
+\includegraphics[width=0.5\linewidth]{../graphics/Compton-spektrum.pdf}
+\parencite{comptoneffekt}
 
-%In dem entstehenden Spektrum, erkennt man ein Compton-Kontinuum, welches die 
-%Comptonstreuung bis zu einem Winkel von \SI{180}{\degree} enthält. Da bei diesem
-%Wert der maximale Energieübertrag stattfindet, erhält man eine scharfe Kante, 
-%die Compton Kante. Wird nicht nur ein Teil sondern die gesamte Energie
-%abgegeben, wie es beim
-%Photoeffekt der Fall ist, entsteht der energetisch höher gelegene Ausschlag. Man 
-%nennt ihn Photo-Peak.
-
-
+In dem schematischen Spektrum, erkennt man ein Compton-Kontinuum, welches die 
+Comptonstreuung bis zu einem Winkel von \SI{180}{\degree} enthält. Da bei diesem
+Wert der maximale Energieübertrag stattfindet, erhält man die scharfe Compton Kante.
+Wird nicht nur ein Teil sondern die gesamte Energie abgegeben, wie es beim
+Photoeffekt der Fall ist, entsteht der energetisch höher gelegene Ausschlag. Man 
+nennt ihn Photo-Peak.
 
 \chapter{Aufbau und Durchführung}
 
-Der Aufbau dieses Experiments sieht wie folgt aus:
+Der Aufbau des Experiments sieht wie folgt aus:
 
-Der jeweilige Detektor ist an einen Signalverstärker angeschlossen, welcher
+Die Detektoren sind an einen Signalverstärker angeschlossen, der
 wiederum an einen Vielkanalanalysator angeschlossen ist.
 
-Für die Durchführung müssen zunächst die Betriebsparameter, wie die
+Für die Durchführung müssen zunächst die Betriebsparameter wie die
 Verstärkung des Signalverstärkers eingestellt werden.
 Dazu werden die Proben jeweils einzeln vor die Detektoren gestellt und das
 Ausgangssignal des Signalverstärkers am Oszilloskop betrachtet.
@@ -232,12 +234,12 @@ wichtige \SI{1408}{\kilo\electronvolt}-Linie des $^{152}\text{Eu}$
 innerhalb des Messbereichs liegt.
 %TODO Foto vom Aufbau
 
-Nun messen wir mit beiden Detektoren sowohl die drei Proben, $^{60}\text{Co}$,
-$^{137}\text{Cs}$ und $^{152}\text{Eu}$, als auch den Untergrund. Jede dieser
-Messungen wird über einen Zeitraum von fünf Minuten aufgenommen.
+Nun messen wir mit beiden Detektoren für alle drei Proben, $^{60}\text{Co}$,
+$^{137}\text{Cs}$ und $^{152}\text{Eu}$, und den Untergrund jeweils ein
+Spektrum. Jede dieser Messungen wird über einen Zeitraum von fünf Minuten aufgenommen.
 
 Für die Langzeitmessung mit dem Ge-Detektor wird eine Bleiabschirmung
-aufgebaut, mit der über Nacht der Untergrund gemessen wird bevor die Bodenprobe
+aufgebaut, mit der über Nacht der Untergrund gemessen wird, bevor die Bodenprobe
 innerhalb der Abschirmung positioniert wird und erneut über Nacht gemessen wird.
 
 \chapter{Auswertung}
@@ -245,10 +247,10 @@ innerhalb der Abschirmung positioniert wird und erneut über Nacht gemessen wird
 Bevor wir anfangen können die Spektren zu untersuchen, müssen zunächst die
 Aufnahmezeiten angepasst werden, da wir die Realzeit auf \SI{600}{\second} gesetzt
 haben und diese durch Totzeiten des Detektors von der Aufnahmezeit abweicht.
-Nach Anpassung der Zeit müssen wir die
-Untergrundmessung von der Messung der Spektren abziehen.
-Von den gefilterten Spektren untersuchen wir im folgenden die durch
-$\gamma$-Zerfall entstandenen Ausschläge. Abbildung~\ref{fig:energiekalibrierung}
+Nach Anpassung der Zeit müssen wir die Untergrundmessung von der Messung der Spektren 
+abziehen. Von den gefilterten Spektren untersuchen wir im folgenden die durch
+$\gamma$-Zerfall entstandenen Ausschläge, wie in
+Abbildung~\ref{fig:energiekalibrierung} zu sehen ist.
 % FIXME Satzende?
 
 \begin{figure}
@@ -261,14 +263,16 @@ $\gamma$-Zerfall entstandenen Ausschläge. Abbildung~\ref{fig:energiekalibrierun
     \label{fig:energiekalibrierung}
 \end{figure}
 
-Da die Spektren mit einem Vielkanalanalysator aufgenommen werden, muss eine
+Weil die Spektren mit einem Vielkanalanalysator aufgenommen werden, muss eine
 Energiekalibrierung vorgenommen werden. Hierbei wird den Nummern der 8192
 Kanäle die Energie zugeordnet der sie entsprechen.
-Das lässt sich erreichen indem wir durch Anpassen von Verteilungsfunktionen an die
-Ausschläge bekannter $\gamma$-Übergänge deren Schwerpunkt in Kanalnummer
-erhalten. An die Daten aus dem NaJ(Ti)-Detektor haben wir Gaußkurven und an die
+Das erreichen wir indem wir an Ausschläge bekannter $\gamma$-Übergänge
+Verteilungsfunktionen anpassen. Über den Schwerpunkt erhalten wir die Kanalnummer zu 
+der vorgegebenen Energie . 
+An die Daten aus dem NaJ(Ti)-Detektor haben wir Gaußkurven und an die
 aus dem Ge-Detektor Lorentzkurven angepasst, da diese näher an den Daten liegen.
-Somit wurde den Kanalnummern eine Energie zugeordnet. Abbildung~\ref{fig:Ge-peaks}
+Somit wurde den Kanalnummern eine Energie zugeordnet. Das ist in
+Abbildung~\ref{fig:Ge-peaks} zu sehen.
 % FIXME Satzende?
 
 \begin{tabular}{SSSSSS}
@@ -352,8 +356,9 @@ bestimmen, kennen wir auch die Halbwertsbreiten $\Gamma$.
 \end{align*}
 
 %TODO kommentar zur detektor abhängigkeit.
-Diese zeigen auch wieder, um wie viel besser die Energieauflösung des
-Ge-Detektors ist.
+An der Breite der Linien zeigt sich, um wie viel besser die Energieauflösung des
+Ge-Detektors ist. Deshalb lassen sich mit dem Ge-Detektor mehr Linien
+deutlich trennen.
 
 Aus den Halbwertsbreiten der Linien, die mit dem Ge-Detektor aufgenommen
 wurden,
@@ -601,6 +606,11 @@ Spektrum verglichen.
 % gab es so ein Spektrum für jedes Element mit unterschiedlichen Höhen für die
 % verschiedenen Zerfallskanäle. Die Spektren wurden dann noch am Stück so
 % normiert, dass sie gut zur Messung passen und vergleichbar sind.
+%TODO korrektur. Um die Spektren zu generieren entnehmen wie der Datenbank die
+%Energien und Wirkungsquerschnitte aller eingetragenen Linien. Wir gehen davon
+%aus, dass der Wirkungsquerschnitt proportional zur Linienhöhe ist. Als Breite
+%nehmen wir eine Breite an, die zu den Breiten der Eichungslinien passt.
+%Hierraus lassen sich nun Lorentzkurven generieren. 
 Ein Kriterium ist, wie sehr unsere Daten die generierten Spektren
 ausfüllen. Wenn alle Linien eines Isotops sowohl in der Lage als auch den
 Höhenverhältnissen
