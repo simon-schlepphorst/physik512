@@ -747,9 +747,15 @@ Das Ergebnis ist in Abbildung~\ref{fig:zeiteichung_peaks_plot} zu sehen.
 %Slow-Kreis
 Um die Lebensdauer des angeregten $5/2^+$ Zustandes der $^{133}\text{Cs}$
 Quelle zu bestimmen tauscht man die Quellen und geht bei der Einstellung ebenso
-vor. Hierbei stellt man die Einkanalfenster so ein, dass für das Startsignal
-des TACs die \SI{356}{\kilo\electronvolt}- und für das Stopsignal
-die \SI{81}{\kilo\electronvolt}-Linie dient.
+vor. Da wir die Verstärkung schon im vorherigen Durchgang passend eingestellt
+haben, brauchen wir dies nun nicht mehr zu tun. Die mit der Verstärkung
+aufgenommen Spektren sind in
+Abbildung~\ref{fig:ba_slow_signal_hv_eingestellt_plot} zu sehen.
+
+Die Einkanalfenster stellen wir so ein, dass für das Startsignal
+des TACs die \SI{356}{\kilo\electronvolt}-Linie des rechten Detektors und für
+das Stopsignal
+die \SI{81}{\kilo\electronvolt}-Linie des linken Detektors dient.
 
 \begin{figure}
 	\centering
@@ -819,10 +825,12 @@ die \SI{81}{\kilo\electronvolt}-Linie dient.
 	\label{fig:ba_slow_signal_sca_eingestellt_plot}
 \end{figure}
 
-Durch das Einstellen des SCA haben wir links die Kanäle
+Dadurch haben wir links die Kanäle
 \numrange{<< li_Ba_lower_channel >>}{<< li_Ba_upper_channel >>} und rechts
 die Kanäle
-\numrange{<< re_Ba_lower_channel >>}{<< re_Ba_upper_channel >>} ausgewählt.
+\numrange{<< re_Ba_lower_channel >>}{<< re_Ba_upper_channel >>} ausgewählt, wie
+in Abbildungen~\ref{fig:ba_slow_signal_sca_eingestellt} und
+\ref{fig:ba_slow_signal_sca_eingestellt_plot} zu sehen ist.
 
 
 \begin{figure}
@@ -840,8 +848,19 @@ die Kanäle
 	\label{fig:ba_slow_signal_sca_koinzidenz}
 \end{figure}
 
+Die Koinzidenz der jeweiligen Slow-Signale wird in
+Abbildung~\ref{fig:ba_slow_signal_sca_koinzidenz} überprüft.
 
 %Fast-Kreis
+Den Fast-Kreis stellen wir ebenfalls auf die oben gewählten Linien ein und
+erhalten aus den Abbildungen~\ref{fig:ba_fast_signal_cfd_trig} und
+\ref{fig:ba_fast_signal_cdf_plot} die Kanäle
+\numrange{<< li_Ba_lower_cfd_channel >>}{<< li_Ba_upper_cfd_channel >>} für den
+linken Detektor und
+die Kanäle
+\numrange{<< re_Ba_lower_cfd_channel >>}{<< re_Ba_upper_cfd_channel >>} für den
+rechten Detekor.
+
 
 \begin{figure}
 	\centering
@@ -887,23 +906,32 @@ die Kanäle
 	\label{fig:ba_fast_signal_cfd_plot}
 \end{figure}
 
-Durch das Einstellen des CFD haben wir links die Kanäle
-\numrange{<< li_Ba_lower_cfd_channel >>}{<< li_Ba_upper_cfd_channel >>} und rechts
-die Kanäle
-\numrange{<< re_Ba_lower_cfd_channel >>}{<< re_Ba_upper_cfd_channel >>} ausgewählt.
-
-
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{TEK00046}
+	\includegraphics[width=\plotwidth]{TEK00046}
 	\caption{%
 		Slow-Fast Koinzidenz
 	}
 	\label{fig:ba_slow_fast_koinzidenz}
 \end{figure}
 
-\fehlt%TODO Lebenszeit Plot
+Nachdem wir nun ebenfalls die Koinzidenz zwischen Slow- und Fast-Kreis
+sichergestellt haben (vgl. Abbildung~\ref{fig:ba_slow_fast_koinzidenz}), sind
+wir bereit für die Langzeitmessung. Dazu schließen wir statt des Oszilloskops
+wieder den MCA an und nehmen über einen Zeitraum von \SI{19}{\hour} das
+Spektrum auf. Das aufgenommene Spektrum ist in
+Abbildung~\ref{fig:langzeit_plot} zu sehen.
 
+\begin{figure}
+	\centering
+	\includegraphics[width=\plotwidth]{plot_langzeit_raw}
+	\caption{%
+		Lebenszeitkurve
+	}
+	\label{fig:langzeit_plot}
+\end{figure}
+
+\clearpage
 \chapter{Auswertung}
 %TODO
 \section{Energiekalibrierung}
@@ -1145,7 +1173,7 @@ anschließend über diese mitteln erhalten wir eine Zeitauflösung von
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{plot_time_calibration}
+	\includegraphics[width=\plotwidth]{plot_time_calibration}
 	\caption{%
 		Um \SI{16}{\nano\second} versetzte \SI{511}{\kilo\electronvolt}
 		Linien aus $^{22}\text{Na}$ zur Zeiteichung
@@ -1172,7 +1200,7 @@ anschließend über diese mitteln erhalten wir eine Zeitauflösung von
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{plot_time_calibrate_fit}
+	\includegraphics[width=\plotwidth]{plot_time_calibrate_fit}
 	\caption{%
 		Zeiteichung
 	}
@@ -1180,14 +1208,40 @@ anschließend über diese mitteln erhalten wir eine Zeitauflösung von
 \end{figure}
 
 \section{Bestimmung der Lebenszeit}
+
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{plot_langzeit_fit}
+	\includegraphics[width=\plotwidth]{plot_langzeit}
 	\caption{%
 		Lebenszeitkurve
 	}
-	\label{fig:langzeit_plot}
+	\label{fig:langzeit_plot_daten}
 \end{figure}
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\plotwidth]{../graphics/fit_ranges}
+	\caption{%
+		Ermittelte Lebenszeit, je nachdem welcher Endbereich der Daten
+		als Anpassungsgrundlage genommen wurde
+	}
+	\label{fig:langzeit_fit_ranges}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\plotwidth]{../graphics/hist}
+	\caption{%
+		Häufigkeit der ermittelten Lebenszeiten
+	}
+	\label{fig:langzeit_hist}
+\end{figure}
+
+\[
+	\tau = \SI{11.07 +- 1.59}{\nano\second}\\
+	\text{Abweichung} = 1.24 \sigma
+\]
 
 
 \chapter{Ergebnis}
