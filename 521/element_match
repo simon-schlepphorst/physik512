@@ -181,6 +181,8 @@ def main():
 
     ax.grid(True)
     ax.margins(.05)
+    ax.set_xlabel('Energie / keV')
+    ax.set_ylabel('Energie / keV')
     fig.tight_layout()
 
     if options.show:
