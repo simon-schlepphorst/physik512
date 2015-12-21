@@ -81,27 +81,41 @@
 
 % TODO
 \section{Wechselwirkung von $\gamma$-Strahlung mit Materie}
+\label{sec:WW-strahlung-Materie}
+
 Die $\gamma$-Strahlung entsteht wenn nach einem vorhergegangen Zerfall der
 Tochterkern nicht in seinen Grundzustand, sondern in einen angeregten Zustand
 zerfällt.
-Dieser angeregte Zustand zerfällt nach einiger Zeit durch Abstrahlung des
-$\gamma$-Quants in den Grundzustand. Die Photonen sind sehr energiereich,
+Dieser angeregte Zustand zerfällt nach einiger Zeit durch Abstrahlung eines
+$\gamma$-Quants in den Grundzustand. Diese Photonen sind sehr energiereich,
 weshalb sie genug Energie haben, um auf verschiedene Weisen mit der Materie zu
-wechselwirken.
-Die Art der Wechselwirkung hängt dabei von der Ordnungszahl der bestrahlten Atome
-und der Energie der $\gamma$-Strahlung ab.
+wechselwirken. Hierbei hängt der dominierende Effekt von der
+Energie der Teilchen und der Ordnungszahl des Wechselwirkungspartners ab.
+%TODO Skizze Wirkungsquerschnitt-energie 
+Im unteren Energiebereich, ab dem Punkt wo die Energie höher ist als die
+Bindungsenergie, findet hauptsächlich der Photoeffekt statt. Im mittleren
+Bereich dominiert der Compton-Effekt und ab einer Energie von
+\SI{1022}{\kilo\electronvolt} kann auch vermehrt die
+Elektron-Positron-Erzeugung auftreten.
+
+Dabei darf aber nicht vergessen werden, dass es durchaus noch eine große
+Wahrscheinlichkeit gibt, dass $\gamma$-Strahlung nicht wechselwirkt.
+
 
 \subsection{Photoeffekt}
-Der Photoeffekt beschreibt den Vorgang, bei dem ein Photon ein Elektron aus
+Der Photoeffekt beschreibt den Vorgang, bei welchem ein Photon ein Elektron aus
 dem Atom auslöst.
 Hierbei gibt das Photon seine komplette Energie ab.
 Die kinetische Energie des ausgelösten Elektrons hängt nur über die
 Bindungsenergie ($E_\text{Bind.}$) mit dem der Energie des Photons ($h\nu$),
 also dessen Frequenz ($\nu$) zusammen.
+Dieser Prozess kann nur in der Nähe eines Atomkerns stattfinden, weil dieser
+den Rückstoß aufnimmt.
+So bleibt bei diesen Vorgang Energie und Impuls erhalten. 
 \[ 
     E = h\nu - E_\text{Bind.}
 \]
-Wenn man sich den Wirkungsquerschnitt $\sigma$ für den Prozess anschaut,
+Wenn man sich den Wirkungsquerschnitt $\sigma$ für diesen Prozess anschaut,
 dann stellt man eine große Abhängigkeit von der Ordnungszahl $Z$ fest.
 \[
     \sigma \propto Z^5 E_\gamma^{\frac 72}
@@ -128,8 +142,8 @@ Für den Wirkungsquerschnitt gilt $\sigma \propto Z^2$.
 \subsection{Comptonstreuung}
 Wenn Photonen an einem Elektron streuen, spricht man vom Comptoneffekt. 
 Hierbei gibt das Photon einen Teil seiner Energie an das Elektron ab und ändert dabei
-die eigene Frequenz.
-Die abgegebene Energie hängt vom Streuwinkel ab.
+seine Frequenz.%TODO bild Comptonstreuung
+Die abgegebene Energie hängt dabei vom Streuwinkel ab.
 Für die Restenergie des Photons gilt:
 \[
     E_\nu'(\phi) = \frac{E_\nu}{1+\frac{E_\nu}{m_\text ec^2}(1+\cos(\phi))}
@@ -138,13 +152,9 @@ Die größte Energieänderung erhält man also bei einem Winkel von
 $\phi=\SI{180}{\degree}$.
 Diese Energieänderung berechnet sich durch:
 \[
-    \delta\lambda = \frac{h}{m_\text ec}(1-\cos(\phi))
+    \Delta\lambda = \frac{h}{m_\text ec}(1-\cos(\phi))
 \]
 Der Wirkungsquerschnitt entspricht $\sigma_\text C \propto \frac{Z}{E_\gamma}$.
-
-\subsection{Keine Wechselwirkung}
-Ein nicht unerheblicher Teil der $\gamma$-Strahlung kann auch ohne Wechselwirkung
-Materie durchdringen.
 
 \section{Szintillationsdetektor}
 
