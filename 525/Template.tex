@@ -328,9 +328,9 @@ $^{22}\text{Na}$-Präparat.
 %Na-22
 %Slow-Kreis
 Nachdem die Hochspannung an den Szintillationsspektrometer angelegt wurde, wird
-zunächst das Signal, Abbildung ~\ref{fig:slow_signal}, aus dem Slow-Ausgang oszilloskopiert.
+zunächst das Signal, Abbildung~\ref{fig:slow_signal}, aus dem Slow-Ausgang oszilloskopiert.
 
-\begin{figure}
+\begin{figure}[htbp]
 	\centering
 	\begin{subfigure}{0.49 \textwidth}
 		\includegraphics[width=\textwidth]{TEK00007}
@@ -358,9 +358,9 @@ bleibt der Splitter im gesamten weiteren Verlauf eingebaut. Die eine Hälfte des
 Signals geht durch einen Verzögerer in das Oszilloskop, Abbildung~\ref{fig:slow_signal_hv}, während das zweite Signal erst
 durch einen SCA läuft und dann im zweiten Kanal,
 Abbildung~\ref{fig:slow_signal_sca_trig-li} und
-\ref{fig:slow_signal_sca_trig-re}, angezeigt wird. 
+\ref{fig:slow_signal_sca_trig-re}, angezeigt wird.
 
-\begin{figure}
+\begin{figure}[htbp]
 	\centering
 	\begin{subfigure}{0.49 \textwidth}
 		\includegraphics[width=\textwidth]{TEK00012}
@@ -374,7 +374,7 @@ Abbildung~\ref{fig:slow_signal_sca_trig-li} und
 	\label{fig:slow_signal_hv}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
 	\centering
 	\begin{subfigure}{0.49 \textwidth}
 		\includegraphics[width=\textwidth]{TEK00014}
@@ -403,7 +403,7 @@ Linie und versuchen diese über die Verstärkung auf \SIrange{3}{4}{\volt}
 einzustellen. Als nächstes verzögern wir das Analogsignal, damit es von dem
 Digitalsignal des SCA überdeckt wird.
 
-\begin{figure}
+\begin{figure}[htbp]
 	\centering
 	\begin{subfigure}{0.49 \textwidth}
 		\includegraphics[width=\textwidth]{plot_spektrum_li_na_raw}
@@ -427,12 +427,9 @@ Digitalsignal des SCA überdeckt wird.
 \end{figure}
 
 Nun wird das Signal aus dem Hauptverstärker und das SCA-Signal in den MCA
-gegeben und Datensätze aufgenommen. Wir wählen die Verstärkung so, dass die
-\SI{511}{\kilo\electronvolt}-Linie sich am rechten Spektrumsrand befindet.
-Außerdem muss die \SI{81}{\kilo\electronvolt}-Linie des $^{133}\text{Cs}$ in dem Spektrum
-auftauchen.
-
-\begin{figure}
+gegeben und Datensätze aufgenommen (vlg.
+Abbildung~\ref{fig:slsow_signal_sca_trig_plot}).
+\begin{figure}[htbp]
 	\centering
 	\begin{subfigure}{0.49 \textwidth}
 		\includegraphics[width=\textwidth]{TEK00018}
@@ -454,13 +451,6 @@ auftauchen.
 	}
 	\label{fig:slow_signal_hv_eingestellt}
 \end{figure}
-
-Außerdem werden die Einkanalfenster auf \SI{511}{\kilo\electronvolt}
-eingestellt. Dafür stellt man die obere und die untere Grenze so ein, dass das
-Signal gut umschlossen ist. Wenn man beide Seiten eingestellt hat, dann stellen
-wir die Koinzidenz her. Hierfür betrachten wir die beiden Signal auf dem
-Oszilloskop und verzögern die Signale so, dass sie möglichst gut überlagern.
-
 Anschließend haben wir den Hauptverstärker für beide Seiten jeweils so
 eingestellt, dass der \SI{511}{\kilo\electronvolt} Peak aus dem
 $^{22}\text{Na}$ am rechten Rand des aufgenommen Spektrums liegt und das
@@ -470,7 +460,7 @@ in Abbildung~\ref{fig:slow_signal_hv_eingestellt_plot} und
 Abbildung~\ref{fig:ba_slow_signal_hv_eingestellt_plot} zu sehenden Spektren
 erhalten haben.
 
-\begin{figure}
+\begin{figure}[htbp]
 	\centering
 	\begin{subfigure}{0.49 \textwidth}
 		\includegraphics[width=\textwidth]{plot_spektrum_li_na}
@@ -493,8 +483,7 @@ erhalten haben.
 	\label{fig:slow_signal_hv_eingestellt_plot}
 \end{figure}
 
-
-\begin{figure}
+\begin{figure}[htbp]
 	\centering
 	\begin{subfigure}{0.49 \textwidth}
 		\includegraphics[width=\textwidth]{TEK00019}
@@ -517,7 +506,20 @@ erhalten haben.
 	\label{fig:slow_signal_sca_eingestellt}
 \end{figure}
 
-\begin{figure}
+Außerdem werden die Einkanalfenster auf \SI{511}{\kilo\electronvolt}
+eingestellt. Dafür stellt man die obere und die untere Grenze so ein, dass das
+Signal gut umschlossen ist. 
+Die fertige Auswahl umfasst links die Kanäle
+\numrange{<< li_Na_lower_channel >>}{<< li_Na_upper_channel >>} und rechts
+die Kanäle
+\numrange{<< re_Na_lower_channel >>}{<< re_Na_upper_channel >>}.
+
+Nachdem beide Seiten eingestellt sind, stellen
+wir die Koinzidenz her. Hierfür betrachten wir die beiden Signal auf dem
+Oszilloskop und verzögern die Signale so, dass sie möglichst gut überlagern
+(vlg. Abbildung~\ref{fig:slow_signal_sca_koinzidenz}).
+
+\begin{figure}[htbp]
 	\centering
 	\begin{subfigure}{0.49 \textwidth}
 		\includegraphics[width=\textwidth]{plot_spektrum_filter_li_Na}
@@ -539,12 +541,7 @@ erhalten haben.
 	\label{fig:slow_signal_sca_eingestellt_plot}
 \end{figure}
 
-Durch das Einstellen des SCA haben wir links die Kanäle
-\numrange{<< li_Na_lower_channel >>}{<< li_Na_upper_channel >>} und rechts
-die Kanäle
-\numrange{<< re_Na_lower_channel >>}{<< re_Na_upper_channel >>} ausgewählt.
-
-\begin{figure}
+\begin{figure}[htbp]
 	\centering
 	\begin{subfigure}{0.49 \textwidth}
 		\includegraphics[width=\textwidth]{TEK00021}
@@ -559,6 +556,8 @@ die Kanäle
 	\label{fig:slow_signal_sca_koinzidenz}
 \end{figure}
 
+\clearpage
+
 \section{Fast-Koinzidenz einstellen}
 %Fast-Kreis
 Als nächstes stellen wir den Fast-Kreis ein. Als erstes oszilloskopieren wir
@@ -566,7 +565,7 @@ das Fast-Signal. Dann stellen wir die Schwelle von dem CFD ein.
 Bei dem erstellen der Fast-Koinzidenz ist wichtig zu entscheiden, welches
 Signal als Start- und welches als Stop-Signal für den TAC benutzt werden soll.
 Im Zweifelsfall kann man hier einen Verzögerer nutzen. Dabei sollte man darauf
-achten, dass die Verzögerungseinheiten möglichst klein gewählt werden. 
+achten, dass die Verzögerungseinheiten möglichst klein gewählt werden.
 
 % zeitlicher abgleich von Fast- und slow signal
 %TODO zeiteichung
